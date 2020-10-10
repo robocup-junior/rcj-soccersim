@@ -55,6 +55,10 @@ while robot.step(TIME_STEP) != -1:
 
         data = parse_supervisor_msg(packet)
 
+        # Move only the B1 robot -- everyone else stay still
+        if name.upper() != 'B1':
+            continue
+
         # Get the position of our robot
         robot_pos = data[name.upper()]
         # Get the position of the ball
@@ -86,4 +90,4 @@ while robot.step(TIME_STEP) != -1:
 
         left_motor.setVelocity(left_speed)
         right_motor.setVelocity(right_speed)
-        print('Positions:', robot_pos, ball_pos)
+        print('Robot Position:', robot_pos, 'Ball Position:', ball_pos)
