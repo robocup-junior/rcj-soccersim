@@ -8,7 +8,7 @@ aplha stage and will very probably change in the future.
 
 ## How do I try this out?
 
-1. Download [Webots](https://www.cyberbotics.com/])
+1. Download [Webots](https://www.cyberbotics.com/#download)
 
 2. Clone this repository to your computer by running `git clone https://github.com/RoboCupJuniorTC/webots-soccer-sim-playground.git`
 
