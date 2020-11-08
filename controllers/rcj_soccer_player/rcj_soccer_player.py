@@ -64,30 +64,39 @@ while robot.step(TIME_STEP) != -1:
         # Get the position of the ball
         ball_pos = data['ball']
 
+        robot_angle = robot_pos['orientation']
+
         # Get the angle between the robot and the ball
-        angle = math.atan2(robot_pos['y'] - ball_pos['y'],
-                           robot_pos['x'] - ball_pos['x'])
+        angle = math.atan2(ball_pos['y'] - robot_pos['y'],
+                           ball_pos['x'] - robot_pos['x'])
 
-        # Find out the distance between the robot's orientation and the ball's
-        # angle
-        d = math.atan2(math.sin(angle - robot_pos['orientation']),
-                       math.cos(angle - robot_pos['orientation']))
+        if angle < 0:
+            angle = 2 * math.pi + angle
 
-        degrees = math.degrees(d)
+        if robot_angle < 0:
+            robot_angle = 2 * math.pi + robot_angle
+                      
+        degrees = math.degrees(angle + robot_angle)
 
-        left_speed = -1
-        right_speed = 1
+        # Axis Z is forward
+        # TODO: change the robot's orientation so that X axis means forward
+        degrees -= 90
+        if degrees > 360:
+            degrees -= 360
+
+        left_speed = 1
+        right_speed = -1
 
         # If the robot has the ball right in front of it, go forward, otherwise
         # rotate
-        if degrees >= 130 and degrees <= 160:
-            left_speed = 5
-            right_speed = 5
+        if degrees >= 345 or degrees <= 15:
+            left_speed = -5
+            right_speed = -5
         else:
-            multiplier = -1  # if degrees < 180 else 1
-            left_speed = multiplier * 2
-            right_speed = multiplier * -2
+            multiplier = -1 if degrees < 180 else 1
+            left_speed = multiplier * 4
+            right_speed = multiplier * -4
 
         left_motor.setVelocity(left_speed)
         right_motor.setVelocity(right_speed)
-        print('Robot Position:', robot_pos, 'Ball Position:', ball_pos)
+        print('Robot Position:', robot_pos, 'Ball Position:', ball_pos, 'Angle', degrees)
