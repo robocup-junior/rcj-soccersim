@@ -37,8 +37,8 @@ class RCJSoccerReferee(Supervisor):
 
         self.emitter = self.getEmitter("emitter")
 
-        self.robot_translation = ROBOT_INITIAL_TRANSLATION
-        self.robot_rotation = ROBOT_INITIAL_ROTATION
+        self.robot_translation = ROBOT_INITIAL_TRANSLATION.copy()
+        self.robot_rotation = ROBOT_INITIAL_ROTATION.copy()
 
         self.robot_translation_fields = {}
         self.robot_rotation_fields = {}
@@ -54,6 +54,8 @@ class RCJSoccerReferee(Supervisor):
 
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
+
+        self.reset_positions()
 
         self._update_positions()
 
@@ -108,7 +110,7 @@ class RCJSoccerReferee(Supervisor):
             time (int): the current match time
         """
 
-        time_str = "%d:%d" % (time // 60, time % 60)
+        time_str = "%02d:%02d" % (time // 60, time % 60)
         self.setLabel(2, time_str, 0.45, 0.01, 0.1, 0x000000, 0.0, "Arial")
 
     def _pack_packet(self,
@@ -163,6 +165,22 @@ class RCJSoccerReferee(Supervisor):
 
         self.emitter.send(packet)
 
+    def reset_positions(self):
+        """
+        Reset the positions of the ball as well as the robots to the initial
+        position.
+        """
+
+        ball_translation_field = self.ball.getField("translation")
+        ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
+
+        # reset the robot positions
+        for robot in ROBOT_NAMES:
+            tr_field = self.getFromDef(robot).getField('translation')
+            tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
+            rot_field = self.getFromDef(robot).getField('rotation')
+            rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+
     def tick(self):
         self.time -= TIME_STEP / 1000.0
         if self.time < 0:
@@ -192,16 +210,7 @@ class RCJSoccerReferee(Supervisor):
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
             if self.ball_reset_timer <= 0:
-                ball_translation_field = self.ball.getField("translation")
-                ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
-
-                # reset the robot positions
-                for robot in ROBOT_NAMES:
-                    tr_field = self.getFromDef(robot).getField('translation')
-                    tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
-                    rot_field = self.getFromDef(robot).getField('rotation')
-                    rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
-
+                self.reset_positions()
                 self.ball_reset_timer = 0
 
 
