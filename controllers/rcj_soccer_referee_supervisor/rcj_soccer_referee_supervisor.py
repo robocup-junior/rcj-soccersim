@@ -192,13 +192,17 @@ class RCJSoccerReferee(Supervisor):
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
             if self.ball_reset_timer <= 0:
-                self.ball.setSFVec3f(BALL_INITIAL_TRANSLATION)
+                ball_translation_field = self.ball.getField("translation")
+                ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
 
                 # reset the robot positions
                 for robot in ROBOT_NAMES:
-                    robot_node = self.getFromDef(robot)
-                    robot_node.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
-                    robot_node.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+                    tr_field = self.getFromDef(robot).getField('translation')
+                    tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
+                    rot_field = self.getFromDef(robot).getField('rotation')
+                    rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+
+                self.ball_reset_timer = 0
 
 
 referee = RCJSoccerReferee(match_time=MATCH_TIME)
