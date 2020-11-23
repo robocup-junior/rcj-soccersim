@@ -195,13 +195,13 @@ class RCJSoccerReferee(Supervisor):
 
             # ball in the blue goal
             if self.ball_translation[0] > GOAL_X_LIMIT:
-                self.score_blue += 1
+                self.score_yellow += 1
                 self.draw_scores(self.score_blue, self.score_yellow)
                 self.ball_reset_timer = self.post_goal_wait_time
 
             # ball in the yellow goal
             elif self.ball_translation[0] < -GOAL_X_LIMIT:
-                self.score_yellow += 1
+                self.score_blue += 1
                 self.draw_scores(self.score_blue, self.score_yellow)
                 self.ball_reset_timer = self.post_goal_wait_time
 
