@@ -174,6 +174,8 @@ class RCJSoccerReferee(Supervisor):
         ball_translation_field = self.ball.getField("translation")
         ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
 
+        self.ball.setVelocity([0, 0, 0, 0, 0, 0])
+
         # reset the robot positions
         for robot in ROBOT_NAMES:
             tr_field = self.getFromDef(robot).getField('translation')
