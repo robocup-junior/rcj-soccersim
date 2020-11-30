@@ -1,5 +1,6 @@
 from controller import Supervisor
 import struct
+import random
 
 MATCH_TIME = 10 * 60  # 10 minutes
 GOAL_X_LIMIT = 0.745
@@ -26,12 +27,14 @@ BALL_INITIAL_TRANSLATION = [0, 0, 0]
 class RCJSoccerReferee(Supervisor):
 
     def __init__(self, match_time: int,
-                 post_goal_wait_time: int = 3):
+                 post_goal_wait_time: int = 3,
+                 add_noise_to_initial_position: bool = True):
 
         super().__init__()
 
         self.match_time = match_time
         self.post_goal_wait_time = post_goal_wait_time
+        self.add_noise_to_initial_position = add_noise_to_initial_position
 
         self.time = match_time
 
@@ -179,9 +182,15 @@ class RCJSoccerReferee(Supervisor):
         # reset the robot positions
         for robot in ROBOT_NAMES:
             tr_field = self.getFromDef(robot).getField('translation')
-            tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
+            translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
+            if self.add_noise_to_initial_position:
+                translation[0] += (random.random() - 0.5) / 5
+                translation[2] += (random.random() - 0.5) / 5
+            tr_field.setSFVec3f(translation)
+
             rot_field = self.getFromDef(robot).getField('rotation')
-            rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+            rotation = ROBOT_INITIAL_ROTATION[robot]
+            rot_field.setSFRotation(rotation)
 
     def tick(self):
         self.time -= TIME_STEP / 1000.0
