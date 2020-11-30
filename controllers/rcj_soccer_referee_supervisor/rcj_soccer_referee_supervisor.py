@@ -178,8 +178,11 @@ class RCJSoccerReferee(Supervisor):
 
         # reset the robot positions
         for robot in ROBOT_NAMES:
+            self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
+
             tr_field = self.getFromDef(robot).getField('translation')
             tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
+
             rot_field = self.getFromDef(robot).getField('rotation')
             rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
 
