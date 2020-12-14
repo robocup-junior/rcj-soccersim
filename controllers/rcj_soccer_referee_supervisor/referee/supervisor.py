@@ -1,5 +1,6 @@
 from controller import Supervisor
 import struct
+import random
 
 from referee.consts import (
     MATCH_TIME,
@@ -15,12 +16,14 @@ from referee.consts import (
 
 class RCJSoccerSupervisor(Supervisor):
     def __init__(self, match_time: int,
-                 post_goal_wait_time: int = 3):
+                 post_goal_wait_time: int = 3,
+                 add_noise_to_initial_position: bool = True):
 
         super().__init__()
 
         self.match_time = match_time
         self.post_goal_wait_time = post_goal_wait_time
+        self.add_noise_to_initial_position = add_noise_to_initial_position
 
         self.time = match_time
 
@@ -176,8 +179,13 @@ class RCJSoccerSupervisor(Supervisor):
         for robot in ROBOT_NAMES:
             self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
 
+            translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
+            if self.add_noise_to_initial_position:
+                translation[0] += (random.random() - 0.5) / 5
+                translation[2] += (random.random() - 0.5) / 5
+
             tr_field = self.getFromDef(robot).getField('translation')
-            tr_field.setSFVec3f(ROBOT_INITIAL_TRANSLATION[robot])
+            tr_field.setSFVec3f(translation)
 
             rot_field = self.getFromDef(robot).getField('rotation')
             rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
