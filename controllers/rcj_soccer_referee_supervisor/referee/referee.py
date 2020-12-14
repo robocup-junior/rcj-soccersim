@@ -14,16 +14,22 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         pass
 
     def check_progress(self):
+        """
+        Check that the robots, as well as the ball, have made enough progress
+        in their respective time intervals. If they did not, call "Lack of
+        Progress".
+        """
+
         for robot in ROBOT_NAMES:
             pos = self.robot_translation[robot]
-            self.progress_chck[robot].update_position(pos)
+            self.progress_chck[robot].track(pos)
 
             if not self.progress_chck[robot].is_progress(robot):
                 print(f'Robot {robot}: Lack of progress')
                 self.reset_robot_position(robot)
 
         bpos = self.ball_translation.copy()
-        self.progress_chck['ball'].update_position(bpos)
+        self.progress_chck['ball'].track(bpos)
         if not self.progress_chck['ball'].is_progress('ball'):
             print('Ball: Lack of progress')
             self.reset_ball_position()
@@ -42,10 +48,10 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.draw_scores(self.score_blue, self.score_yellow)
             self.ball_reset_timer = self.post_goal_wait_time
 
-    def tick(self):
+    def tick(self) -> bool:
         self.time -= TIME_STEP / 1000.0
         if self.time < 0:
-            self.time = self.match_time
+            return False
 
         self.draw_time(self.time)
 
@@ -63,3 +69,5 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             if self.ball_reset_timer <= 0:
                 self.reset_positions()
                 self.ball_reset_timer = 0
+
+        return True

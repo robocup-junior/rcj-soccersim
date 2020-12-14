@@ -12,14 +12,16 @@ from referee.consts import (
 
 
 class RCJSoccerSupervisor(Supervisor):
-    def __init__(self,
-                 match_time: int,
-                 progress_check_steps: int,
-                 progress_check_threshold: int,
-                 ball_progress_check_steps: int,
-                 ball_progress_check_threshold: int,
-                 post_goal_wait_time: int = 3,
-                 add_noise_to_initial_position: bool = True):
+    def __init__(
+            self,
+            match_time: int,
+            progress_check_steps: int,
+            progress_check_threshold: int,
+            ball_progress_check_steps: int,
+            ball_progress_check_threshold: int,
+            post_goal_wait_time: int = 3,
+            add_noise_to_initial_position: bool = True
+    ):
 
         super().__init__()
 
