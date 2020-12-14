@@ -6,4 +6,5 @@ referee = RCJSoccerReferee(match_time=MATCH_TIME)
 while referee.step(TIME_STEP) != -1:
     referee.emit_positions()
 
-    referee.tick()
+    if not referee.tick():
+        break
