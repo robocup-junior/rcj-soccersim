@@ -42,10 +42,10 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.draw_scores(self.score_blue, self.score_yellow)
             self.ball_reset_timer = self.post_goal_wait_time
 
-    def tick(self):
+    def tick(self) -> bool:
         self.time -= TIME_STEP / 1000.0
         if self.time < 0:
-            self.time = self.match_time
+            return False
 
         self.draw_time(self.time)
 
@@ -63,3 +63,5 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             if self.ball_reset_timer <= 0:
                 self.reset_positions()
                 self.ball_reset_timer = 0
+
+        return True
