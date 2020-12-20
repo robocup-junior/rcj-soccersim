@@ -18,3 +18,20 @@ ROBOT_INITIAL_ROTATION = {"B1": [0, 1, 0, 1.57],
                           "Y3": [0, 1, 0, 3.14]}
 
 BALL_INITIAL_TRANSLATION = [0, 0, 0]
+
+CENTER_NS = "center_ns"
+YELLOW_LEFT_NS = "yellow_left_ns"
+YELLOW_MIDDLE_NS = "yellow_middle_ns"
+YELLOW_RIGHT_NS = "yellow_right_ns"
+BLUE_LEFT_NS = "blue_left_ns"
+BLUE_MIDDLE_NS = "blue_middle_ns"
+BLUE_RIGHT_NS = "blue_right_ns"
+NEUTRAL_SPOTS = {
+   CENTER_NS : (0, 0),
+   YELLOW_LEFT_NS : (-0.3, -0.3),
+   YELLOW_MIDDLE_NS : (-0.2, 0),
+   YELLOW_RIGHT_NS : (-0.3, 0.3),
+   BLUE_LEFT_NS : (0.3, 0.3),
+   BLUE_MIDDLE_NS : (0.2, 0),
+   BLUE_RIGHT_NS : (0.3, -0.3),
+}
