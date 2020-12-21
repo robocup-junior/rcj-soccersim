@@ -1,7 +1,9 @@
 from controller import Supervisor
 from referee.progress_checker import ProgressChecker
+from referee.json_logger import JSONLogger
 import struct
 import random
+from pathlib import Path
 
 from referee.consts import (
     ROBOT_NAMES,
@@ -19,6 +21,9 @@ class RCJSoccerSupervisor(Supervisor):
             progress_check_threshold: int,
             ball_progress_check_steps: int,
             ball_progress_check_threshold: int,
+            reflog_path: Path,
+            team_name_blue: str,
+            team_name_yellow: str,
             post_goal_wait_time: int = 3,
             add_noise_to_initial_position: bool = True
     ):
@@ -30,6 +35,10 @@ class RCJSoccerSupervisor(Supervisor):
         self.add_noise_to_initial_position = add_noise_to_initial_position
 
         self.time = match_time
+
+        self.log = JSONLogger(reflog_path)
+        self.team_name_blue = team_name_blue
+        self.team_name_yellow = team_name_yellow
 
         self.emitter = self.getEmitter("emitter")
 
@@ -213,3 +222,11 @@ class RCJSoccerSupervisor(Supervisor):
 
         # Ensure the progress checker does not count this "jump"
         self.progress_chck[robot].reset()
+
+    def robot_to_team_name(self, robot):
+        if robot.startswith('Y'):
+            return self.team_name_yellow
+        elif robot.startswith('B'):
+            return self.team_name_blue
+        else:
+            raise ValueError(f"Unrecognized robot's name {robot}")
