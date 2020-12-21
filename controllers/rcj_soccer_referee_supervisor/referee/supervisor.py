@@ -1,13 +1,10 @@
 from controller import Supervisor
+from referee.progress_checker import ProgressChecker
 import struct
 import random
 
 from referee.consts import (
-    MATCH_TIME,
-    GOAL_X_LIMIT,
-    TIME_STEP,
     ROBOT_NAMES,
-    N_ROBOTS,
     ROBOT_INITIAL_TRANSLATION,
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
@@ -15,9 +12,16 @@ from referee.consts import (
 
 
 class RCJSoccerSupervisor(Supervisor):
-    def __init__(self, match_time: int,
-                 post_goal_wait_time: int = 3,
-                 add_noise_to_initial_position: bool = True):
+    def __init__(
+            self,
+            match_time: int,
+            progress_check_steps: int,
+            progress_check_threshold: int,
+            ball_progress_check_steps: int,
+            ball_progress_check_threshold: int,
+            post_goal_wait_time: int = 3,
+            add_noise_to_initial_position: bool = True
+    ):
 
         super().__init__()
 
@@ -37,6 +41,8 @@ class RCJSoccerSupervisor(Supervisor):
 
         self.robot_in_penalty_counter = {}
 
+        self.progress_chck = {}
+
         for robot in ROBOT_NAMES:
             robot_node = self.getFromDef(robot)
             field = robot_node.getField('translation')
@@ -48,8 +54,16 @@ class RCJSoccerSupervisor(Supervisor):
 
             self.robot_in_penalty_counter[robot] = 0
 
+            pc = ProgressChecker(progress_check_steps,
+                                 progress_check_threshold)
+            self.progress_chck[robot] = pc
+
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
+
+        bpc = ProgressChecker(ball_progress_check_steps,
+                              ball_progress_check_threshold)
+        self.progress_chck['ball'] = bpc
 
         self.reset_positions()
 
@@ -170,22 +184,32 @@ class RCJSoccerSupervisor(Supervisor):
         position.
         """
 
+        self.reset_ball_position()
+
+        # reset the robot positions
+        for robot in ROBOT_NAMES:
+            self.reset_robot_position(robot)
+
+    def reset_ball_position(self):
         ball_translation_field = self.ball.getField("translation")
         ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
 
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
+        self.progress_chck['ball'].reset()
 
-        # reset the robot positions
-        for robot in ROBOT_NAMES:
-            self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
+    def reset_robot_position(self, robot):
+        self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
 
-            translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
-            if self.add_noise_to_initial_position:
-                translation[0] += (random.random() - 0.5) / 5
-                translation[2] += (random.random() - 0.5) / 5
+        translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
+        if self.add_noise_to_initial_position:
+            translation[0] += (random.random() - 0.5) / 5
+            translation[2] += (random.random() - 0.5) / 5
 
-            tr_field = self.getFromDef(robot).getField('translation')
-            tr_field.setSFVec3f(translation)
+        tr_field = self.getFromDef(robot).getField('translation')
+        tr_field.setSFVec3f(translation)
 
-            rot_field = self.getFromDef(robot).getField('rotation')
-            rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+        rot_field = self.getFromDef(robot).getField('rotation')
+        rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+
+        # Ensure the progress checker does not count this "jump"
+        self.progress_chck[robot].reset()
