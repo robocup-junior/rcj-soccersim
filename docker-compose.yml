@@ -1,0 +1,11 @@
+services:
+  webots-game:
+    build: .
+    privileged: true
+    volumes:
+      - ../webots_video_out/:/out
+    shm_size: '4gb'
+    ports:
+      - 1234:1234
+    devices:
+      - "/dev/dri:/dev/dri"
