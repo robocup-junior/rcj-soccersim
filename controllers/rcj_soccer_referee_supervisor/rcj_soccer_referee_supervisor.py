@@ -8,3 +8,6 @@ while referee.step(TIME_STEP) != -1:
 
     if not referee.tick():
         break
+
+# When end of match, pause simulator immediately
+referee.simulationSetMode(referee.SIMULATION_MODE_PAUSE)
