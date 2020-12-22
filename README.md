@@ -3,6 +3,8 @@
 This repository serves as a playground for various experiments related to
 setting up a simulated RCJ Soccer environment in the Webots simulator.
 
+![Soccer Sim](./media/soccer_sim.png)
+
 It currently features a sample robot as well as a supervisor. These are in an
 aplha stage and will very probably change in the future.
 
