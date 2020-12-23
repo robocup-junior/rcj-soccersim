@@ -1,16 +1,17 @@
-from controller import Supervisor
-from referee.progress_checker import ProgressChecker
-from referee.json_logger import JSONLogger
 import struct
 import random
 from pathlib import Path
 
+from controller import Supervisor
+from referee.progress_checker import ProgressChecker
+from referee.penalty_area_checker import PenaltyAreaChecker
 from referee.consts import (
     ROBOT_NAMES,
     ROBOT_INITIAL_TRANSLATION,
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
 )
+from referee.json_logger import JSONLogger
 
 
 class RCJSoccerSupervisor(Supervisor):
@@ -24,6 +25,8 @@ class RCJSoccerSupervisor(Supervisor):
             reflog_path: Path,
             team_name_blue: str,
             team_name_yellow: str,
+            penalty_area_allowed_time: int,
+            penalty_area_reset_after: int,
             post_goal_wait_time: int = 3,
             add_noise_to_initial_position: bool = True
     ):
@@ -51,6 +54,7 @@ class RCJSoccerSupervisor(Supervisor):
         self.robot_in_penalty_counter = {}
 
         self.progress_chck = {}
+        self.penalty_area_chck = {}
 
         for robot in ROBOT_NAMES:
             robot_node = self.getFromDef(robot)
@@ -63,9 +67,16 @@ class RCJSoccerSupervisor(Supervisor):
 
             self.robot_in_penalty_counter[robot] = 0
 
-            pc = ProgressChecker(progress_check_steps,
-                                 progress_check_threshold)
-            self.progress_chck[robot] = pc
+            self.progress_chck[robot] = ProgressChecker(
+                progress_check_steps,
+                progress_check_threshold
+            )
+
+            self.penalty_area_chck[robot] = PenaltyAreaChecker(
+                penalty_area_allowed_time,
+                penalty_area_reset_after,
+                self.time,
+            )
 
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
@@ -222,6 +233,8 @@ class RCJSoccerSupervisor(Supervisor):
 
         # Ensure the progress checker does not count this "jump"
         self.progress_chck[robot].reset()
+
+        self.penalty_area_chck[robot].reset()
 
     def robot_to_team_name(self, robot: str) -> str:
         if robot.startswith('Y'):

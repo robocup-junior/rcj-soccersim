@@ -34,7 +34,9 @@ referee = RCJSoccerReferee(
     ball_progress_check_threshold=0.5,
     reflog_path=reflog,
     team_name_blue=TEAM_BLUE,
-    team_name_yellow=TEAM_YELLOW
+    team_name_yellow=TEAM_YELLOW,
+    penalty_area_allowed_time=15,
+    penalty_area_reset_after=2,
 )
 
 while referee.step(TIME_STEP) != -1:
