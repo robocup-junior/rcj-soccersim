@@ -1,9 +1,10 @@
-"""rcj_soccer_player controller."""
+# rcj_soccer_player controller - ROBOT B3
 from controller import Robot
 import struct
 import math
 
 TIME_STEP = 64
+MY_ROBOT_NAME = "B3"
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
@@ -55,10 +56,6 @@ while robot.step(TIME_STEP) != -1:
 
         data = parse_supervisor_msg(packet)
 
-        # Move only the B1 robot -- everyone else stay still
-        if name.upper() != 'B1':
-            continue
-
         # Get the position of our robot
         robot_pos = data[name.upper()]
         # Get the position of the ball
@@ -75,7 +72,7 @@ while robot.step(TIME_STEP) != -1:
 
         if robot_angle < 0:
             robot_angle = 2 * math.pi + robot_angle
-                      
+
         degrees = math.degrees(angle + robot_angle)
 
         # Axis Z is forward
@@ -99,4 +96,3 @@ while robot.step(TIME_STEP) != -1:
 
         left_motor.setVelocity(left_speed)
         right_motor.setVelocity(right_speed)
-        print('Robot Position:', robot_pos, 'Ball Position:', ball_pos, 'Angle', degrees)

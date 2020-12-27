@@ -514,7 +514,7 @@ DEF B1 Robot {
     density -1
     mass 0.2
   }
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_b1"
 }
 DEF B2 Robot {
   translation 0.271657 0.0381772 0.289311
@@ -638,7 +638,7 @@ DEF B2 Robot {
   name "b2"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_b2"
 }
 DEF B3 Robot {
   translation 0.718395 0.0381772 -0.0459804
@@ -762,7 +762,7 @@ DEF B3 Robot {
   name "b3"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_b3"
 }
 DEF Y1 Robot {
   translation -0.344136 0.0381772 -0.407555
@@ -886,7 +886,7 @@ DEF Y1 Robot {
   name "y1"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_y1"
 }
 DEF Y2 Robot {
   translation -0.392446 0.0381772 0.0946615
@@ -1010,7 +1010,7 @@ DEF Y2 Robot {
   name "y2"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_y2"
 }
 DEF Y3 Robot {
   translation -0.710919 0.0381772 -0.114706
@@ -1134,7 +1134,7 @@ DEF Y3 Robot {
   name "y3"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "rcj_soccer_player"
+  controller "rcj_soccer_player_y3"
 }
 Robot {
   children [
