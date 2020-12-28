@@ -1,7 +1,8 @@
 from referee.consts import (
     GOAL_X_LIMIT,
     TIME_STEP,
-    ROBOT_NAMES
+    ROBOT_NAMES,
+    GameEvents
 )
 from referee.supervisor import RCJSoccerSupervisor
 
@@ -27,7 +28,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             if not self.progress_chck[robot].is_progress(robot):
                 self.log.event(
                     supervisor=self,
-                    type="lack_of_progress",
+                    type=GameEvents.LACK_OF_PROGRESS,
                     msg=f"Robot {robot}: Lack of progress",
                     payload={
                         "type": "robot"
@@ -40,7 +41,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if not self.progress_chck['ball'].is_progress('ball'):
             self.log.event(
                 supervisor=self,
-                type="lack_of_progress",
+                type=GameEvents.LACK_OF_PROGRESS,
                 msg="Ball: Lack of progress",
                 payload={
                     "type": "ball"
@@ -67,7 +68,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if self.time == self.match_time:
             self.log.event(
                 supervisor=self,
-                type="match_started",
+                type=GameEvents.MATCH_START,
                 msg=f"The match ({self.match_time}s) has started",
                 payload={
                     "score_yellow": self.score_yellow,
@@ -81,7 +82,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if self.time < 0:
             self.log.event(
                 supervisor=self,
-                type="match_finished",
+                type=GameEvents.MATCH_FINISH,
                 msg=f"The match time {self.match_time}s is over",
                 payload={
                     "score_yellow": self.score_yellow,

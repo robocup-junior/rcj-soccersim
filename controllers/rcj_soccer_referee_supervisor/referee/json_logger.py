@@ -5,8 +5,7 @@ from typing import Optional
 
 
 class JSONLogger(object):
-    def __init__(self,
-                 logfile: Path):
+    def __init__(self, logfile: Path):
 
         self.logfile = logfile
 
