@@ -1,18 +1,33 @@
 from controller import Supervisor
 
+from pathlib import Path
+import datetime
+
 
 class VideoRecordAssistant:
 
-    def __init__(self, supervisor: Supervisor, resolution: str = "720p"):
+    def __init__(self,
+                 supervisor: Supervisor,
+                 output_path: str = "",
+                 fastforward_rate: int = 1,
+                 resolution: str = "720p"):
+
         self.supervisor = supervisor
+        self.output_path = output_path
+        self.fastforward_rate = fastforward_rate
         self.resolution = resolution
 
         if not isinstance(self.supervisor, Supervisor):
             raise TypeError("Unexpected supervisor instance")
 
     def create_title(self):
-        title = "test.mp4"
-        return title
+
+        if self.output_path == "":
+            # When output path is not specified
+            time_str = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
+            return "{}/{}.mp4".format(str(Path.home()), time_str)
+
+        return self.output_path
 
     def get_resolution(self):
         res_table = {"480p": (720, 480),
@@ -26,13 +41,16 @@ class VideoRecordAssistant:
 
     def start_recording(self):
         width, height = self.get_resolution()
-        filename = "./{}".format(self.create_title())
+        filename = self.create_title()
+
+        # API details for movieStartRecording
+        # https://www.cyberbotics.com/doc/reference/supervisor?tab-language=python#wb_supervisor_movie_start_recording
         self.supervisor.movieStartRecording(filename,
                                             width,
                                             height,
                                             quality=100,
                                             codec=0,
-                                            acceleration=1,
+                                            acceleration=self.fastforward_rate,
                                             caption=False)
 
     def stop_recording(self):
