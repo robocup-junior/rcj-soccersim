@@ -28,7 +28,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             if not self.progress_chck[robot].is_progress(robot):
                 self.log.event(
                     supervisor=self,
-                    type=GameEvents.LACK_OF_PROGRESS,
+                    type=GameEvents.LACK_OF_PROGRESS.value,
                     msg=f"Robot {robot}: Lack of progress",
                     payload={
                         "type": "robot"
@@ -41,7 +41,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if not self.progress_chck['ball'].is_progress('ball'):
             self.log.event(
                 supervisor=self,
-                type=GameEvents.LACK_OF_PROGRESS,
+                type=GameEvents.LACK_OF_PROGRESS.value,
                 msg="Ball: Lack of progress",
                 payload={
                     "type": "ball"
@@ -68,7 +68,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if self.time == self.match_time:
             self.log.event(
                 supervisor=self,
-                type=GameEvents.MATCH_START,
+                type=GameEvents.MATCH_START.value,
                 msg=f"The match ({self.match_time}s) has started",
                 payload={
                     "score_yellow": self.score_yellow,
@@ -82,7 +82,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if self.time < 0:
             self.log.event(
                 supervisor=self,
-                type=GameEvents.MATCH_FINISH,
+                type=GameEvents.MATCH_FINISH.value,
                 msg=f"The match time {self.match_time}s is over",
                 payload={
                     "score_yellow": self.score_yellow,
