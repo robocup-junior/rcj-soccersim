@@ -3,12 +3,12 @@ from controller import Supervisor
 
 class VideoRecordAssistant:
 
-    def __init__(self, supervisor, resolution="720p"):
+    def __init__(self, supervisor: Supervisor, resolution: str = "720p"):
         self.supervisor = supervisor
         self.resolution = resolution
 
         if not isinstance(self.supervisor, Supervisor):
-            raise TypeError()
+            raise TypeError("Unexpected supervisor instance")
 
     def create_title(self):
         title = "test.mp4"
@@ -19,14 +19,14 @@ class VideoRecordAssistant:
                      "720p": (1280, 720),
                      "1080p": (1920, 1080)}
 
-        if(self.resolution not in res_table):
+        if self.resolution not in res_table:
             raise ValueError("Invalid Resolution")
 
         return res_table[self.resolution]
 
     def start_recording(self):
         width, height = self.get_resolution()
-        filename = "./"+self.create_title()
+        filename = "./{}".format(self.create_title())
         self.supervisor.movieStartRecording(filename,
                                             width,
                                             height,
@@ -34,8 +34,6 @@ class VideoRecordAssistant:
                                             codec=0,
                                             acceleration=1,
                                             caption=False)
-        return
 
     def stop_recording(self):
         self.supervisor.movieStopRecording()
-        return
