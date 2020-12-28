@@ -14,3 +14,6 @@ while referee.step(TIME_STEP) != -1:
         break
 
 recorder.stop_recording()
+
+# When end of match, pause simulator immediately
+referee.simulationSetMode(referee.SIMULATION_MODE_PAUSE)
