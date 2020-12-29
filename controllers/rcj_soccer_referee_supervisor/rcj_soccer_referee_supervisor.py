@@ -20,7 +20,7 @@ def reflog_path(directory: Path,
     if not directory.exists():
         directory.mkdir(parents=True, exist_ok=True)
 
-    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}.json')
+    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}.jsonl')
     return p
 
 
