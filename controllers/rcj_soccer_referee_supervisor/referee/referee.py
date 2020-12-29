@@ -72,7 +72,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 msg=f"The match ({self.match_time}s) has started",
                 payload={
                     "score_yellow": self.score_yellow,
-                    "score_blue": self.score_blue
+                    "score_blue": self.score_blue,
+                    "total_match_time": self.match_time
                 }
             )
 
