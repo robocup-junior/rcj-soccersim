@@ -1,7 +1,8 @@
 from referee.consts import (
     GOAL_X_LIMIT,
     TIME_STEP,
-    ROBOT_NAMES
+    ROBOT_NAMES,
+    GameEvents
 )
 from referee.supervisor import RCJSoccerSupervisor
 
@@ -25,13 +26,27 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.progress_chck[robot].track(pos)
 
             if not self.progress_chck[robot].is_progress(robot):
-                print(f'Robot {robot}: Lack of progress')
+                self.log.event(
+                    supervisor=self,
+                    type=GameEvents.LACK_OF_PROGRESS.value,
+                    msg=f"Robot {robot}: Lack of progress",
+                    payload={
+                        "type": "robot"
+                    }
+                )
                 self.reset_robot_position(robot)
 
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
         if not self.progress_chck['ball'].is_progress('ball'):
-            print('Ball: Lack of progress')
+            self.log.event(
+                supervisor=self,
+                type=GameEvents.LACK_OF_PROGRESS.value,
+                msg="Ball: Lack of progress",
+                payload={
+                    "type": "ball"
+                }
+            )
             self.reset_ball_position()
 
     def check_goal(self):
@@ -49,8 +64,32 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.ball_reset_timer = self.post_goal_wait_time
 
     def tick(self) -> bool:
+        # On the very first tick, note that the match has started
+        if self.time == self.match_time:
+            self.log.event(
+                supervisor=self,
+                type=GameEvents.MATCH_START.value,
+                msg=f"The match ({self.match_time}s) has started",
+                payload={
+                    "score_yellow": self.score_yellow,
+                    "score_blue": self.score_blue
+                }
+            )
+
         self.time -= TIME_STEP / 1000.0
+
+        # On the very last tick, note that the match has finished
         if self.time < 0:
+            self.log.event(
+                supervisor=self,
+                type=GameEvents.MATCH_FINISH.value,
+                msg=f"The match time {self.match_time}s is over",
+                payload={
+                    "score_yellow": self.score_yellow,
+                    "score_blue": self.score_blue
+                }
+            )
+
             return False
 
         self.draw_time(self.time)

@@ -1,6 +1,30 @@
 from math import ceil
 from referee.consts import MATCH_TIME, TIME_STEP
 from referee.referee import RCJSoccerReferee
+from datetime import datetime
+from pathlib import Path
+
+
+TEAM_YELLOW = "The Yellows"
+TEAM_BLUE = "The Blues"
+
+
+def reflog_path(directory: Path,
+                team_blue: str,
+                team_yellow: str):
+    now_str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    team_blue = team_blue.replace(' ', '_')
+    team_yellow = team_yellow.replace(' ', '_')
+
+    # Ensure the directory ecists
+    if not directory.exists():
+        directory.mkdir(parents=True, exist_ok=True)
+
+    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}.json')
+    return p
+
+
+reflog = reflog_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -8,6 +32,9 @@ referee = RCJSoccerReferee(
     progress_check_threshold=0.5,
     ball_progress_check_steps=ceil(10/(TIME_STEP/1000.0)),
     ball_progress_check_threshold=0.5,
+    reflog_path=reflog,
+    team_name_blue=TEAM_BLUE,
+    team_name_yellow=TEAM_YELLOW
 )
 
 while referee.step(TIME_STEP) != -1:

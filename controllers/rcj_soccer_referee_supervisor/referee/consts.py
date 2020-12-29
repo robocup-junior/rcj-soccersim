@@ -1,3 +1,5 @@
+from enum import Enum
+
 MATCH_TIME = 10 * 60  # 10 minutes
 GOAL_X_LIMIT = 0.745
 TIME_STEP = 64
@@ -27,11 +29,17 @@ BLUE_LEFT_NS = "blue_left_ns"
 BLUE_MIDDLE_NS = "blue_middle_ns"
 BLUE_RIGHT_NS = "blue_right_ns"
 NEUTRAL_SPOTS = {
-   CENTER_NS : (0, 0),
-   YELLOW_LEFT_NS : (-0.3, -0.3),
-   YELLOW_MIDDLE_NS : (-0.2, 0),
-   YELLOW_RIGHT_NS : (-0.3, 0.3),
-   BLUE_LEFT_NS : (0.3, 0.3),
-   BLUE_MIDDLE_NS : (0.2, 0),
-   BLUE_RIGHT_NS : (0.3, -0.3),
+   CENTER_NS: (0, 0),
+   YELLOW_LEFT_NS: (-0.3, -0.3),
+   YELLOW_MIDDLE_NS: (-0.2, 0),
+   YELLOW_RIGHT_NS: (-0.3, 0.3),
+   BLUE_LEFT_NS: (0.3, 0.3),
+   BLUE_MIDDLE_NS: (0.2, 0),
+   BLUE_RIGHT_NS: (0.3, -0.3),
 }
+
+
+class GameEvents(Enum):
+    MATCH_START = "MATCH_START"
+    MATCH_FINISH = "MATCH_FINISH"
+    LACK_OF_PROGRESS = "LACK_OF_PROGRESS"
