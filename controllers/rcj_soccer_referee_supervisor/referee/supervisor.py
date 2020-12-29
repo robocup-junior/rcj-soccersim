@@ -223,7 +223,7 @@ class RCJSoccerSupervisor(Supervisor):
         # Ensure the progress checker does not count this "jump"
         self.progress_chck[robot].reset()
 
-    def robot_to_team_name(self, robot) -> str:
+    def robot_to_team_name(self, robot: str) -> str:
         if robot.startswith('Y'):
             return self.team_name_yellow
         elif robot.startswith('B'):
