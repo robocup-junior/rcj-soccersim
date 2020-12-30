@@ -2,7 +2,7 @@ from referee.consts import (
     GOAL_X_LIMIT,
     TIME_STEP,
     ROBOT_NAMES,
-    GameEvents
+    GameEvents,
 )
 from referee.supervisor import RCJSoccerSupervisor
 
@@ -18,7 +18,15 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.penalty_area_chck[robot].track(pos, self.time)
 
             if self.penalty_area_chck[robot].is_violating():
-                print(f'Robot {robot}: Inside penalty area for too long')
+                self.log.event(
+                    supervisor=self,
+                    type=GameEvents.INSIDE_PENALTY_FOR_TOO_LONG.value,
+                    msg=f"Robot {robot}: Inside penalty for too long",
+                    payload={
+                        "type": "robot",
+                        "robot": robot,
+                    }
+                )
                 # TODO: move the robot to the FURTHEST unoccupied neutral spot
                 self.reset_robot_position(robot)
 
@@ -38,7 +46,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     type=GameEvents.LACK_OF_PROGRESS.value,
                     msg=f"Robot {robot}: Lack of progress",
                     payload={
-                        "type": "robot"
+                        "type": "robot",
+                        "robot": robot,
                     }
                 )
                 self.reset_robot_position(robot)
