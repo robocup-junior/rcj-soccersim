@@ -2,17 +2,33 @@ from referee.consts import (
     GOAL_X_LIMIT,
     TIME_STEP,
     ROBOT_NAMES,
-    GameEvents
+    GameEvents,
 )
 from referee.supervisor import RCJSoccerSupervisor
 
 
 class RCJSoccerReferee(RCJSoccerSupervisor):
     def check_robots_in_penalty_area(self):
-        """Check whether robots are violating rule not to stay in
-        penalty area for longer period of time"""
-        # TODO: decide if this rule will be applied and then implement it
-        pass
+        """
+        Check whether robots are violating rule not to stay in
+        penalty area for longer period of time
+        """
+        for robot in ROBOT_NAMES:
+            pos = self.robot_translation[robot]
+            self.penalty_area_chck[robot].track(pos, self.time)
+
+            if self.penalty_area_chck[robot].is_violating():
+                self.log.event(
+                    supervisor=self,
+                    type=GameEvents.INSIDE_PENALTY_FOR_TOO_LONG.value,
+                    msg=f"Robot {robot}: Inside penalty for too long",
+                    payload={
+                        "type": "robot",
+                        "robot": robot,
+                    }
+                )
+                # TODO: move the robot to the FURTHEST unoccupied neutral spot
+                self.reset_robot_position(robot)
 
     def check_progress(self):
         """
@@ -20,7 +36,6 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         in their respective time intervals. If they did not, call "Lack of
         Progress".
         """
-
         for robot in ROBOT_NAMES:
             pos = self.robot_translation[robot]
             self.progress_chck[robot].track(pos)
@@ -31,7 +46,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     type=GameEvents.LACK_OF_PROGRESS.value,
                     msg=f"Robot {robot}: Lack of progress",
                     payload={
-                        "type": "robot"
+                        "type": "robot",
+                        "robot": robot,
                     }
                 )
                 self.reset_robot_position(robot)

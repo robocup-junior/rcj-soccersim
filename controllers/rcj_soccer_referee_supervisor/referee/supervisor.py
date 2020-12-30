@@ -1,31 +1,34 @@
-from controller import Supervisor
-from referee.progress_checker import ProgressChecker
-from referee.json_logger import JSONLogger
 import struct
 import random
 from pathlib import Path
 
+from controller import Supervisor
+from referee.progress_checker import ProgressChecker
+from referee.penalty_area_checker import PenaltyAreaChecker
 from referee.consts import (
     ROBOT_NAMES,
     ROBOT_INITIAL_TRANSLATION,
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
 )
+from referee.json_logger import JSONLogger
 
 
 class RCJSoccerSupervisor(Supervisor):
     def __init__(
-            self,
-            match_time: int,
-            progress_check_steps: int,
-            progress_check_threshold: int,
-            ball_progress_check_steps: int,
-            ball_progress_check_threshold: int,
-            reflog_path: Path,
-            team_name_blue: str,
-            team_name_yellow: str,
-            post_goal_wait_time: int = 3,
-            add_noise_to_initial_position: bool = True
+        self,
+        match_time: int,
+        progress_check_steps: int,
+        progress_check_threshold: int,
+        ball_progress_check_steps: int,
+        ball_progress_check_threshold: int,
+        reflog_path: Path,
+        team_name_blue: str,
+        team_name_yellow: str,
+        penalty_area_allowed_time: int,
+        penalty_area_reset_after: int,
+        post_goal_wait_time: int = 3,
+        add_noise_to_initial_position: bool = True
     ):
 
         super().__init__()
@@ -51,6 +54,7 @@ class RCJSoccerSupervisor(Supervisor):
         self.robot_in_penalty_counter = {}
 
         self.progress_chck = {}
+        self.penalty_area_chck = {}
 
         for robot in ROBOT_NAMES:
             robot_node = self.getFromDef(robot)
@@ -63,9 +67,15 @@ class RCJSoccerSupervisor(Supervisor):
 
             self.robot_in_penalty_counter[robot] = 0
 
-            pc = ProgressChecker(progress_check_steps,
-                                 progress_check_threshold)
-            self.progress_chck[robot] = pc
+            self.progress_chck[robot] = ProgressChecker(
+                progress_check_steps,
+                progress_check_threshold
+            )
+
+            self.penalty_area_chck[robot] = PenaltyAreaChecker(
+                penalty_area_allowed_time,
+                penalty_area_reset_after,
+            )
 
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
@@ -84,7 +94,6 @@ class RCJSoccerSupervisor(Supervisor):
         self.draw_scores(self.score_blue, self.score_yellow)
 
     def _update_positions(self):
-
         self.ball_translation = self.ball_translation_field.getSFVec3f()
 
         for robot in ROBOT_NAMES:
@@ -104,8 +113,7 @@ class RCJSoccerSupervisor(Supervisor):
 
         Args:
             blue (int): score of the blue team
-            yello (int): score of the yellow team
-
+            yellow (int): score of the yellow team
         """
 
         self.setLabel(0, str(blue),
@@ -135,10 +143,12 @@ class RCJSoccerSupervisor(Supervisor):
         time_str = "%02d:%02d" % (time // 60, time % 60)
         self.setLabel(2, time_str, 0.45, 0.01, 0.1, 0x000000, 0.0, "Arial")
 
-    def _pack_packet(self,
-                     robot_rotation: dict,
-                     robot_translation: dict,
-                     ball_translation: list):
+    def _pack_packet(
+        self,
+        robot_rotation: dict,
+        robot_translation: dict,
+        ball_translation: list,
+    ):
         """
         Take the positions and rotations of the robots and the ball and pack
         them into a single packet that can be send to all robots in the game.
@@ -223,10 +233,12 @@ class RCJSoccerSupervisor(Supervisor):
         # Ensure the progress checker does not count this "jump"
         self.progress_chck[robot].reset()
 
-    def robot_to_team_name(self, robot: str) -> str:
-        if robot.startswith('Y'):
+        self.penalty_area_chck[robot].reset()
+
+    def robot_name_to_team_name(self, robot_name: str) -> str:
+        if robot_name.startswith('Y'):
             return self.team_name_yellow
-        elif robot.startswith('B'):
+        elif robot_name.startswith('B'):
             return self.team_name_blue
         else:
-            raise ValueError(f"Unrecognized robot's name {robot}")
+            raise ValueError(f"Unrecognized robot's name {robot_name}")

@@ -1,17 +1,20 @@
 from math import ceil
+from datetime import datetime
+from pathlib import Path, PosixPath
+
 from referee.consts import MATCH_TIME, TIME_STEP
 from referee.referee import RCJSoccerReferee
-from datetime import datetime
-from pathlib import Path
 
 
 TEAM_YELLOW = "The Yellows"
 TEAM_BLUE = "The Blues"
 
 
-def reflog_path(directory: Path,
-                team_blue: str,
-                team_yellow: str):
+def reflog_path(
+    directory: Path,
+    team_blue: str,
+    team_yellow: str,
+) -> PosixPath:
     now_str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     team_blue = team_blue.replace(' ', '_')
     team_yellow = team_yellow.replace(' ', '_')
@@ -34,7 +37,9 @@ referee = RCJSoccerReferee(
     ball_progress_check_threshold=0.5,
     reflog_path=reflog,
     team_name_blue=TEAM_BLUE,
-    team_name_yellow=TEAM_YELLOW
+    team_name_yellow=TEAM_YELLOW,
+    penalty_area_allowed_time=15,
+    penalty_area_reset_after=2,
 )
 
 while referee.step(TIME_STEP) != -1:
