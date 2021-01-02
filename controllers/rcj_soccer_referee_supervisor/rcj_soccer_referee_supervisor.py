@@ -16,7 +16,7 @@ def reflog_path(
     team_yellow: str,
 ) -> PosixPath:
 
-    now_str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+    now_str = datetime.utcnow().strftime('%Y%m%dT%H%M%S.%fZ')
     team_blue = team_blue.replace(' ', '_')
     team_yellow = team_yellow.replace(' ', '_')
 
