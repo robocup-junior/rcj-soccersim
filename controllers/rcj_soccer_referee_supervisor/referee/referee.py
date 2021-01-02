@@ -117,7 +117,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 specified, it will be chosen randomly.
         """
         if team not in (Team.BLUE, Team.YELLOW, None):
-            raise ValueError(f'Unexpected team name {team}')
+            raise ValueError(f"Unexpected team name {team}")
 
         if not team:
             team = Team.BLUE if random.random() > 0.5 else Team.YELLOW
