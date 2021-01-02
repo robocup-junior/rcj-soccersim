@@ -7,8 +7,11 @@ sys.path.append(str(Path('.').absolute().parent))
 from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 ######
 
-# Feel free to import built-in libraries here
+# Feel free to import built-in libraries
 import math
+
+# You can also import scripts that you put into the folder with controller
+import utils
 
 
 class MyRobot(RCJSoccerRobot):
@@ -26,16 +29,10 @@ class MyRobot(RCJSoccerRobot):
                 # and between the robot and the north
                 ball_angle, robot_angle = self.get_angles(ball_pos, robot_pos)
 
-                # If the robot has the ball right in front of it, go forward,
-                # rotate otherwise
-                if ball_angle >= 345 or ball_angle <= 15:
-                    left_speed = -5
-                    right_speed = -5
-                else:
-                    multiplier = -1 if ball_angle < 180 else 1
-                    left_speed = multiplier * 4
-                    right_speed = multiplier * -4
+                # Compute the speed for motors
+                left_speed, right_speed = utils.compute_motor_speeds(ball_angle)
 
+                # Set the speed to motors
                 self.left_motor.setVelocity(left_speed)
                 self.right_motor.setVelocity(right_speed)
 
