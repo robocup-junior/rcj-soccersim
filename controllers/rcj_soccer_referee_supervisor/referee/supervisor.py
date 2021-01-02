@@ -218,7 +218,7 @@ class RCJSoccerSupervisor(Supervisor):
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
         self.progress_chck['ball'].reset()
 
-    def _add_initial_position_noise(self, translation):
+    def _add_initial_position_noise(self, translation: List[float]) -> List[float]:
         level = self.initial_position_noise
         translation[0] += (random.random() - 0.5) * level
         translation[2] += (random.random() - 0.5) * level
