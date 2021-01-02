@@ -79,14 +79,14 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.score_yellow += 1
 
             team_goal = self.team_name_yellow
-            team_kickoff = Team.BLUE
+            team_kickoff = Team.BLUE.value
 
         # ball in the yellow goal
         elif self.ball_translation[0] < -GOAL_X_LIMIT:
             self.score_blue += 1
 
             team_goal = self.team_name_blue
-            team_kickoff = Team.YELLOW
+            team_kickoff = Team.YELLOW.value
 
         # If a goal was scored, redraw the scores, set the timers, log what
         # happened and set the proper team for kickoff.
@@ -106,21 +106,22 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             )
 
             # Let the team that did not score the goal have a kickoff.
-            self.kickoff(team_kickoff)
+            self.team_to_kickoff = team_kickoff
 
-    def kickoff(self, team: Optional[Team] = None):
+    def kickoff(self, team: Optional[str] = None):
         """Set up the kickoff by putting one of the robots of the team that is
         kicking off closer to the center point
 
         Args:
-            team (Team): The team that is kicking off. If the team is not
+            team (str): The team that is kicking off. If the team is not
                 specified, it will be chosen randomly.
         """
-        if team not in (Team.BLUE, Team.YELLOW, None):
+        if team not in (Team.BLUE.value, Team.YELLOW.value, None):
             raise ValueError(f"Unexpected team name {team}")
 
+        seed = random.random()
         if not team:
-            team = Team.BLUE if random.random() > 0.5 else Team.YELLOW
+            team = Team.BLUE.value if seed > 0.5 else Team.YELLOW.value
 
         robot_name = self.reset_team_for_kickoff(team)
 
@@ -177,6 +178,6 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             if self.ball_reset_timer <= 0:
                 self.reset_positions()
                 self.ball_reset_timer = 0
-                self.kickoff()
+                self.kickoff(self.team_to_kickoff)
 
         return True

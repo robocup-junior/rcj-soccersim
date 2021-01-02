@@ -2,6 +2,8 @@ import struct
 import random
 from pathlib import Path
 
+from typing import List
+
 from controller import Supervisor
 from referee.progress_checker import ProgressChecker
 from referee.penalty_area_checker import PenaltyAreaChecker
@@ -11,7 +13,6 @@ from referee.consts import (
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
     KICKOFF_TRANSLATION,
-    Team
 )
 from referee.json_logger import JSONLogger
 
@@ -92,6 +93,8 @@ class RCJSoccerSupervisor(Supervisor):
 
         self.ball_reset_timer = 0
         self.score_blue = self.score_yellow = 0
+        # The team that ought to have the kickoff at the next restart
+        self.team_to_kickoff = None
 
         self.draw_scores(self.score_blue, self.score_yellow)
 
@@ -218,7 +221,11 @@ class RCJSoccerSupervisor(Supervisor):
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
         self.progress_chck['ball'].reset()
 
-    def _add_initial_position_noise(self, translation: List[float]) -> List[float]:
+    def _add_initial_position_noise(
+        self,
+        translation: List[float]
+    ) -> List[float]:
+
         level = self.initial_position_noise
         translation[0] += (random.random() - 0.5) * level
         translation[2] += (random.random() - 0.5) * level
@@ -249,7 +256,7 @@ class RCJSoccerSupervisor(Supervisor):
         else:
             raise ValueError(f"Unrecognized robot's name {robot_name}")
 
-    def reset_team_for_kickoff(self, team: Team):
+    def reset_team_for_kickoff(self, team: str):
         """
         Given a team name ('B' or 'Y'), set the position of the third robot on
         the team to "kick off" (inside the center circle).
@@ -258,7 +265,7 @@ class RCJSoccerSupervisor(Supervisor):
             str: Name of the robot that is kicking off.
         """
         # Always kickoff with the third robot
-        robot = f'{team.value}3'
+        robot = f'{team}3'
 
         tr_field = self.getFromDef(robot).getField('translation')
         tr_field.setSFVec3f(KICKOFF_TRANSLATION[team])
