@@ -36,7 +36,7 @@ for option, value in options:
         clean_key = option.replace('--', '')
         params[clean_key] = value
 
-if not template_path.exists():
+if template_path is None or not template_path.exists():
     print(f"ERROR: Provided path {template_path} does not exist")
     sys.exit(1)
 
