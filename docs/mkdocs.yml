@@ -1,0 +1,5 @@
+site_name: RCJ Soccer Sim
+theme:
+  name: material
+  palette:
+    primary: teal

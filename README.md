@@ -12,12 +12,14 @@ as well as a sample simulated team of robots with some basic strategy.
 
 1. Download [Webots](https://www.cyberbotics.com/#download)
 
-2. Clone this repository to your computer by running `git clone https://github.com/RoboCupJuniorTC/webots-soccer-sim-playground.git`
+2. Clone this repository to your computer by running
+
+        git clone https://github.com/RoboCupJuniorTC/rcj-soccer-sim.git
 
 3. Make sure the program will be executed by Python version 3. Set `python3` via
    `Tools > Preferences > Python command`
 
-4. Open the downloaded `soccer.wbt` world which you can find in the `worlds`
+4. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
    directory (via `File > Open World`)
 
 5. Run the simulation. Note that the controllers that are responsible for the
