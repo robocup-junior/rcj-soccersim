@@ -254,7 +254,8 @@ class RCJSoccerSupervisor(Supervisor):
         Given a team name ('B' or 'Y'), set the position of the third robot on
         the team to "kick off" (inside the center circle).
 
-        Returns: str, name of the robot that is kicking off.
+        Returns:
+            str: Name of the robot that is kicking off.
         """
         # Always kickoff with the third robot
         robot = f'{team.value}3'
