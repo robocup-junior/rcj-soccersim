@@ -15,6 +15,7 @@ def reflog_path(
     team_blue: str,
     team_yellow: str,
 ) -> PosixPath:
+
     now_str = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     team_blue = team_blue.replace(' ', '_')
     team_yellow = team_yellow.replace(' ', '_')
@@ -42,9 +43,14 @@ referee = RCJSoccerReferee(
     penalty_area_reset_after=2,
 )
 
+referee.kickoff()
+
+# The "event" loop for the referee
 while referee.step(TIME_STEP) != -1:
     referee.emit_positions()
 
+    # If the tick does not return True, the match has ended and the event loop
+    # can stop
     if not referee.tick():
         break
 
