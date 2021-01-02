@@ -10,6 +10,8 @@ from referee.consts import (
     ROBOT_INITIAL_TRANSLATION,
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
+    KICKOFF_TRANSLATION,
+    Team
 )
 from referee.json_logger import JSONLogger
 
@@ -28,14 +30,14 @@ class RCJSoccerSupervisor(Supervisor):
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
         post_goal_wait_time: int = 3,
-        add_noise_to_initial_position: bool = True
+        initial_position_noise: float = 0.15
     ):
 
         super().__init__()
 
         self.match_time = match_time
         self.post_goal_wait_time = post_goal_wait_time
-        self.add_noise_to_initial_position = add_noise_to_initial_position
+        self.initial_position_noise = initial_position_noise
 
         self.time = match_time
 
@@ -216,13 +218,17 @@ class RCJSoccerSupervisor(Supervisor):
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
         self.progress_chck['ball'].reset()
 
+    def _add_initial_position_noise(self, translation):
+        level = self.initial_position_noise
+        translation[0] += (random.random() - 0.5) * level
+        translation[2] += (random.random() - 0.5) * level
+        return translation
+
     def reset_robot_position(self, robot):
         self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
 
         translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
-        if self.add_noise_to_initial_position:
-            translation[0] += (random.random() - 0.5) / 5
-            translation[2] += (random.random() - 0.5) / 5
+        translation = self._add_initial_position_noise(translation)
 
         tr_field = self.getFromDef(robot).getField('translation')
         tr_field.setSFVec3f(translation)
@@ -242,3 +248,21 @@ class RCJSoccerSupervisor(Supervisor):
             return self.team_name_blue
         else:
             raise ValueError(f"Unrecognized robot's name {robot_name}")
+
+    def reset_team_for_kickoff(self, team: Team):
+        """
+        Given a team name ('B' or 'Y'), set the position of the third robot on
+        the team to "kick off" (inside the center circle).
+
+        Returns: str, name of the robot that is kicking off.
+        """
+        # Always kickoff with the third robot
+        robot = f'{team.value}3'
+
+        tr_field = self.getFromDef(robot).getField('translation')
+        tr_field.setSFVec3f(KICKOFF_TRANSLATION[team])
+
+        rot_field = self.getFromDef(robot).getField('rotation')
+        rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+
+        return robot
