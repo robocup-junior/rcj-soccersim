@@ -22,10 +22,10 @@ as well as a sample simulated team of robots with some basic strategy.
 
 4. In Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3`.
 
-4. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
+5. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
    directory (via `File > Open World`)
 
-5. Run the simulation. Note that the controllers that are responsible for the
+6. Run the simulation. Note that the controllers that are responsible for the
    various robots on the field can be found in the `controllers/` directory.
 
 ## Notes
