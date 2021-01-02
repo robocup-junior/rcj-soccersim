@@ -1,12 +1,12 @@
-# RCJ Soccer Sim Webots Playground
+# RCJ Soccer Simulator
 
-This repository serves as a playground for various experiments related to
-setting up a simulated RCJ Soccer environment in the Webots simulator.
+This is the official repository of the RoboCupJunior Soccer Simulator. The
+simulator is based on [Webots](https://github.com/cyberbotics/webots) and this
+repository provides both the "automatic referee" (which implements the [Soccer
+Simulated Rules](https://github.com/RoboCupJuniorTC/soccer-rules-simulation))
+as well as a sample simulated team of robots with some basic strategy.
 
 ![Soccer Sim](./media/soccer_sim.png)
-
-It currently features a sample robot as well as a supervisor. These are in an
-aplha stage and will very probably change in the future.
 
 ## How do I try this out?
 
@@ -14,16 +14,14 @@ aplha stage and will very probably change in the future.
 
 2. Clone this repository to your computer by running `git clone https://github.com/RoboCupJuniorTC/webots-soccer-sim-playground.git`
 
-3. Make sure the program will be executed by Python version 3. Set `python3` via 
+3. Make sure the program will be executed by Python version 3. Set `python3` via
    `Tools > Preferences > Python command`
 
 4. Open the downloaded `soccer.wbt` world which you can find in the `worlds`
    directory (via `File > Open World`)
 
-5. Run the simulation. Note that just one robot (`B1`) will move usint the
-   Python controler which is located at
-   `controllers/rcj_soccer_player/rcj_soccer_player.py`. Every other robot will
-   stand still
+5. Run the simulation. Note that the controllers that are responsible for the
+   various robots on the field can be found in the `controllers/` directory.
 
 ## Notes
 
@@ -35,6 +33,6 @@ follows:
 Which allows for at least some automation. Further info can be found in the
 [docs](https://cyberbotics.com/doc/guide/starting-webots).
 
-Both the sample player as well as the supervisor are implemented in Python,
-which should allow for easily updating the code to match the rules and avoid
-any compilation issues.
+The sample players as well as the "automatic referee" are implemented in
+Python, which should allow for easily updating the code to match the rules and
+avoid any compilation issues.
