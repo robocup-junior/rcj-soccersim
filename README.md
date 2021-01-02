@@ -8,6 +8,8 @@ as well as a sample simulated team of robots with some basic strategy.
 
 ![Soccer Sim](./media/soccer_sim.png)
 
+*Learn more in the [documentation](https://robocupjuniortc.github.io/rcj-soccer-sim/).*
+
 ## How do I try this out?
 
 1. Download [Webots](https://www.cyberbotics.com/#download)
