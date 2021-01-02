@@ -98,7 +98,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 supervisor=self,
                 type=GameEvents.GOAL.value,
                 team=team_goal,
-                msg="A goal was scored by {team_goal}",
+                msg=f"A goal was scored by {team_goal}",
                 payload={
                     "score_yellow": self.score_yellow,
                     "score_blue": self.score_blue,
