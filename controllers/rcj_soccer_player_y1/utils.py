@@ -1,15 +1,13 @@
-from typing import Tuple
+def get_direction(ball_angle: float) -> int:
+    """Get direction to navigate robot to face the ball
 
+    Args:
+        ball_angle (float): Angle between the ball and the robot
 
-def compute_motor_speeds(ball_angle: float) -> Tuple[int, int]:
-    # If the robot has the ball right in front of it, go forward,
-    # rotate otherwise
+    Returns:
+        int: 0 = forward, -1 = right, 1 = left
+    """
     if ball_angle >= 345 or ball_angle <= 15:
-        left_speed = -5
-        right_speed = -5
-    else:
-        multiplier = -1 if ball_angle < 180 else 1
-        left_speed = multiplier * 4
-        right_speed = multiplier * -4
+        return 0
+    return -1 if ball_angle < 180 else 1
 
-    return left_speed, right_speed
