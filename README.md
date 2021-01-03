@@ -20,7 +20,7 @@ as well as a sample simulated team of robots with some basic strategy.
 
 3. Soccer Sim needs Python version 3.7 (or higher). You can download it from [here](https://www.python.org/downloads/).
 
-4. In Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3`.
+4. In Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3` to point Webots to Python 3. Depending on your system, the reference to Python 3 can be via the command `python` or `python3`. More information on how to configure Webots to work with Python can be found [here](https://cyberbotics.com/doc/guide/using-python).
 
 5. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
    directory (via `File > Open World`)
