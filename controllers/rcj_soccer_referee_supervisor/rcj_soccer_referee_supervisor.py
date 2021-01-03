@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path, PosixPath
 
 from referee.consts import MATCH_TIME, TIME_STEP
+from referee.event_handlers import JSONLoggerHandler, DrawMessageHandler
 from referee.referee import RCJSoccerReferee
 
 
@@ -28,20 +29,22 @@ def reflog_path(
     return p
 
 
-reflog = reflog_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
-
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
     progress_check_steps=ceil(15/(TIME_STEP/1000.0)),
     progress_check_threshold=0.5,
     ball_progress_check_steps=ceil(10/(TIME_STEP/1000.0)),
     ball_progress_check_threshold=0.5,
-    reflog_path=reflog,
     team_name_blue=TEAM_BLUE,
     team_name_yellow=TEAM_YELLOW,
     penalty_area_allowed_time=15,
     penalty_area_reset_after=2,
 )
+
+reflog = reflog_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+
+referee.add_event_subscriber(JSONLoggerHandler(reflog))
+referee.add_event_subscriber(DrawMessageHandler())
 
 referee.kickoff()
 
