@@ -42,15 +42,15 @@ ROBOT_INITIAL_TRANSLATION = {
 }
 
 ROBOT_INITIAL_ROTATION = {
-    "B1": [0, 1, 0, 1.57],
-    "B2": [0, 1, 0, 1.57],
-    "B3": [0, 1, 0, 1.57],
+    "B1": [0, 1, 0, -1.57],
+    "B2": [0, 1, 0, -1.57],
+    "B3": [0, 1, 0, -1.57],
     "Y1": [0, 1, 0, 1.57],
     "Y2": [0, 1, 0, 1.57],
     "Y3": [0, 1, 0, 1.57],
 }
 
-BLUE_KICKOFF_TRANSLATION = [0.1,  0.03817, 0]
+BLUE_KICKOFF_TRANSLATION = [0.1, 0.03817, 0]
 YELLOW_KICKOFF_TRANSLATION = [-0.1, 0.03817, 0]
 
 KICKOFF_TRANSLATION = {
@@ -61,6 +61,16 @@ KICKOFF_TRANSLATION = {
 # (vertical boundary x, lower boundary z, upper boundary z)
 YELLOW_PENALTY_AREA = (-0.59, -0.35, 0.35)
 BLUE_PENALTY_AREA = (0.59, -0.35, 0.35)
+
+MAX_EVENT_MESSAGES_IN_QUEUE = 10
+
+
+class LabelIDs(Enum):
+    """Each label ought to have specific ID when calling setLabel function."""
+    BLUE_SCORE = 0
+    YELLOW_SCORE = 1
+    TIME = 2
+    EVENT_MESSAGES = 3
 
 
 class GameEvents(Enum):
