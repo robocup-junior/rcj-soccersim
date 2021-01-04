@@ -3,6 +3,7 @@ from datetime import datetime
 from pathlib import Path, PosixPath
 
 from referee.consts import MATCH_TIME, TIME_STEP
+from referee.event_handlers import JSONLoggerHandler, DrawMessageHandler
 from referee.referee import RCJSoccerReferee
 from recorder.recorder import VideoRecordAssistant
 
@@ -56,6 +57,9 @@ recorder = VideoRecordAssistant(
 if automatic_mode:
     referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
     recorder.start_recording()
+
+referee.add_event_subscriber(JSONLoggerHandler(reflog))
+referee.add_event_subscriber(DrawMessageHandler())
 
 referee.kickoff()
 
