@@ -1,7 +1,8 @@
 import struct
 import random
+from pathlib import Path
 
-from typing import List, Tuple
+from typing import List
 
 from controller import Supervisor
 from referee.progress_checker import ProgressChecker
@@ -12,12 +13,8 @@ from referee.consts import (
     ROBOT_INITIAL_ROTATION,
     BALL_INITIAL_TRANSLATION,
     KICKOFF_TRANSLATION,
-    LabelIDs,
-    MAX_EVENT_MESSAGES_IN_QUEUE,
 )
-from referee.eventer import Eventer
-from referee.event_handlers import EventHandler
-from referee.utils import time_to_string
+from referee.json_logger import JSONLogger
 
 
 class RCJSoccerSupervisor(Supervisor):
@@ -28,6 +25,7 @@ class RCJSoccerSupervisor(Supervisor):
         progress_check_threshold: int,
         ball_progress_check_steps: int,
         ball_progress_check_threshold: int,
+        reflog_path: Path,
         team_name_blue: str,
         team_name_yellow: str,
         penalty_area_allowed_time: int,
@@ -44,12 +42,7 @@ class RCJSoccerSupervisor(Supervisor):
 
         self.time = match_time
 
-        # Event message queue to be drawn
-        # List of Tuples of int (time) and string (message)
-        self.event_messages_to_draw: List[Tuple[int, str]] = []
-
-        self.eventer = Eventer()
-
+        self.log = JSONLogger(reflog_path)
         self.team_name_blue = team_name_blue
         self.team_name_yellow = team_name_yellow
 
@@ -118,86 +111,42 @@ class RCJSoccerSupervisor(Supervisor):
             # TODO: update self.robot_in_penalty_counter if the robot
             #       is located in penalty area
 
-    def add_event_subscriber(self, subscriber: EventHandler):
-        """Add new event subscriber.
-
-        Args:
-            subscriber (EventHandler): Instance inheriting EventHandler
-        """
-        self.eventer.subscribe(subscriber)
-
     def draw_scores(self, blue: int, yellow: int):
-        """Visualize (draw) the provide scores for both the blue and
-        the yellow teams.
+        """
+        Visualize (draw) the provide scores for both the blue and the yellow
+        teams.
 
         Args:
             blue (int): score of the blue team
             yellow (int): score of the yellow team
         """
 
-        self.setLabel(
-            LabelIDs.BLUE_SCORE.value,
-            str(blue),
-            0.92,  # X position
-            0.01,  # Y position
-            0.1,  # Size
-            0x0000ff,  # Color
-            0.0,  # Transparency
-            "Tahoma",  # Font
-        )
+        self.setLabel(0, str(blue),
+                      # X and Y positions
+                      0.92, 0.01,
+                      # Size and color
+                      0.1, 0x0000ff,
+                      # Transparency and Font
+                      0.0, "Tahoma")
 
-        self.setLabel(
-            LabelIDs.YELLOW_SCORE.value,
-            str(yellow),
-            0.05,  # X position
-            0.01,  # Y position
-            0.1,  # Size
-            0xffff00,  # Color
-            0.0,  # Transparency
-            "Tahoma"  # Font
-        )
+        self.setLabel(1, str(yellow),
+                      # X and Y positions
+                      0.05, 0.01,
+                      # Size and color
+                      0.1, 0xffff00,
+                      # Transparency and Font
+                      0.0, "Tahoma")
 
-    def draw_time(self, time: int):
-        """Visualize (draw) the current match time
+    def draw_time(self, time):
+        """
+        Visualize (draw) the current match time
 
         Args:
             time (int): the current match time
         """
 
-        self.setLabel(
-            LabelIDs.TIME.value,
-            time_to_string(time),
-            0.45,
-            0.01,
-            0.1,
-            0x000000,
-            0.0,
-            "Arial",
-        )
-
-    def draw_event_messages(self):
-        """Visualize (draw) the event messages from queue"""
-        messages = []
-        for time, msg in self.event_messages_to_draw:
-            messages.append("{} - {}".format(time_to_string(time), msg))
-
-        if messages:
-            self.setLabel(
-                LabelIDs.EVENT_MESSAGES.value,
-                "\n".join(messages),
-                0.01,
-                0.95 - ((len(messages)-1) * 0.025),
-                0.05,
-                0xffffff,
-                0.0,
-                "Tahoma",
-            )
-
-    def add_event_message_to_queue(self, message: str):
-        if len(self.event_messages_to_draw) >= MAX_EVENT_MESSAGES_IN_QUEUE:
-            self.event_messages_to_draw.pop(0)
-
-        self.event_messages_to_draw.append((self.time, message))
+        time_str = "%02d:%02d" % (time // 60, time % 60)
+        self.setLabel(2, time_str, 0.45, 0.01, 0.1, 0x000000, 0.0, "Arial")
 
     def _pack_packet(
         self,
@@ -205,14 +154,17 @@ class RCJSoccerSupervisor(Supervisor):
         robot_translation: dict,
         ball_translation: list,
     ):
-        """ Take the positions and rotations of the robots and the ball and pack
+        """
+        Take the positions and rotations of the robots and the ball and pack
         them into a single packet that can be send to all robots in the game.
 
         Args:
             robot_rotation (dict): a mapping between the robot name and its
                                    rotation
+
             robot_translation (dict): a mapping between the robot name and its
                                       position on the field
+
             ball_translation (list): the position of the ball on the field
 
         Returns:

@@ -21,13 +21,14 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.penalty_area_chck[robot].track(pos, self.time)
 
             if self.penalty_area_chck[robot].is_violating():
-                self.eventer.event(
+                self.log.event(
                     supervisor=self,
                     type=GameEvents.INSIDE_PENALTY_FOR_TOO_LONG.value,
+                    msg=f"Robot {robot}: Inside penalty for too long",
                     payload={
                         "type": "robot",
-                        "robot_name": robot,
-                    },
+                        "robot": robot,
+                    }
                 )
                 # TODO: move the robot to the FURTHEST unoccupied neutral spot
                 self.reset_robot_position(robot)
@@ -43,12 +44,13 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.progress_chck[robot].track(pos)
 
             if not self.progress_chck[robot].is_progress(robot):
-                self.eventer.event(
+                self.log.event(
                     supervisor=self,
                     type=GameEvents.LACK_OF_PROGRESS.value,
+                    msg=f"Robot {robot}: Lack of progress",
                     payload={
                         "type": "robot",
-                        "robot_name": robot,
+                        "robot": robot,
                     }
                 )
                 self.reset_robot_position(robot)
@@ -56,12 +58,13 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
         if not self.progress_chck['ball'].is_progress('ball'):
-            self.eventer.event(
+            self.log.event(
                 supervisor=self,
                 type=GameEvents.LACK_OF_PROGRESS.value,
+                msg="Ball: Lack of progress",
                 payload={
                     "type": "ball"
-                },
+                }
             )
             self.reset_ball_position()
 
@@ -91,14 +94,15 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.draw_scores(self.score_blue, self.score_yellow)
             self.ball_reset_timer = self.post_goal_wait_time
 
-            self.eventer.event(
+            self.log.event(
                 supervisor=self,
                 type=GameEvents.GOAL.value,
+                team=team_goal,
+                msg=f"A goal was scored by {team_goal}",
                 payload={
-                    "team_name": team_goal,
                     "score_yellow": self.score_yellow,
                     "score_blue": self.score_blue,
-                },
+                }
             )
 
             # Let the team that did not score the goal have a kickoff.
@@ -121,46 +125,44 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
 
         robot_name = self.reset_team_for_kickoff(team)
 
-        self.eventer.event(
+        self.log.event(
             supervisor=self,
             type=GameEvents.KICKOFF.value,
-            payload={
-                "robot_name": robot_name,
-                "team_name": team,
-            },
+            robot_name=robot_name,
+            msg=f"Robot {robot_name} is kicking off."
         )
 
     def tick(self) -> bool:
         # On the very first tick, note that the match has started
         if self.time == self.match_time:
-            self.eventer.event(
+            self.log.event(
                 supervisor=self,
                 type=GameEvents.MATCH_START.value,
+                msg=f"The match ({self.match_time}s) has started",
                 payload={
                     "score_yellow": self.score_yellow,
                     "score_blue": self.score_blue,
-                    "total_match_time": self.match_time,
-                },
+                    "total_match_time": self.match_time
+                }
             )
 
         self.time -= TIME_STEP / 1000.0
 
         # On the very last tick, note that the match has finished
         if self.time < 0:
-            self.eventer.event(
+            self.log.event(
                 supervisor=self,
                 type=GameEvents.MATCH_FINISH.value,
+                msg=f"The match time {self.match_time}s is over",
                 payload={
-                    "total_match_time": self.match_time,
                     "score_yellow": self.score_yellow,
-                    "score_blue": self.score_blue,
-                },
+                    "score_blue": self.score_blue
+                }
             )
 
             return False
 
         self.draw_time(self.time)
-        self.draw_event_messages()
 
         # If we are currently not in the post-goal waiting period,
         # check if a goal took place, setup the waiting period and move the
