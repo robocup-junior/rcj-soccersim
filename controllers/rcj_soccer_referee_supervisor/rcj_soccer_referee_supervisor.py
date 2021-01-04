@@ -12,7 +12,7 @@ TEAM_YELLOW = "The Yellows"
 TEAM_BLUE = "The Blues"
 
 
-def reflog_path(
+def output_path(
     directory: Path,
     team_blue: str,
     team_yellow: str,
@@ -26,11 +26,11 @@ def reflog_path(
     if not directory.exists():
         directory.mkdir(parents=True, exist_ok=True)
 
-    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}.jsonl')
+    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
     return p
 
 
-reflog = reflog_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+reflog = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW).with_suffix('.jsonl')
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
