@@ -31,6 +31,7 @@ def output_path(
 
 
 reflog = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW).with_suffix('.jsonl')
+video = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW).with_suffix('.mp4')
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -45,7 +46,11 @@ referee = RCJSoccerReferee(
     penalty_area_reset_after=2,
 )
 
-recorder = VideoRecordAssistant(referee)
+recorder = VideoRecordAssistant(
+    supervisor=referee,
+    output_path=str(video),
+    resolution="720p",
+)
 
 if automatic_mode:
     referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
