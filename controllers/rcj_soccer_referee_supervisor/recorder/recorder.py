@@ -4,6 +4,8 @@ from pathlib import Path
 import datetime
 import time
 
+import logging
+
 
 class VideoRecordAssistant:
 
@@ -65,6 +67,7 @@ class VideoRecordAssistant:
         return self.__recording
 
     def wait_processing(self):
+        logging.info('Processing Video...')
         while not self.supervisor.movieIsReady():
             time.sleep(1.0)
 
