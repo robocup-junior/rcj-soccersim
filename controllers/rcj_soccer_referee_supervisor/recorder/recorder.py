@@ -2,6 +2,7 @@ from controller import Supervisor
 
 from pathlib import Path
 import datetime
+import time
 
 
 class VideoRecordAssistant:
@@ -16,6 +17,8 @@ class VideoRecordAssistant:
         self.output_path = output_path
         self.fastforward_rate = fastforward_rate
         self.resolution = resolution
+
+        self.__recording = False
 
         if not isinstance(self.supervisor, Supervisor):
             raise TypeError("Unexpected supervisor instance")
@@ -52,6 +55,16 @@ class VideoRecordAssistant:
                                             codec=0,
                                             acceleration=self.fastforward_rate,
                                             caption=False)
+        self.__recording = True
 
     def stop_recording(self):
         self.supervisor.movieStopRecording()
+        self.__recording = False
+
+    def is_recording(self):
+        return self.__recording
+
+    def wait_processing(self):
+        while not self.supervisor.movieIsReady():
+            time.sleep(0.5)
+
