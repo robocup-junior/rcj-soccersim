@@ -5,13 +5,15 @@ from pathlib import Path, PosixPath
 from referee.consts import MATCH_TIME, TIME_STEP
 from referee.event_handlers import JSONLoggerHandler, DrawMessageHandler
 from referee.referee import RCJSoccerReferee
+from recorder.recorder import VideoRecordAssistant
 
+automatic_mode = False
 
 TEAM_YELLOW = "The Yellows"
 TEAM_BLUE = "The Blues"
 
 
-def reflog_path(
+def output_path(
     directory: Path,
     team_blue: str,
     team_yellow: str,
@@ -25,9 +27,13 @@ def reflog_path(
     if not directory.exists():
         directory.mkdir(parents=True, exist_ok=True)
 
-    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}.jsonl')
+    p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
     return p
 
+
+output_prefix = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+reflog_path = output_prefix.with_suffix('.jsonl')
+video_path = output_prefix.with_suffix('.mp4')
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -41,9 +47,17 @@ referee = RCJSoccerReferee(
     penalty_area_reset_after=2,
 )
 
-reflog = reflog_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+recorder = VideoRecordAssistant(
+    supervisor=referee,
+    output_path=str(video_path),
+    resolution="720p",
+)
 
-referee.add_event_subscriber(JSONLoggerHandler(reflog))
+if automatic_mode:
+    referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
+    recorder.start_recording()
+
+referee.add_event_subscriber(JSONLoggerHandler(reflog_path))
 referee.add_event_subscriber(DrawMessageHandler())
 
 referee.kickoff()
@@ -59,3 +73,11 @@ while referee.step(TIME_STEP) != -1:
 
 # When end of match, pause simulator immediately
 referee.simulationSetMode(referee.SIMULATION_MODE_PAUSE)
+
+if recorder.is_recording():
+    recorder.stop_recording()
+    recorder.wait_processing()
+
+if automatic_mode:
+    referee.simulationQuit(0)
+
