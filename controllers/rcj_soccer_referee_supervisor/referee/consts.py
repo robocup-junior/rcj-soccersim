@@ -62,6 +62,16 @@ KICKOFF_TRANSLATION = {
 YELLOW_PENALTY_AREA = (-0.59, -0.35, 0.35)
 BLUE_PENALTY_AREA = (0.59, -0.35, 0.35)
 
+MAX_EVENT_MESSAGES_IN_QUEUE = 10
+
+
+class LabelIDs(Enum):
+    """Each label ought to have specific ID when calling setLabel function."""
+    BLUE_SCORE = 0
+    YELLOW_SCORE = 1
+    TIME = 2
+    EVENT_MESSAGES = 3
+
 
 class GameEvents(Enum):
     MATCH_START = "MATCH_START"
