@@ -41,7 +41,6 @@ referee = RCJSoccerReferee(
     progress_check_threshold=0.5,
     ball_progress_check_steps=ceil(10/(TIME_STEP/1000.0)),
     ball_progress_check_threshold=0.5,
-    reflog_path=reflog_path,
     team_name_blue=TEAM_BLUE,
     team_name_yellow=TEAM_YELLOW,
     penalty_area_allowed_time=15,
@@ -58,7 +57,7 @@ if automatic_mode:
     referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
     recorder.start_recording()
 
-referee.add_event_subscriber(JSONLoggerHandler(reflog))
+referee.add_event_subscriber(JSONLoggerHandler(reflog_path))
 referee.add_event_subscriber(DrawMessageHandler())
 
 referee.kickoff()
