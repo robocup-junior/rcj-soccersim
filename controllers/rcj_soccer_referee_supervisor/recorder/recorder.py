@@ -66,5 +66,5 @@ class VideoRecordAssistant:
 
     def wait_processing(self):
         while not self.supervisor.movieIsReady():
-            time.sleep(0.5)
+            time.sleep(1.0)
 
