@@ -1,14 +1,15 @@
-# RCJ Soccer Simulator
+# Welcome to RCJ Soccer Sim!
 
-This is the official repository of the RoboCupJunior Soccer Simulator. The
-simulator is based on [Webots](https://github.com/cyberbotics/webots) and this
-repository provides both the "automatic referee" (which implements the [Soccer
-Simulated Rules](https://github.com/RoboCupJuniorTC/soccer-rules-simulation))
-as well as a sample simulated team of robots with some basic strategy.
+The RoboCupJunior Soccer Simulator is an attempt at playing RoboCupJunior
+Soccer in a virtualized environment. It is an experimental project organized by
+the RoboCupJunior Soccer Technical Committe.
 
-![Soccer Sim](./docs/docs/images/soccer_sim.png)
+![Screenshot of RCJ Soccer Sim](images/soccer_sim.png)
 
-*Learn more in the [documentation](https://robocupjuniortc.github.io/rcj-soccer-sim/).*
+The simulator is based on [Webots](https://github.com/cyberbotics/webots). The
+associated repository provides both the "automatic referee" (which implements
+the [Soccer Simulated Rules](https://github.com/RoboCupJuniorTC/soccer-rules-simulation))
+as well as a sample team of robots with some basic simulated strategy.
 
 ## How do I try this out?
 
@@ -28,16 +29,3 @@ as well as a sample simulated team of robots with some basic strategy.
 6. Run the simulation. Note that the controllers that are responsible for the
    various robots on the field can be found in the `controllers/` directory.
 
-## Notes
-
-A specific `webots` world can be executed directly from the command line as
-follows:
-
-        webots --mode=run worlds/soccer.wbt
-
-Which allows for at least some automation. Further info can be found in the
-[docs](https://cyberbotics.com/doc/guide/starting-webots).
-
-The sample players as well as the "automatic referee" are implemented in
-Python, which should allow for easily updating the code to match the rules and
-avoid any compilation issues.
