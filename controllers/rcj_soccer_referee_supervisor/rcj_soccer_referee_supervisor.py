@@ -30,8 +30,9 @@ def output_path(
     return p
 
 
-reflog = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW).with_suffix('.jsonl')
-video = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW).with_suffix('.mp4')
+output_prefix = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+reflog_path = output_prefix.with_suffix('.jsonl')
+video_path = output_prefix.with_suffix('.mp4')
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -39,7 +40,7 @@ referee = RCJSoccerReferee(
     progress_check_threshold=0.5,
     ball_progress_check_steps=ceil(10/(TIME_STEP/1000.0)),
     ball_progress_check_threshold=0.5,
-    reflog_path=reflog,
+    reflog_path=reflog_path,
     team_name_blue=TEAM_BLUE,
     team_name_yellow=TEAM_YELLOW,
     penalty_area_allowed_time=15,
@@ -48,7 +49,7 @@ referee = RCJSoccerReferee(
 
 recorder = VideoRecordAssistant(
     supervisor=referee,
-    output_path=str(video),
+    output_path=str(video_path),
     resolution="720p",
 )
 
