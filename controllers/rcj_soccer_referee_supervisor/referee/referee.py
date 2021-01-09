@@ -171,11 +171,14 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.check_robots_in_penalty_area()
         else:
             self.ball_reset_timer -= TIME_STEP / 1000.0
+            self.draw_goal_sign()
+
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
             if self.ball_reset_timer <= 0:
                 self.reset_positions()
                 self.ball_reset_timer = 0
+                self.hide_goal_sign()
                 self.kickoff(self.team_to_kickoff)
 
         return True
