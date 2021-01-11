@@ -72,6 +72,8 @@ class LabelIDs(Enum):
     TIME = 2
     EVENT_MESSAGES = 3
     GOAL = 4
+    BLUE_TEAM = 5
+    YELLOW_TEAM = 6
 
 
 class GameEvents(Enum):

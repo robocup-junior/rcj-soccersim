@@ -103,6 +103,7 @@ class RCJSoccerSupervisor(Supervisor):
         # The team that ought to have the kickoff at the next restart
         self.team_to_kickoff = None
 
+        self.draw_team_names()
         self.draw_scores(self.score_blue, self.score_yellow)
 
     def _update_positions(self):
@@ -125,6 +126,31 @@ class RCJSoccerSupervisor(Supervisor):
             subscriber (EventHandler): Instance inheriting EventHandler
         """
         self.eventer.subscribe(subscriber)
+
+    def draw_team_names(self):
+        """Visualize (draw) the names of the teams."""
+
+        self.setLabel(
+            LabelIDs.BLUE_TEAM.value,
+            self.team_name_blue,
+            0.92 - (len(self.team_name_blue) * 0.01),  # X position
+            0.05,  # Y position
+            0.1,  # Size
+            0x0000ff,  # Color
+            0.0,  # Transparency
+            "Tahoma",  # Font
+        )
+
+        self.setLabel(
+            LabelIDs.YELLOW_TEAM.value,
+            self.team_name_yellow,
+            0.05,  # X position
+            0.05,  # Y position
+            0.1,  # Size
+            0xffff00,  # Color
+            0.0,  # Transparency
+            "Tahoma"  # Font
+        )
 
     def draw_scores(self, blue: int, yellow: int):
         """Visualize (draw) the provide scores for both the blue and
