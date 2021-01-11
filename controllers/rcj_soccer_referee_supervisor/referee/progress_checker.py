@@ -49,11 +49,12 @@ class ProgressChecker:
         """
         s = sum(self.samples)
 
-        if robot:
-            print(f'Robot {robot} iterator: {self.iterator}, '
-                  f's: {s}, thr: {self.threshold}')
-        else:
-            print(f'iterator: {self.iterator}, s: {s}, thr: {self.threshold}')
+        # if robot:
+        #     print(f'Robot {robot} iterator: {self.iterator}, '
+        #           f's: {s}, thr: {self.threshold}')
+        # else:
+        #     print(f'iterator: {self.iterator}, s: {s}, '
+        #           f'thr: {self.threshold}')
 
         # We we haven't tracked at least as many samples as the number of
         # steps, our default position is "benefit of doubt": we assume enough
