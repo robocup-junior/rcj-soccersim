@@ -175,6 +175,32 @@ class RCJSoccerSupervisor(Supervisor):
             "Arial",
         )
 
+    def draw_goal_sign(self, transparency: float = 0.0):
+        """Visualize (draw) a GOAL! sign after goal gets scored.
+
+        Args:
+
+            transparency (float): the transparecny of the text, with 0 meaning
+                no transparency and 1 meaning total transparency (the text will
+                not be visible).
+        """
+
+        self.setLabel(
+            LabelIDs.GOAL.value,
+            "GOAL!",
+            0.30,
+            0.40,
+            0.4,
+            0xff0000,
+            transparency,
+            "Verdana",
+        )
+
+    def hide_goal_sign(self):
+        """Hide the GOAL! once the game is again in progress."""
+
+        self.draw_goal_sign(transparency=1.0)
+
     def draw_event_messages(self):
         """Visualize (draw) the event messages from queue"""
         messages = []
