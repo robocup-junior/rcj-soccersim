@@ -225,7 +225,16 @@ class RCJSoccerSupervisor(Supervisor):
     def hide_goal_sign(self):
         """Hide the GOAL! once the game is again in progress."""
 
-        self.draw_goal_sign(transparency=1.0)
+        self.setLabel(
+            LabelIDs.GOAL.value,
+            "",
+            0.30,
+            0.40,
+            0.4,
+            0xff0000,
+            1.0,
+            "Verdana",
+        )
 
     def draw_event_messages(self):
         """Visualize (draw) the event messages from queue"""
