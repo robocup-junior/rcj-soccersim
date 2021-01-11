@@ -147,6 +147,17 @@ class RCJSoccerSupervisor(Supervisor):
         )
 
         self.setLabel(
+            LabelIDs.BLUE_TEAM.value,
+            self.team_name_blue,
+            0.92 - (len(self.team_name_blue) * 0.01),  # X position
+            0.05,  # Y position
+            0.1,  # Size
+            0x0000ff,  # Color
+            0.0,  # Transparency
+            "Tahoma",  # Font
+        )
+
+        self.setLabel(
             LabelIDs.YELLOW_SCORE.value,
             str(yellow),
             0.05,  # X position
@@ -156,6 +167,18 @@ class RCJSoccerSupervisor(Supervisor):
             0.0,  # Transparency
             "Tahoma"  # Font
         )
+
+        self.setLabel(
+            LabelIDs.YELLOW_TEAM.value,
+            self.team_name_yellow,
+            0.05,  # X position
+            0.05,  # Y position
+            0.1,  # Size
+            0xffff00,  # Color
+            0.0,  # Transparency
+            "Tahoma"  # Font
+        )
+
 
     def draw_time(self, time: int):
         """Visualize (draw) the current match time
