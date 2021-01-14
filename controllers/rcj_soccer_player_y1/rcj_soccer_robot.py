@@ -16,11 +16,11 @@ class RCJSoccerRobot:
         self.team = self.name[0]
         self.player_id = int(self.name[1])
 
-        self.receiver = self.robot.getReceiver("receiver")
+        self.receiver = self.robot.getDevice("receiver")
         self.receiver.enable(TIME_STEP)
 
-        self.left_motor = self.robot.getMotor("left wheel motor")
-        self.right_motor = self.robot.getMotor("right wheel motor")
+        self.left_motor = self.robot.getDevice("left wheel motor")
+        self.right_motor = self.robot.getDevice("right wheel motor")
 
         self.left_motor.setPosition(float('+inf'))
         self.right_motor.setPosition(float('+inf'))
