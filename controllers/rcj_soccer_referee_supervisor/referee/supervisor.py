@@ -53,7 +53,7 @@ class RCJSoccerSupervisor(Supervisor):
         self.team_name_blue = team_name_blue
         self.team_name_yellow = team_name_yellow
 
-        self.emitter = self.getEmitter("emitter")
+        self.emitter = self.getDevice("emitter")
 
         self.robot_translation = ROBOT_INITIAL_TRANSLATION.copy()
         self.robot_rotation = ROBOT_INITIAL_ROTATION.copy()
