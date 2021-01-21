@@ -43,7 +43,7 @@ class RCJSoccerRobot:
         """
         # X, Z and rotation for each robot
         # plus X and Z for ball
-        struct_fmt = 'ddd' * 6 + 'dd'
+        struct_fmt = 'ddd' * N_ROBOTS + 'dd'
 
         unpacked = struct.unpack(struct_fmt, packet)
 
