@@ -34,6 +34,8 @@ N_ROBOTS = len(ROBOT_NAMES)
 class MyRobot:
     def __init__(self):
         self.robot = Robot()
+        self.name = self.robot.getName()
+
         self.receiver = self.robot.getDevice("receiver")
         self.receiver.enable(TIME_STEP)
 
@@ -121,6 +123,7 @@ going to continue with our OOP approach.
 ```python
 def __init__(self):
     self.robot = Robot()
+    self.name = self.robot.getName()
     ...
 ```
 
@@ -128,6 +131,9 @@ The `__init__` something like constructor of the class and is called when the ob
 is created. We initialize some important variables there. The most important one
 is the `Robot` instance, which allows us to get access to the so called devices
 like motor (for controlling the speed) or receiver (for reading data from supervisor).
+**The name and the team of your robot** can be determined by calling `self.robot.getName()`.
+It will give you one of `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`. The first letter determines
+the team ("Blue", "Yellow"), while the second one is the robot's identifier.
 
 ```python
 def get_new_data(self):
@@ -189,7 +195,6 @@ and its actually a good practice not to duplicate code all over the place.
 Imagine you have the folder structure which looks like this
 
 ```
-controllers
 controllers/
 ├── robot1/
 │   └── robot1.py
