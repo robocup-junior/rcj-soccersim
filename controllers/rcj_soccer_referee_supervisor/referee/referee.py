@@ -5,7 +5,8 @@ from referee.consts import (
     TIME_STEP,
     ROBOT_NAMES,
     GameEvents,
-    Team
+    Team,
+    NeutralSpotDistanceType,
 )
 from referee.supervisor import RCJSoccerSupervisor
 
@@ -29,8 +30,12 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                         "robot_name": robot,
                     },
                 )
-                # TODO: move the robot to the FURTHEST unoccupied neutral spot
-                self.reset_robot_position(robot)
+                furthest_spot = self.get_unoccupied_neutral_spot(
+                    NeutralSpotDistanceType.FURTHEST,
+                    robot,
+                )
+                self.move_object_to_neutral_spot(robot, furthest_spot)
+                self.reset_checkers(robot)
 
     def check_progress(self):
         """
@@ -51,7 +56,12 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                         "robot_name": robot,
                     }
                 )
-                self.reset_robot_position(robot)
+                nearest_spot = self.get_unoccupied_neutral_spot(
+                    NeutralSpotDistanceType.NEAREST,
+                    robot,
+                )
+                self.move_object_to_neutral_spot(robot, nearest_spot)
+                self.reset_checkers(robot)
 
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
@@ -63,7 +73,12 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     "type": "ball"
                 },
             )
-            self.reset_ball_position()
+            nearest_spot = self.get_unoccupied_neutral_spot(
+                NeutralSpotDistanceType.NEAREST,
+                "ball",
+            )
+            self.move_object_to_neutral_spot("ball", nearest_spot)
+            self.reset_checkers("ball")
 
     def check_goal(self):
         """Check if goal is scored"""

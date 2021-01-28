@@ -1,7 +1,8 @@
+import math
 import struct
 import random
 
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from controller import Supervisor
 from referee.progress_checker import ProgressChecker
@@ -14,6 +15,11 @@ from referee.consts import (
     KICKOFF_TRANSLATION,
     LabelIDs,
     MAX_EVENT_MESSAGES_IN_QUEUE,
+    NEUTRAL_SPOTS,
+    NeutralSpotDistanceType,
+    DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
+    Team,
+    OBJECT_DEPTH,
 )
 from referee.eventer import Eventer
 from referee.event_handlers import EventHandler
@@ -58,6 +64,7 @@ class RCJSoccerSupervisor(Supervisor):
         self.robot_translation = ROBOT_INITIAL_TRANSLATION.copy()
         self.robot_rotation = ROBOT_INITIAL_ROTATION.copy()
 
+        self.robot_nodes = {}
         self.robot_translation_fields = {}
         self.robot_rotation_fields = {}
 
@@ -68,6 +75,7 @@ class RCJSoccerSupervisor(Supervisor):
 
         for robot in ROBOT_NAMES:
             robot_node = self.getFromDef(robot)
+            self.robot_nodes[robot] = robot_node
             field = robot_node.getField('translation')
 
             self.robot_translation_fields[robot] = field
@@ -316,18 +324,77 @@ class RCJSoccerSupervisor(Supervisor):
         Reset the positions of the ball as well as the robots to the initial
         position.
         """
-
         self.reset_ball_position()
 
         # reset the robot positions
         for robot in ROBOT_NAMES:
             self.reset_robot_position(robot)
 
-    def reset_ball_position(self):
-        ball_translation_field = self.ball.getField("translation")
-        ball_translation_field.setSFVec3f(BALL_INITIAL_TRANSLATION)
+    def set_robot_position(self, robot_name: str, position: List[float]):
+        """Set the position of a robot.
 
+        Args:
+            robot_name (str): The robot we are moving
+            position (list of floats): The actual position
+        """
+        tr_field = self.robot_translation_fields[robot_name]
+        tr_field.setSFVec3f(position)
+        self.robot_nodes[robot_name].resetPhysics()
+        self.robot_translation[robot_name] = position
+
+    def set_robot_rotation(self, robot_name: str, rotation: List[float]):
+        """Set the rotation of a robot.
+
+        Args:
+            robot_name (str): The robot we are rotating
+            rotation (list of floats): The actual rotation
+        """
+        rot_field = self.robot_rotation_fields[robot_name]
+        rot_field.setSFRotation(rotation)
+
+    def reset_robot_position(self, robot_name: str):
+        """Reset robot's position to the initial one.
+
+        Args:
+            robot_name (str): The robot to reset the position for
+        """
+        self.reset_robot_velocity(robot_name)
+
+        translation = ROBOT_INITIAL_TRANSLATION[robot_name].copy()
+        translation = self._add_initial_position_noise(translation)
+
+        self.set_robot_position(robot_name, translation)
+        self.set_robot_rotation(robot_name, ROBOT_INITIAL_ROTATION[robot_name])
+
+        self.reset_checkers(robot_name)
+
+    def reset_robot_velocity(self, robot_name: str):
+        """Reset the robot's velocity.
+
+        Args:
+            robot_name (str): The robot we set the velocity for
+        """
+        self.getFromDef(robot_name).setVelocity([0, 0, 0, 0, 0, 0])
+
+    def set_ball_position(self, position: List[float]):
+        """Set the position of the ball.
+
+        Args:
+            position (list of floats): The actual position
+        """
+        ball_translation_field = self.ball.getField("translation")
+        ball_translation_field.setSFVec3f(position)
+        self.reset_ball_velocity()
+        self.ball.resetPhysics()
+        self.ball_translation = position
+
+    def reset_ball_velocity(self):
+        """Reset the ball's velocity."""
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
+
+    def reset_ball_position(self):
+        """Reset the position of the ball."""
+        self.set_ball_position(BALL_INITIAL_TRANSLATION)
         self.progress_chck['ball'].reset()
 
     def _add_initial_position_noise(
@@ -340,22 +407,15 @@ class RCJSoccerSupervisor(Supervisor):
         translation[2] += (random.random() - 0.5) * level
         return translation
 
-    def reset_robot_position(self, robot):
-        self.getFromDef(robot).setVelocity([0, 0, 0, 0, 0, 0])
+    def reset_checkers(self, object_name: str):
+        """Reset rule checkers for the specified object.
 
-        translation = ROBOT_INITIAL_TRANSLATION[robot].copy()
-        translation = self._add_initial_position_noise(translation)
-
-        tr_field = self.getFromDef(robot).getField('translation')
-        tr_field.setSFVec3f(translation)
-
-        rot_field = self.getFromDef(robot).getField('rotation')
-        rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
-
-        # Ensure the progress checker does not count this "jump"
-        self.progress_chck[robot].reset()
-
-        self.penalty_area_chck[robot].reset()
+        Args:
+            object_name (str): Either "ball" or the robot's name.
+        """
+        self.progress_chck[object_name].reset()
+        if object_name != 'ball':
+            self.penalty_area_chck[object_name].reset()
 
     def robot_name_to_team_name(self, robot_name: str) -> str:
         if robot_name.startswith('Y'):
@@ -376,10 +436,95 @@ class RCJSoccerSupervisor(Supervisor):
         # Always kickoff with the third robot
         robot = f'{team}3'
 
-        tr_field = self.getFromDef(robot).getField('translation')
-        tr_field.setSFVec3f(KICKOFF_TRANSLATION[team])
-
-        rot_field = self.getFromDef(robot).getField('rotation')
-        rot_field.setSFRotation(ROBOT_INITIAL_ROTATION[robot])
+        self.set_robot_position(robot, KICKOFF_TRANSLATION[team])
+        self.set_robot_rotation(robot, ROBOT_INITIAL_ROTATION[robot])
 
         return robot
+
+    def is_neutral_spot_occupied(self, ns_x: float, ns_z: float) -> bool:
+        """Check whether the specific neutral spot is occupied
+
+        Args:
+            ns_x (float): x position of the neutral spot
+            ns_z (float): z position of the neutral spot
+
+        Returns:
+            bool: Whether the neutral spot is unoccupied
+        """
+        # Check whether any of the robots is blocking the neutral spot
+        for _, pos in self.robot_translation.items():
+            rx, rz = pos[0], pos[2]
+            distance = math.sqrt((rx - ns_x)**2 + (rz - ns_z)**2)
+            if distance < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
+                return True
+
+        # Check whether the ball is blocking the neutral spot
+        bx, bz = self.ball_translation[0], self.ball_translation[2]
+        distance = math.sqrt((bx - ns_x) ** 2 + (bz - ns_z) ** 2)
+        if distance < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
+            return True
+
+        return False
+
+    def get_unoccupied_neutral_spot(
+        self,
+        distance_type: NeutralSpotDistanceType,
+        object_name: str,
+    ) -> Optional[str]:
+        """Get the nearest/furthest unoccupied neutral spot.
+
+        Args:
+            distance_type (NeutralSpotDistanceType): Either nearest or furthest
+            object_pos (Tuple[int, int]): Get the spot for object at this pos
+            robot_name (str, optional
+
+        Returns:
+            str (optional): The name of the best spot. If the value is None
+                there is no free neutral spot.
+        """
+        if object_name == "ball":
+            x = self.ball_translation[0]
+            z = self.ball_translation[2]
+        else:
+            x = self.robot_translation[object_name][0]
+            z = self.robot_translation[object_name][2]
+
+        find_nearest = distance_type == NeutralSpotDistanceType.NEAREST.value
+        best_distance = -1
+        best_spot = None
+        for ns, ns_pos in NEUTRAL_SPOTS.items():
+            ns_x, ns_z = ns_pos
+            spot_distance = math.sqrt((x - ns_x)**2 + (z - ns_z)**2)
+
+            if find_nearest:
+                is_better = best_spot is None or best_distance > spot_distance
+            else:
+                is_better = best_spot is None or best_distance < spot_distance
+
+            if is_better and not self.is_neutral_spot_occupied(ns_x, ns_z):
+                best_distance = spot_distance
+                best_spot = ns
+
+        return best_spot
+
+    def move_object_to_neutral_spot(
+        self,
+        object_name: str,
+        neutral_spot: Optional[str],
+    ):
+        """Move the robot to the specified neutral spot.
+
+        Args:
+            object_name (str): Name of the object (Ball or robot's name)
+            neutral_spot (str, optional): The spot the robot will be moved to
+        """
+        if neutral_spot is None:
+            return
+
+        x, z = NEUTRAL_SPOTS[neutral_spot]
+
+        if object_name == "ball":
+            self.set_ball_position(BALL_INITIAL_TRANSLATION)
+        else:
+            self.set_robot_position(object_name, [x, OBJECT_DEPTH, z])
+            self.set_robot_rotation(object_name, ROBOT_INITIAL_ROTATION[object_name])
