@@ -8,8 +8,8 @@ one controller, implemented as a **Python3** program. There is an invisible refe
 which takes care of controlling the game and checking the rules.
 
 The controllers are located in the `controllers` directory. The name of the controller
-must be located in a subfolder with the same name and this name ought to be specified
-in `soccer.wbt` file.
+must be located in a subfolder with the same name (i.e. `my_controller/my_controller.py`)
+and this name ought to be specified in `soccer.wbt` file.
 
 ## Hello world, robot!
 
@@ -225,3 +225,5 @@ magic lines to `robot1.py`, but instead just call
 ```python
 import utils
 ```
+
+because the PATH actually contains the folder of the script which is being run.
