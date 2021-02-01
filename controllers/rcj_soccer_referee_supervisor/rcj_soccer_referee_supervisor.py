@@ -11,8 +11,8 @@ from os import environ
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in environ.keys() else False
 
-TEAM_YELLOW = environ['TEAM_YELLOW_NAME'] if 'TEAM_YELLOW_NAME' in environ.keys() else "The Yellows"
-TEAM_BLUE = environ['TEAM_BLUE_NAME'] if 'TEAM_BLUE_NAME' in environ.keys() else "The Blues"
+TEAM_YELLOW = environ.get("TEAM_YELLOW_NAME", "The Yellows")
+TEAM_BLUE = environ.get("TEAM_BLUE_NAME", "The Blues")
 
 def output_path(
     directory: Path,
@@ -29,7 +29,7 @@ def output_path(
         directory.mkdir(parents=True, exist_ok=True)
 
     p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
-    if "RCJ_SIM_AUTO_MODE" in environ.keys():
+    if automatic_mode:
         return Path('/out/') / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
     return p
 
@@ -83,4 +83,3 @@ if recorder.is_recording():
 
 if automatic_mode:
     referee.simulationQuit(0)
-
