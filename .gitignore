@@ -4,3 +4,4 @@
 *.pyc
 reflog/
 docs/docs/site/
+x11docker/
