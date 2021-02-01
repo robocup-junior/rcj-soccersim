@@ -1,0 +1,72 @@
+<tournament>
+  <leagues>
+    <league abbrev="sim1" id="68" name="Simulation Feb 2021">
+      <leagueRound mode="289" name="Round Robin">
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r1_1" number="1" team1="1060" team2="1065"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r1_2" number="2" team1="1061" team2="1066"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r1_3" number="3" team1="1062" team2="1067"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r1_4" number="4" team1="1063" team2="1068"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r1_5" number="5" team1="1064" team2="1069"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r2_1" number="6" team1="1066" team2="1060"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r2_2" number="7" team1="1065" team2="1067"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r2_3" number="8" team1="1061" team2="1068"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r2_4" number="9" team1="1062" team2="1069"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r2_5" number="10" team1="1063" team2="1064"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r3_1" number="11" team1="1060" team2="1067"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r3_2" number="12" team1="1066" team2="1068"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r3_3" number="13" team1="1065" team2="1069"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r3_4" number="14" team1="1061" team2="1064"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r3_5" number="15" team1="1062" team2="1063"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r4_1" number="16" team1="1068" team2="1060"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r4_2" number="17" team1="1067" team2="1069"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r4_3" number="18" team1="1066" team2="1064"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r4_4" number="19" team1="1065" team2="1063"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r4_5" number="20" team1="1061" team2="1062"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r5_1" number="21" team1="1060" team2="1069"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r5_2" number="22" team1="1068" team2="1064"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r5_3" number="23" team1="1067" team2="1063"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r5_4" number="24" team1="1066" team2="1062"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r5_5" number="25" team1="1065" team2="1061"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r6_1" number="26" team1="1064" team2="1060"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r6_2" number="27" team1="1069" team2="1063"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r6_3" number="28" team1="1068" team2="1062"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r6_4" number="29" team1="1067" team2="1061"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r6_5" number="30" team1="1066" team2="1065"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r7_1" number="31" team1="1060" team2="1063"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r7_2" number="32" team1="1064" team2="1062"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r7_3" number="33" team1="1069" team2="1061"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r7_4" number="34" team1="1068" team2="1065"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r7_5" number="35" team1="1067" team2="1066"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r8_1" number="36" team1="1062" team2="1060"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r8_2" number="37" team1="1063" team2="1061"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r8_3" number="38" team1="1064" team2="1065"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r8_4" number="39" team1="1069" team2="1066"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r8_5" number="40" team1="1068" team2="1067"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r9_1" number="41" team1="1060" team2="1061"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r9_2" number="42" team1="1062" team2="1065"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r9_3" number="43" team1="1063" team2="1066"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r9_4" number="44" team1="1064" team2="1067"/>
+        <match comment="" groupName="Group 1" name="sim1_1_g1_r9_5" number="45" team1="1069" team2="1068"/>
+      </leagueRound>
+    </league>
+  </leagues>
+  <modes>
+    <mode id="289" modeFile="1" name="Groups, 1 Groups, 10 Teams per Group" params="[{&quot;name&quot;:&quot;Number of groups&quot;,&quot;value&quot;:&quot;1&quot;},{&quot;name&quot;:&quot;Number of teams per group&quot;,&quot;value&quot;:&quot;10&quot;}]"/>
+  </modes>
+  <pitches/>
+  <teams>
+    <team comment="" id="1060" league="68" name="001" school="" startnumber="0"/>
+    <team comment="" id="1061" league="68" name="002" school="" startnumber="0"/>
+    <team comment="" id="1062" league="68" name="003" school="" startnumber="0"/>
+    <team comment="" id="1063" league="68" name="004" school="" startnumber="0"/>
+    <team comment="" id="1064" league="68" name="005" school="" startnumber="0"/>
+    <team comment="" id="1065" league="68" name="006" school="" startnumber="0"/>
+    <team comment="" id="1066" league="68" name="007" school="" startnumber="0"/>
+    <team comment="" id="1067" league="68" name="008" school="" startnumber="0"/>
+    <team comment="" id="1068" league="68" name="009" school="" startnumber="0"/>
+    <team comment="" id="1069" league="68" name="010" school="" startnumber="0"/>
+  </teams>
+  <referees/>
+  <balls/>
+</tournament>
+
