@@ -12,7 +12,9 @@ from os import environ
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in environ.keys() else False
 
 TEAM_YELLOW = environ.get("TEAM_YELLOW_NAME", "The Yellows")
+TEAM_YELLOW_ID = environ.get("TEAM_YELLOW_ID")
 TEAM_BLUE = environ.get("TEAM_BLUE_NAME", "The Blues")
+TEAM_BLUE_ID = environ.get("TEAM_BLUE_ID")
 
 def output_path(
     directory: Path,
@@ -34,7 +36,7 @@ def output_path(
     return p
 
 
-output_prefix = output_path(Path('reflog'), TEAM_BLUE, TEAM_YELLOW)
+output_prefix = output_path(Path('reflog'), TEAM_BLUE_ID, TEAM_YELLOW_ID)
 reflog_path = output_prefix.with_suffix('.jsonl')
 video_path = output_prefix.with_suffix('.mp4')
 
