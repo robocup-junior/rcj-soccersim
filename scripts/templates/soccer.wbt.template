@@ -508,7 +508,7 @@ DEF B1 Robot {
     Receiver {
     }
   ]
-  name "b1"
+  name "B1"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics DEF ROBOT_PHYSICS Physics {
     density -1
@@ -635,7 +635,7 @@ DEF B2 Robot {
     Receiver {
     }
   ]
-  name "b2"
+  name "B2"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "$controller_b2"
@@ -759,7 +759,7 @@ DEF B3 Robot {
     Receiver {
     }
   ]
-  name "b3"
+  name "B3"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "$controller_b3"
@@ -883,7 +883,7 @@ DEF Y1 Robot {
     Receiver {
     }
   ]
-  name "y1"
+  name "Y1"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "$controller_y1"
@@ -1007,7 +1007,7 @@ DEF Y2 Robot {
     Receiver {
     }
   ]
-  name "y2"
+  name "Y2"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "$controller_y2"
@@ -1131,7 +1131,7 @@ DEF Y3 Robot {
     Receiver {
     }
   ]
-  name "y3"
+  name "Y3"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "$controller_y3"
