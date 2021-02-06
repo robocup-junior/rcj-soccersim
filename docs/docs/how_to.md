@@ -47,7 +47,7 @@ class MyRobot:
 
         self.left_motor.setVelocity(0.0)
         self.right_motor.setVelocity(0.0)
-    
+
     def get_new_data(self):
         packet = self.receiver.getData()
         self.receiver.nextPacket()
@@ -138,7 +138,7 @@ the team ("Blue", "Yellow"), while the second one is the robot's identifier.
 ```python
 def get_new_data(self):
     ...
-``` 
+```
 
 We are not going to explain this deeply. This function is to parse the incoming
 data from supervisor. Feel free to copy and use it. The resulting dictionary
@@ -214,7 +214,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path('.').absolute().parent))
 from robot1 import utils
-``` 
+```
 
 This will ensure that the code from `robot1` is importable (it adds the parent folder
 to the Python PATH -- the list of folders where Python looks when importing modules).
