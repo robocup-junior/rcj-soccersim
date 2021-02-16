@@ -32,7 +32,9 @@ def output_path(
 
     p = directory / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
     if automatic_mode:
-        return Path('/out/') / Path(f'{team_blue}_vs_{team_yellow}-{now_str}')
+      match_id = environ.get("MATCH_ID", "")
+      half_id = environ.get("HALF_ID", "")
+      return Path('/out/') / Path(f'{match_id}_-_{half_id}_-_{team_blue}_vs_{team_yellow}-{now_str}')
     return p
 
 

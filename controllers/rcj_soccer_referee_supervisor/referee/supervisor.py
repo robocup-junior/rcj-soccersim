@@ -1,5 +1,6 @@
 import struct
 import random
+import os
 
 from typing import List, Tuple
 
@@ -99,7 +100,10 @@ class RCJSoccerSupervisor(Supervisor):
         self._update_positions()
 
         self.ball_reset_timer = 0
-        self.score_blue = self.score_yellow = 0
+        score_blue = os.environ.get("TEAM_B_INITIAL_SCORE", "0")
+        self.score_blue = int(score_blue) if score_blue != "" else 0
+        score_yellow = os.environ.get("TEAM_Y_INITIAL_SCORE", "0")
+        self.score_yellow = int(score_yellow) if score_yellow != "" else 0
         # The team that ought to have the kickoff at the next restart
         self.team_to_kickoff = None
 
