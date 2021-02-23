@@ -1,7 +1,6 @@
 import math
 import struct
 import random
-import os
 
 from typing import List, Optional, Tuple
 
@@ -37,6 +36,8 @@ class RCJSoccerSupervisor(Supervisor):
         ball_progress_check_threshold: int,
         team_name_blue: str,
         team_name_yellow: str,
+        initial_score_blue: int,
+        initial_score_yellow: int,
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
         post_goal_wait_time: int = 3,
@@ -108,10 +109,9 @@ class RCJSoccerSupervisor(Supervisor):
         self._update_positions()
 
         self.ball_reset_timer = 0
-        score_blue = os.environ.get("TEAM_B_INITIAL_SCORE", "0")
-        self.score_blue = int(score_blue) if score_blue != "" else 0
-        score_yellow = os.environ.get("TEAM_Y_INITIAL_SCORE", "0")
-        self.score_yellow = int(score_yellow) if score_yellow != "" else 0
+
+        self.score_blue = initial_score_blue
+        self.score_yellow = initial_score_yellow
         # The team that ought to have the kickoff at the next restart
         self.team_to_kickoff = None
 
