@@ -30,7 +30,7 @@ class VideoRecordAssistant:
         if self.output_path == "":
             # When output path is not specified
             time_str = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-            return "{}/{}.mp4".format(str(Path.home()), time_str)
+            return "{}/{}".format(str(Path.home()), time_str)
 
         return self.output_path
 
@@ -44,19 +44,22 @@ class VideoRecordAssistant:
 
         return res_table[self.resolution]
 
-    def start_recording(self):
+    def start_recording(self, formats):
         width, height = self.get_resolution()
         filename = self.create_title()
 
         # API details for movieStartRecording
         # https://www.cyberbotics.com/doc/reference/supervisor?tab-language=python#wb_supervisor_movie_start_recording
-        self.supervisor.movieStartRecording(filename,
-                                            width,
-                                            height,
-                                            quality=100,
-                                            codec=0,
-                                            acceleration=self.fastforward_rate,
-                                            caption=False)
+        if 'mp4' in formats:
+            self.supervisor.movieStartRecording(filename + '.mp4',
+                                                width,
+                                                height,
+                                                quality=100,
+                                                codec=0,
+                                                acceleration=self.fastforward_rate,
+                                                caption=False)
+        if 'x3d' in formats:
+            self.supervisor.animationStartRecording(filename + '.html')
         self.__recording = True
 
     def stop_recording(self):

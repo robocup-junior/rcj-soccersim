@@ -37,6 +37,7 @@ TEAM_BLUE_ID = os.environ.get("TEAM_BLUE_ID", "The Blues")
 TEAM_BLUE_INITIAL_SCORE = int(os.environ.get("TEAM_B_INITIAL_SCORE", "0") or "0")
 MATCH_ID = os.environ.get("MATCH_ID", 1)
 HALF_ID = os.environ.get("HALF_ID", 1)
+REC_FORMATS = os.environ.get("REC_FORMATS","").split(",")
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in os.environ.keys() else False
 
@@ -49,7 +50,7 @@ output_prefix = output_path(
     HALF_ID,
 )
 reflog_path = output_prefix.with_suffix('.jsonl')
-video_path = output_prefix.with_suffix('.mp4')
+video_path = output_prefix.with_suffix('') # recorder sets suffix depending on filetype
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -73,7 +74,7 @@ recorder = VideoRecordAssistant(
 
 if automatic_mode:
     referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
-    recorder.start_recording()
+    recorder.start_recording(formats=REC_FORMATS)
 
 referee.add_event_subscriber(JSONLoggerHandler(reflog_path))
 referee.add_event_subscriber(DrawMessageHandler())
