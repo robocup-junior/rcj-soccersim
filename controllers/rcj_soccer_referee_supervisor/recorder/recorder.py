@@ -4,10 +4,11 @@ from pathlib import Path
 import datetime
 import time
 
-import logging
+from recorder.consts import RecordingFileSuffix
 
 
-class VideoRecordAssistant:
+class BaseVideoRecordAssistant:
+    output_suffix = ""
 
     def __init__(self,
                  supervisor: Supervisor,
@@ -26,11 +27,10 @@ class VideoRecordAssistant:
             raise TypeError("Unexpected supervisor instance")
 
     def create_title(self):
-
         if self.output_path == "":
             # When output path is not specified
             time_str = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-            return "{}/{}".format(str(Path.home()), time_str)
+            return "{}/{}.{}".format(str(Path.home()), time_str, self.output_suffix)
 
         return self.output_path
 
@@ -44,33 +44,58 @@ class VideoRecordAssistant:
 
         return res_table[self.resolution]
 
-    def start_recording(self, formats):
+    def start_recording(self):
+        raise NotImplementedError
+
+    def stop_recording(self):
+        raise NotImplementedError
+
+    def is_recording(self):
+        return self.__recording
+
+    def wait_processing(self):
+        raise NotImplementedError
+
+
+class MP4VideoRecordAssistant(BaseVideoRecordAssistant):
+    output_suffix = RecordingFileSuffix.MP4.value
+
+    def start_recording(self):
         width, height = self.get_resolution()
         filename = self.create_title()
 
         # API details for movieStartRecording
         # https://www.cyberbotics.com/doc/reference/supervisor?tab-language=python#wb_supervisor_movie_start_recording
-        if 'mp4' in formats:
-            self.supervisor.movieStartRecording(filename + '.mp4',
-                                                width,
-                                                height,
-                                                quality=100,
-                                                codec=0,
-                                                acceleration=self.fastforward_rate,
-                                                caption=False)
-        if 'x3d' in formats:
-            self.supervisor.animationStartRecording(filename + '.html')
+        self.supervisor.movieStartRecording(filename,
+                                            width,
+                                            height,
+                                            quality=100,
+                                            codec=0,
+                                            acceleration=self.fastforward_rate,
+                                            caption=False)
+
         self.__recording = True
 
     def stop_recording(self):
         self.supervisor.movieStopRecording()
         self.__recording = False
 
-    def is_recording(self):
-        return self.__recording
-
     def wait_processing(self):
-        logging.info('Processing Video...')
         while not self.supervisor.movieIsReady():
             time.sleep(1.0)
 
+
+class X3DVideoRecordAssistant(BaseVideoRecordAssistant):
+    output_suffix = RecordingFileSuffix.X3D.value
+
+    def start_recording(self):
+        filename = self.create_title()
+        self.supervisor.animationStartRecording(filename)
+        self.__recording = True
+
+    def stop_recording(self):
+        self.supervisor.animationStopRecording()
+        self.__recording = False
+
+    def wait_processing(self):
+        pass

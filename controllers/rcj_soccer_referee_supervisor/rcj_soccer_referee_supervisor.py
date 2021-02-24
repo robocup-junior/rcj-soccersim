@@ -1,3 +1,4 @@
+import logging
 import os
 from math import ceil
 from datetime import datetime
@@ -6,7 +7,19 @@ from pathlib import Path, PosixPath
 from referee.consts import MATCH_TIME, TIME_STEP
 from referee.event_handlers import JSONLoggerHandler, DrawMessageHandler
 from referee.referee import RCJSoccerReferee
-from recorder.recorder import VideoRecordAssistant
+from recorder.recorder import (
+    BaseVideoRecordAssistant,
+    MP4VideoRecordAssistant,
+    X3DVideoRecordAssistant,
+)
+from recorder.consts import RecordingFormat
+
+
+def get_video_recorder_class(rec_format: str) -> BaseVideoRecordAssistant:
+    return {
+        RecordingFormat.MP4.value: MP4VideoRecordAssistant,
+        RecordingFormat.X3D.value: X3DVideoRecordAssistant,
+    }[rec_format]
 
 
 def output_path(
@@ -37,7 +50,12 @@ TEAM_BLUE_ID = os.environ.get("TEAM_BLUE_ID", "The Blues")
 TEAM_BLUE_INITIAL_SCORE = int(os.environ.get("TEAM_B_INITIAL_SCORE", "0") or "0")
 MATCH_ID = os.environ.get("MATCH_ID", 1)
 HALF_ID = os.environ.get("HALF_ID", 1)
-REC_FORMATS = os.environ.get("REC_FORMATS","").split(",")
+REC_FORMATS = list(
+    filter(
+        lambda x: x,  # filter empty formats
+        os.environ.get("REC_FORMATS", "").split(",")
+    )
+)
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in os.environ.keys() else False
 
@@ -50,7 +68,6 @@ output_prefix = output_path(
     HALF_ID,
 )
 reflog_path = output_prefix.with_suffix('.jsonl')
-video_path = output_prefix.with_suffix('') # recorder sets suffix depending on filetype
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
@@ -66,15 +83,27 @@ referee = RCJSoccerReferee(
     penalty_area_reset_after=2,
 )
 
-recorder = VideoRecordAssistant(
-    supervisor=referee,
-    output_path=str(video_path),
-    resolution="720p",
-)
+recorders = []
+available_recording_formats = RecordingFormat.all()
+for rec_format in REC_FORMATS:
+    if rec_format not in available_recording_formats:
+        raise ValueError(f"Unexpected video format {rec_format}")
+
+    recorder_class = get_video_recorder_class(rec_format)
+    rec_suffix = recorder_class.output_suffix
+
+    recorders.append(
+        recorder_class(
+            supervisor=referee,
+            output_path=str(output_prefix.with_suffix(rec_suffix)),
+            resolution="720p",
+        )
+    )
 
 if automatic_mode:
     referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
-    recorder.start_recording(formats=REC_FORMATS)
+    for recorder in recorders:
+        recorder.start_recording()
 
 referee.add_event_subscriber(JSONLoggerHandler(reflog_path))
 referee.add_event_subscriber(DrawMessageHandler())
@@ -93,9 +122,11 @@ while referee.step(TIME_STEP) != -1:
 # When end of match, pause simulator immediately
 referee.simulationSetMode(referee.SIMULATION_MODE_PAUSE)
 
-if recorder.is_recording():
-    recorder.stop_recording()
-    recorder.wait_processing()
+for recorder in recorders:
+    if recorder.is_recording():
+        recorder.stop_recording()
+        logging.info(f'Processing {recorder.output_suffix} video...')
+        recorder.wait_processing()
 
 if automatic_mode:
     referee.simulationQuit(0)
