@@ -30,7 +30,7 @@ def output_path(
     half_id: int,
 ) -> PosixPath:
 
-    now_str = datetime.utcnow().strftime('%Y%m%dT%H%M%S.%fZ')
+    now_str = datetime.utcnow().strftime('%Y%m%dT%H%M%S')
     team_blue = team_blue_id.replace(' ', '_')
     team_yellow = team_yellow_id.replace(' ', '_')
 
@@ -95,7 +95,7 @@ for rec_format in REC_FORMATS:
     recorders.append(
         recorder_class(
             supervisor=referee,
-            output_path=str(output_prefix.with_suffix(rec_suffix)),
+            output_path=str(output_prefix.with_suffix(f".{rec_suffix}")),
             resolution="720p",
         )
     )
