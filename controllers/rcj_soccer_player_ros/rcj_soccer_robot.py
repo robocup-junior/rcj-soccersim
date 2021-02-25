@@ -1,9 +1,12 @@
 import math
 import struct
+import os
+
+from rcj_soccer_sim.msg import bot_command, bot_measurements
+
 from typing import Tuple
 from controller import Robot
 
-TIME_STEP = 64
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
@@ -15,9 +18,15 @@ class RCJSoccerRobot:
         self.name = self.robot.getName()
         self.team = self.name[0]
         self.player_id = int(self.name[1])
+        os.environ["ROS_MASTER_URI"] = os.environ["ROS_MASTER_URI_TEAM_" + self.team]
+        os.environ["ROS_NAMESPACE"] = "/bot" + str(self.player_id)
+        import rospy
+        self.measurement_publisher = rospy.Publisher('bot_measurements', bot_measurements, queue_size=1)
+        self.ros_node = rospy.init_node("bot" + str(self.player_id), anonymous=True)
+        self.command_subscruber = rospy.Subscriber('bot_command', bot_command, self.apply_bot_command)
 
         self.receiver = self.robot.getDevice("receiver")
-        self.receiver.enable(TIME_STEP)
+        self.receiver.enable(int(self.robot.getBasicTimeStep()))
 
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
@@ -27,6 +36,10 @@ class RCJSoccerRobot:
 
         self.left_motor.setVelocity(0.0)
         self.right_motor.setVelocity(0.0)
+
+    def apply_bot_command(self, bot_command):
+        self.left_motor.setVelocity(bot_command.left_wheel_speed)
+        self.right_motor.setVelocity(bot_command.right_wheel_speed)
 
     def parse_supervisor_msg(self, packet: str) -> dict:
         """Parse message received from supervisor
@@ -117,4 +130,18 @@ class RCJSoccerRobot:
         return robot_ball_angle, robot_angle
 
     def run(self):
-        raise NotImplementedError
+        while self.robot.step(int(self.robot.getBasicTimeStep())) != -1:
+            if self.is_new_data():
+                data = self.get_new_data()
+
+                # Get the position of our robot
+                robot_pos = data[self.name]
+                # Get the position of the ball
+                ball_pos = data['ball']
+
+                # Publish robot data
+                measurement_msg = bot_measurements(pos_x=robot_pos['x'], pos_y=robot_pos['y'], theta=robot_pos['orientation'])
+                self.measurement_publisher.publish(measurement_msg)
+
+this_bot = RCJSoccerRobot()
+this_bot.run()
