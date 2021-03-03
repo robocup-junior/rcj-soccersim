@@ -39,11 +39,13 @@ class RCJSoccerRobot:
                     'B2': {'x': 0.4, 'y': -0.2, 'orientation': 1},
                     ...
                     'ball': {'x': -0.7, 'y': 0.3}
+                    'waiting_for_kickoff': False,
                 }
         """
         # X, Z and rotation for each robot
         # plus X and Z for ball
-        struct_fmt = 'ddd' * N_ROBOTS + 'dd'
+        # plus True/False telling whether the goal was scored
+        struct_fmt = 'ddd' * N_ROBOTS + 'dd' + '?'
 
         unpacked = struct.unpack(struct_fmt, packet)
 
@@ -54,10 +56,14 @@ class RCJSoccerRobot:
                 "y": unpacked[3 * i + 1],
                 "orientation": unpacked[3 * i + 2]
             }
+        ball_data_index = 3 * N_ROBOTS
         data["ball"] = {
-            "x": unpacked[3 * N_ROBOTS],
-            "y": unpacked[3 * N_ROBOTS + 1]
+            "x": unpacked[ball_data_index],
+            "y": unpacked[ball_data_index + 1]
         }
+
+        waiting_for_kickoff_data_index = ball_data_index + 2
+        data["waiting_for_kickoff"] = unpacked[waiting_for_kickoff_data_index]
         return data
 
     def get_new_data(self) -> dict:

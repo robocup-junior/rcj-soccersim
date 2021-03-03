@@ -52,7 +52,7 @@ class MyRobot:
         packet = self.receiver.getData()
         self.receiver.nextPacket()
 
-        struct_fmt = 'ddd' * 6 + 'dd'
+        struct_fmt = 'ddd' * 6 + 'dd' + '?'
 
         unpacked = struct.unpack(struct_fmt, packet)
 
@@ -63,10 +63,14 @@ class MyRobot:
                 "y": unpacked[3 * i + 1],
                 "orientation": unpacked[3 * i + 2]
             }
+        ball_data_index = 3 * N_ROBOTS
         data["ball"] = {
-            "x": unpacked[3 * N_ROBOTS],
-            "y": unpacked[3 * N_ROBOTS + 1]
+            "x": unpacked[ball_data_index],
+            "y": unpacked[ball_data_index + 1]
         }
+
+        waiting_for_kickoff_data_index = ball_data_index + 2
+        data["waiting_for_kickoff"] = unpacked[waiting_for_kickoff_data_index]
         return data
 
     def run(self):
@@ -142,7 +146,10 @@ def get_new_data(self):
 
 We are not going to explain this deeply. This function is to parse the incoming
 data from supervisor. Feel free to copy and use it. The resulting dictionary
-contains positions of all of the robots as well as the position of the ball.
+contains positions of all of the robots as well as the position of the ball. Moreover,
+it contains information whether the goal gets scored and we are waiting for new kickoff.
+In case the goal gets scored, the value is `True` and is reset to `False` when the 
+referee fires new kickoff.
 
 ```python
 def run(self):

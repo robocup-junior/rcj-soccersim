@@ -286,14 +286,14 @@ class RCJSoccerSupervisor(Supervisor):
 
         Returns:
             str: the packed packet.
-
         """
 
         assert len(robot_translation) == len(robot_rotation)
 
         # X, Z and rotation for each robot
         # plus X and Z for ball
-        struct_fmt = 'ddd' * len(robot_translation) + 'dd'
+        # plus True/False telling whether the goal was scored
+        struct_fmt = 'ddd' * len(robot_translation) + 'dd' + '?'
 
         data = []
         for robot in ROBOT_NAMES:
@@ -307,6 +307,10 @@ class RCJSoccerSupervisor(Supervisor):
 
         data.append(ball_translation[0])
         data.append(ball_translation[2])
+
+        # Add Notification if the goal is scored and we are waiting for kickoff
+        # The value is True or False
+        data.append(self.ball_reset_timer > 0)
 
         return struct.pack(struct_fmt, *data)
 
