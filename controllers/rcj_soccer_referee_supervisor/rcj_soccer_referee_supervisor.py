@@ -4,7 +4,7 @@ from math import ceil
 from datetime import datetime
 from pathlib import Path, PosixPath
 
-from referee.consts import MATCH_TIME, TIME_STEP
+from referee.consts import DEFAULT_MATCH_TIME, TIME_STEP
 from referee.event_handlers import JSONLoggerHandler, DrawMessageHandler
 from referee.referee import RCJSoccerReferee
 from recorder.recorder import (
@@ -56,6 +56,7 @@ REC_FORMATS = list(
         os.environ.get("REC_FORMATS", "").split(",")
     )
 )
+MATCH_TIME = os.environ.get("MATCH_TIME", DEFAULT_MATCH_TIME)
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in os.environ.keys() else False
 

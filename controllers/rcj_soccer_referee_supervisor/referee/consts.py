@@ -6,7 +6,7 @@ class Team(Enum):
     YELLOW = "Y"
 
 
-MATCH_TIME = os.environ.get("MATCH_TIME", 10 * 60)  # 10 minutes unless otherwise specified
+DEFAULT_MATCH_TIME = 10 * 60  # 10 minutes
 GOAL_X_LIMIT = 0.745
 TIME_STEP = 64
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
