@@ -50,12 +50,7 @@ TEAM_BLUE_ID = os.environ.get("TEAM_BLUE_ID", "The Blues")
 TEAM_BLUE_INITIAL_SCORE = int(os.environ.get("TEAM_B_INITIAL_SCORE", "0") or "0")
 MATCH_ID = os.environ.get("MATCH_ID", 1)
 HALF_ID = os.environ.get("HALF_ID", 1)
-REC_FORMATS = list(
-    filter(
-        lambda x: x,  # filter empty formats
-        os.environ.get("REC_FORMATS", "").split(",")
-    )
-)
+REC_FORMATS = [f for f in os.environ.get("REC_FORMATS", "").split(",") if f]
 MATCH_TIME = os.environ.get("MATCH_TIME", DEFAULT_MATCH_TIME)
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in os.environ.keys() else False
