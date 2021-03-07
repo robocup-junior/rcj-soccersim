@@ -36,6 +36,8 @@ class RCJSoccerSupervisor(Supervisor):
         ball_progress_check_threshold: int,
         team_name_blue: str,
         team_name_yellow: str,
+        initial_score_blue: int,
+        initial_score_yellow: int,
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
         post_goal_wait_time: int = 3,
@@ -107,7 +109,9 @@ class RCJSoccerSupervisor(Supervisor):
         self._update_positions()
 
         self.ball_reset_timer = 0
-        self.score_blue = self.score_yellow = 0
+
+        self.score_blue = initial_score_blue
+        self.score_yellow = initial_score_yellow
         # The team that ought to have the kickoff at the next restart
         self.team_to_kickoff = None
 
