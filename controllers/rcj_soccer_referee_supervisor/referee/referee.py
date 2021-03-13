@@ -1,7 +1,6 @@
 import random
 from typing import Optional
 from referee.consts import (
-    GOAL_X_LIMIT,
     TIME_STEP,
     ROBOT_NAMES,
     GameEvents,
@@ -9,6 +8,11 @@ from referee.consts import (
     NeutralSpotDistanceType,
 )
 from referee.supervisor import RCJSoccerSupervisor
+from referee.utils import (
+    is_in_blue_goal,
+    is_in_yellow_goal,
+    is_outside,
+)
 
 
 class RCJSoccerReferee(RCJSoccerSupervisor):
@@ -47,7 +51,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             pos = self.robot_translation[robot]
             self.progress_chck[robot].track(pos)
 
-            if not self.progress_chck[robot].is_progress(robot):
+            x, z = pos[0], pos[2]
+            if is_outside(x, z) or not self.progress_chck[robot].is_progress(robot):
                 self.eventer.event(
                     supervisor=self,
                     type=GameEvents.LACK_OF_PROGRESS.value,
@@ -65,7 +70,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
 
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
-        if not self.progress_chck['ball'].is_progress('ball'):
+        bx, bz = bpos[0], bpos[2]
+        if is_outside(bx, bz) or not self.progress_chck['ball'].is_progress('ball'):
             self.eventer.event(
                 supervisor=self,
                 type=GameEvents.LACK_OF_PROGRESS.value,
@@ -86,15 +92,17 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         team_goal = None
         team_kickoff = None
 
+        ball_x, ball_z = self.ball_translation[0], self.ball_translation[2]
+
         # ball in the blue goal
-        if self.ball_translation[0] > GOAL_X_LIMIT:
+        if is_in_blue_goal(ball_x, ball_z):
             self.score_yellow += 1
 
             team_goal = self.team_name_yellow
             team_kickoff = Team.BLUE.value
 
         # ball in the yellow goal
-        elif self.ball_translation[0] < -GOAL_X_LIMIT:
+        elif is_in_yellow_goal(ball_x, ball_z):
             self.score_blue += 1
 
             team_goal = self.team_name_blue
