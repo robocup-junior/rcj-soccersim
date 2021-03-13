@@ -2,7 +2,7 @@ import math
 import struct
 import random
 
-from typing import List, Optional, Tuple
+from typing import List, Tuple
 
 from controller import Supervisor
 from referee.progress_checker import ProgressChecker
@@ -20,6 +20,7 @@ from referee.consts import (
     DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
     Team,
     OBJECT_DEPTH,
+    BALL_DEPTH,
 )
 from referee.eventer import Eventer
 from referee.event_handlers import EventHandler
@@ -474,21 +475,22 @@ class RCJSoccerSupervisor(Supervisor):
 
         return False
 
-    def get_unoccupied_neutral_spot(
+    def get_unoccupied_neutral_spots_sorted(
         self,
         distance_type: NeutralSpotDistanceType,
         object_name: str,
-    ) -> Optional[str]:
-        """Get the nearest/furthest unoccupied neutral spot.
+    ) -> List[Tuple[str, float]]:
+        """Get sorted pairs of (neutral_spot, distance)
+        sorted according to distance_type.
+        Furthest distance type -> descending order
+        Nearest distance type -> ascending order
 
         Args:
             distance_type (NeutralSpotDistanceType): Either nearest or furthest
-            object_pos (Tuple[int, int]): Get the spot for object at this pos
-            robot_name (str, optional
+            object_name (str): Get the spot for this object
 
         Returns:
-            str (optional): The name of the best spot. If the value is None
-                there is no free neutral spot.
+            list: sorted pairs of neutral spots and their distances
         """
         if object_name == "ball":
             x = self.ball_translation[0]
@@ -497,42 +499,40 @@ class RCJSoccerSupervisor(Supervisor):
             x = self.robot_translation[object_name][0]
             z = self.robot_translation[object_name][2]
 
-        find_nearest = distance_type == NeutralSpotDistanceType.NEAREST.value
-        best_distance = -1
-        best_spot = None
+        spot_distance_pairs = []
         for ns, ns_pos in NEUTRAL_SPOTS.items():
             ns_x, ns_z = ns_pos
             spot_distance = math.sqrt((x - ns_x)**2 + (z - ns_z)**2)
 
-            if find_nearest:
-                is_better = best_spot is None or best_distance > spot_distance
-            else:
-                is_better = best_spot is None or best_distance < spot_distance
+            if not self.is_neutral_spot_occupied(ns_x, ns_z):
+                spot_distance_pairs.append((ns, spot_distance))
 
-            if is_better and not self.is_neutral_spot_occupied(ns_x, ns_z):
-                best_distance = spot_distance
-                best_spot = ns
+        do_reverse = distance_type == NeutralSpotDistanceType.FURTHEST.value
+        sorted_pairs = list(
+            sorted(
+                spot_distance_pairs,
+                key=lambda pair: pair[1],
+                reverse=do_reverse,
+            ),
+        )
 
-        return best_spot
+        return sorted_pairs
 
     def move_object_to_neutral_spot(
         self,
         object_name: str,
-        neutral_spot: Optional[str],
+        neutral_spot: str,
     ):
         """Move the robot to the specified neutral spot.
 
         Args:
             object_name (str): Name of the object (Ball or robot's name)
-            neutral_spot (str, optional): The spot the robot will be moved to
+            neutral_spot (str): The spot the robot will be moved to
         """
-        if neutral_spot is None:
-            return
-
         x, z = NEUTRAL_SPOTS[neutral_spot]
 
         if object_name == "ball":
-            self.set_ball_position(BALL_INITIAL_TRANSLATION)
+            self.set_ball_position([x, BALL_DEPTH, z])
         else:
             self.set_robot_position(object_name, [x, OBJECT_DEPTH, z])
             self.set_robot_rotation(object_name, ROBOT_INITIAL_ROTATION[object_name])
