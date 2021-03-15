@@ -2,6 +2,7 @@ import random
 from typing import Optional
 from referee.consts import (
     TIME_STEP,
+    LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS,
     ROBOT_NAMES,
     GameEvents,
     Team,
@@ -34,12 +35,14 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                         "robot_name": robot,
                     },
                 )
-                furthest_spot = self.get_unoccupied_neutral_spot(
-                    NeutralSpotDistanceType.FURTHEST,
+                furthest_spots = self.get_unoccupied_neutral_spots_sorted(
+                    NeutralSpotDistanceType.FURTHEST.value,
                     robot,
                 )
-                self.move_object_to_neutral_spot(robot, furthest_spot)
-                self.reset_checkers(robot)
+                if furthest_spots:
+                    neutral_spot = furthest_spots[0][0]
+                    self.move_object_to_neutral_spot(robot, neutral_spot)
+                    self.reset_checkers(robot)
 
     def check_progress(self):
         """
@@ -61,12 +64,17 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                         "robot_name": robot,
                     }
                 )
-                nearest_spot = self.get_unoccupied_neutral_spot(
-                    NeutralSpotDistanceType.NEAREST,
+                nearest_spots = self.get_unoccupied_neutral_spots_sorted(
+                    NeutralSpotDistanceType.NEAREST.value,
                     robot,
                 )
-                self.move_object_to_neutral_spot(robot, nearest_spot)
-                self.reset_checkers(robot)
+
+                if nearest_spots:
+                    neutral_spot = random.choice(
+                        nearest_spots[:LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS],
+                    )
+                    self.move_object_to_neutral_spot(robot, neutral_spot[0])
+                    self.reset_checkers(robot)
 
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
@@ -79,12 +87,18 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     "type": "ball"
                 },
             )
-            nearest_spot = self.get_unoccupied_neutral_spot(
-                NeutralSpotDistanceType.NEAREST,
+            nearest_spots = self.get_unoccupied_neutral_spots_sorted(
+                NeutralSpotDistanceType.NEAREST.value,
                 "ball",
             )
-            self.move_object_to_neutral_spot("ball", nearest_spot)
-            self.reset_checkers("ball")
+
+            if nearest_spots:
+                neutral_spot = random.choice(
+                    nearest_spots[:LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS],
+                )
+
+                self.move_object_to_neutral_spot("ball", neutral_spot[0])
+                self.reset_checkers("ball")
 
     def check_goal(self):
         """Check if goal is scored"""
