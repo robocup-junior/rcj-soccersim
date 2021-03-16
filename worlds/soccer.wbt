@@ -515,6 +515,7 @@ DEF B1 Robot {
     mass 0.2
   }
   controller "rcj_soccer_player_b1"
+  synchronization FALSE
 }
 DEF B2 Robot {
   translation 0.271657 0.0381772 0.289311
@@ -639,6 +640,7 @@ DEF B2 Robot {
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "rcj_soccer_player_b2"
+  synchronization FALSE
 }
 DEF B3 Robot {
   translation 0.718395 0.0381772 -0.0459804
@@ -763,6 +765,7 @@ DEF B3 Robot {
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "rcj_soccer_player_b3"
+  synchronization FALSE
 }
 DEF Y1 Robot {
   translation -0.344136 0.0381772 -0.407555
@@ -887,6 +890,7 @@ DEF Y1 Robot {
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "rcj_soccer_player_y1"
+  synchronization FALSE
 }
 DEF Y2 Robot {
   translation -0.392446 0.0381772 0.0946615
@@ -1011,6 +1015,7 @@ DEF Y2 Robot {
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "rcj_soccer_player_y2"
+  synchronization FALSE
 }
 DEF Y3 Robot {
   translation -0.710919 0.0381772 -0.114706
@@ -1135,6 +1140,7 @@ DEF Y3 Robot {
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
   controller "rcj_soccer_player_y3"
+  synchronization FALSE
 }
 Robot {
   children [
@@ -1145,4 +1151,5 @@ Robot {
   ]
   controller "rcj_soccer_referee_supervisor"
   supervisor TRUE
+  synchronization FALSE
 }
