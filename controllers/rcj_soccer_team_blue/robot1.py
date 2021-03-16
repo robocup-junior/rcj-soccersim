@@ -1,21 +1,16 @@
-# rcj_soccer_player controller - ROBOT Y2
-
-###### REQUIRED in order to import files from Y1 controller
-import sys
-from pathlib import Path
-sys.path.append(str(Path('.').absolute().parent))
-# You can now import scripts that you put into the folder with your
-# robot B1 controller
-from rcj_soccer_player_y1 import rcj_soccer_robot, utils
-######
+# rcj_soccer_player controller - ROBOT B1
 
 # Feel free to import built-in libraries
 import math
 
+# You can also import scripts that you put into the folder with controller
+from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
+import utils
 
-class MyRobot(rcj_soccer_robot.RCJSoccerRobot):
+
+class MyRobot1(RCJSoccerRobot):
     def run(self):
-        while self.robot.step(rcj_soccer_robot.TIME_STEP) != -1:
+        while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
                 data = self.get_new_data()
 
@@ -43,7 +38,3 @@ class MyRobot(rcj_soccer_robot.RCJSoccerRobot):
                 # Set the speed to motors
                 self.left_motor.setVelocity(left_speed)
                 self.right_motor.setVelocity(right_speed)
-
-
-my_robot = MyRobot()
-my_robot.run()

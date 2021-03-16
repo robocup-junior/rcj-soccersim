@@ -14,16 +14,92 @@ and this name ought to be specified in `soccer.wbt` file.
 ## Hello world, robot!
 
 We have prepared a few sample robot controllers. They can be found in the `controllers`
-directory. Each controller is prefixed with `rcj_soccer_player_`. They are all programmed in the same way,
-meaning they rotate to face the ball and then goes towards it.
+directory. The controllers for the robots of blue team are located in
+`rcj_soccer_team_blue` folder and for the robots of yellow team in
+`rcj_soccer_team_yellow` folder, respectively.
 
-We decided to make the code reusable and put some common methods into
-the `RCJSoccerRobot` class inside `rcj_soccer_robot.py` file.
+Team folders contain a file called `rcj_soccer_team_blue.py` (blue team)
+or `rcj_soccer_team_yellow.py` (yellow team). Each of the robots initially runs
+this file. Based on the unique identifier of the robot (which can be `1`, `2` or `3`)
+we initialize the code for the particular robot.
+
+### Script for determining and initializing the robot controller
+
+A sample initial file might look as follows:
+
+```python
+from controller import Robot
+
+from robot1 import MyRobot1
+from robot2 import MyRobot2
+from robot3 import MyRobot3
+
+
+robot = Robot()
+name = robot.getName()
+robot_number = name[1]
+
+if robot_number == 1:
+    robot_controller = MyRobot1(robot)
+elif robot_number == 2:
+    robot_controller = MyRobot2(robot)
+else:
+    robot_controller = MyRobot3(robot)
+
+robot_controller.run()
+```
+
+Let's describe a file for determining robot's name and running specific controller.
+
+```python
+from controller import Robot
+```
+
+The Robot class is required to be imported because this is the only way we are able
+to controll the robot. The Robot class is shipped together with Webots.
+
+```python
+from robot1 import MyRobot1
+from robot2 import MyRobot2
+from robot3 import MyRobot3
+```
+
+Since all of robot controllers are located in the same directory, we can easily import them.
+
+```python
+robot = Robot()
+name = robot.getName()
+```
+
+Initialize robot instance and get the name of the robot. The name is one of
+the following `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`.
+
+```python
+robot_number = name[1]
+if robot_number == 1:
+    robot_controller = MyRobot1(robot)
+elif robot_number == 2:
+    robot_controller = MyRobot2(robot)
+else:
+    robot_controller = MyRobot3(robot)
+```
+
+By checking the second character in the name, we can easily get the number identifier
+of the robot and initialize its controller appropriately.
+
+```python
+robot_controller.run()
+```
+
+We just call the method `run` in order to execute the code for the specific
+robot we initialized previously.
+
+
+### Robot controller
 
 Let's put together a simple program to showcase how you can go about programming a robot.
 
 ```python
-from controller import Robot
 import struct
 
 TIME_STEP = 64
@@ -32,8 +108,8 @@ N_ROBOTS = len(ROBOT_NAMES)
 
 
 class MyRobot:
-    def __init__(self):
-        self.robot = Robot()
+    def __init__(self, robot):
+        self.robot = robot
         self.name = self.robot.getName()
 
         self.receiver = self.robot.getDevice("receiver")
@@ -85,27 +161,16 @@ class MyRobot:
 
                 self.left_motor.setVelocity(1)
                 self.right_motor.setVelocity(-1)
-
-
-my_robot = MyRobot()
-my_robot.run()
 ```
 
 Let's explain the code in detail:
 
 ```python
-from controller import Robot
-```
-
-The Robot class is required to be imported because this is the only way we are able
-to controll the robot. The Robot class is shipped together with Webots.
-
-```python
 import struct
 ```
 
-This library is a [built-in Python library](https://docs.python.org/3/library/struct.html), which is required to unpack the data sent by
-the supervisor.
+This library is a [built-in Python library](https://docs.python.org/3/library/struct.html),
+which is required to unpack the data sent by the supervisor.
 
 ```python
 TIME_STEP = 64
@@ -120,13 +185,13 @@ class MyRobot:
 ```
 
 You can wrap the program into the class as we did. The benefit of OOP
-([Object Oriented Programming](https://realpython.com/python3-object-oriented-programming/)) is that you can later reuse the same common class
-throughout your controllers and therefore make the code easier to read. We are
-going to continue with our OOP approach.
+([Object Oriented Programming](https://realpython.com/python3-object-oriented-programming/))
+is that you can later reuse the same common class throughout your controllers and
+therefore make the code easier to read. We are going to continue with our OOP approach.
 
 ```python
-def __init__(self):
-    self.robot = Robot()
+def __init__(self, robot):
+    self.robot = Robot
     self.name = self.robot.getName()
     ...
 ```
@@ -155,7 +220,8 @@ referee fires new kickoff.
 def run(self):
 ```
 
-This is the method which contains the logic for controlling the robot.
+This is the method which contains the logic for controlling the robot. As mentioned
+previously, it is called by our initialization script.
 
 ```python
 while self.robot.step(TIME_STEP) != -1:
@@ -185,52 +251,32 @@ self.right_motor.setVelocity(-1)
 And finally, after reading the new data received from supervisor, we do some calculations
 and set the speed of the motors.
 
-```python
-my_robot = MyRobot()
-my_robot.run()
-```
-
-In the very end of our program, we initialize the robot and call the method `run`
-in order to execute the code.
-
 
 ## Importing shared code
 
 Each team consists of three robots. These robots might share some of the code
-and it is  actually [a good practice](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) not to duplicate code all over the place.
+and it is  actually [a good practice](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
+not to duplicate code all over the place.
 
 Imagine you have the folder structure which looks like this
 
 ```
 controllers/
-├── robot1/
+├── team_name/
+│   └── team_name.py
 │   └── robot1.py
-|   └── utils.py
-├── robot2/
 │   └── robot2.py
-├── robot3/
 │   └── robot3.py
+|   └── utils.py
 ```
 
-and within `robot2.py` you want to import some useful code from `utils.py`
-located in the `robot1` folder. This is possible, but you need to put the following code snippet right at the 
-top of your `robot2.py` file.
-
-```python
-import sys
-from pathlib import Path
-sys.path.append(str(Path('.').absolute().parent))
-from robot1 import utils
-```
-
-This will ensure that the code from `robot1` is importable (it adds the parent folder
-to the Python PATH -- the list of folders where Python looks when importing modules).
-
-If you want to import `utils` within `robot1`, you do no have to add these
-magic lines to `robot1.py`, but instead just call
+and within `robot1.py`, `robot2.py` and `robot3.py` you want to import
+some useful code from `utils.py`. You can easily import it by calling
 
 ```python
 import utils
 ```
 
-because the PATH actually contains the folder of the script which is being run.
+and use the shared code rather than copying it into each of the controllers.
+Do not import anything from `team_name.py` file, otherwise you might get
+cyclic import problem.

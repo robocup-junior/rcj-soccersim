@@ -16,12 +16,8 @@ $ python generate-soccer-world.py \
     --blue_rgb='0 0 1' --yellow_rgb='1 1 0' \
     --blue_png_url='soccer/blue.png' \
     --yellow_png_url='soccer/yellow.png' \
-    --controller_b1='rcj_soccer_player' \
-    --controller_b2='rcj_soccer_player' \
-    --controller_b3='rcj_soccer_player' \
-    --controller_y1='rcj_soccer_player' \
-    --controller_y2='rcj_soccer_player' \
-    --controller_y3='rcj_soccer_player' > soccer.wbt
+    --controller_blue='rcj_soccer_player' \
+    --controller_yellow='rcj_soccer_player'  > soccer.wbt
 ```
 
 Among other things, this allows us to switch team sides without changing the

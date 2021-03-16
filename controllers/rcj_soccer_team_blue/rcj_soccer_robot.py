@@ -1,7 +1,6 @@
 import math
 import struct
 from typing import Tuple
-from controller import Robot
 
 TIME_STEP = 64
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
@@ -9,9 +8,8 @@ N_ROBOTS = len(ROBOT_NAMES)
 
 
 class RCJSoccerRobot:
-    def __init__(self):
-        # create the Robot instance.
-        self.robot = Robot()
+    def __init__(self, robot):
+        self.robot = robot
         self.name = self.robot.getName()
         self.team = self.name[0]
         self.player_id = int(self.name[1])
@@ -38,7 +36,7 @@ class RCJSoccerRobot:
                     'B1': {'x': 0.0, 'y': 0.2, 'orientation': 1},
                     'B2': {'x': 0.4, 'y': -0.2, 'orientation': 1},
                     ...
-                    'ball': {'x': -0.7, 'y': 0.3}
+                    'ball': {'x': -0.7, 'y': 0.3},
                     'waiting_for_kickoff': False,
                 }
         """
