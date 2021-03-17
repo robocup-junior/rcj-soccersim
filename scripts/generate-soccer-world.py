@@ -14,12 +14,8 @@ try:
          'yellow_rgb=',
          'blue_png_url=',
          'yellow_png_url=',
-         'controller_b1=',
-         'controller_b2=',
-         'controller_b3=',
-         'controller_y1=',
-         'controller_y2=',
-         'controller_y3=',
+         'controller_blue=',
+         'controller_yellow=',
          ]
     )
 except getopt.GetoptError as err:

@@ -11,13 +11,12 @@ Suppose you have the folder structure which looks like this
 
 ```
 controllers/
-├── robot1/
+├── robot/
+│   └── robot.py
 │   └── robot1.py
-│   └── utils.py
-├── robot2/
 │   └── robot2.py
-└── robot3/
-    └── robot3.py
+│   └── robot3.py
+|   └── utils.py
 ```
 
 To submit it for the competition, there are two (well, maybe three) things we
@@ -32,20 +31,19 @@ The folder structure above does contain some code but it is not immediately
 obvious which team does it belong to.
 
 To make it obvious, please create a file called `team_name.txt` on the same
-level as `robot1/`, `robot2/` and `robot3/`. This file should contain a single
+level as `robot/`. This file should contain a single
 line of text: the name of the team (up to 32 characters).
 
 The resulting folder structure would then look as follows:
 
 ```
 controllers/
-├── robot1/
+├── robot/
+│   └── robot.py
 │   └── robot1.py
-│   └── utils.py
-├── robot2/
 │   └── robot2.py
-├── robot3/
 │   └── robot3.py
+|   └── utils.py
 └── team_name.txt
 ```
 
@@ -61,30 +59,25 @@ robot. It will be used as an overlay on the robots in the simulator.
 The logo needs to be stored in the [PNG format](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
 and located in a file called `logo.png`.
 
-If you choose to add one, the folder structure will looks something like the
+If you choose to add one, the folder structure will look something like the
 following:
 
 ```
 controllers/
-├── robot1/
+├── robot/
+│   └── robot.py
 │   └── robot1.py
-│   └── utils.py
-├── robot2/
 │   └── robot2.py
-├── robot3/
 │   └── robot3.py
+|   └── utils.py
 ├── logo.png
 └── team_name.txt
 ```
 
-
-If you'd like to 
-
-
 ### Create a ZIP archive
 
-This step is very simple: you just pick the **three directories** that contain
-the code for your three robots and the `team_name.txt` file and put them all
+This step is very simple: you just pick **the directory** that contains
+the code for your three robots, the `team_name.txt` file and optionally `logo.png` and put them all
 together into a single `.ZIP` file. There are many utilities that will do the
 job -- we can recommend [7-Zip](https://www.7-zip.org/).
 
@@ -93,13 +86,12 @@ as follows:
 
 ```
 .
-├── robot1/
+├── robot/
+│   └── robot.py
 │   └── robot1.py
-│   └── utils.py
-├── robot2/
 │   └── robot2.py
-├── robot3/
 │   └── robot3.py
+|   └── utils.py
 ├── logo.png
 └── team_name.txt
 ```
@@ -119,8 +111,8 @@ submission deadline.
 
 - The resulting `.ZIP` file can be at most 10MB in size.
 
-- The `.ZIP` file you submit needs to have **exactly three** first-level
-  folders. That is, the folder structure after unzipping cannot look as
+- The `.ZIP` file you submit needs to have **exactly one** first-level
+  folder. That is, the folder structure after unzipping cannot look as
   follows:
 
 ```
@@ -129,10 +121,6 @@ submission deadline.
 │   └── robot1.py
 ├── robot2
 │   └── robot2.py
-├── robot3
-│   └── robot3.py
-└── robot4
-    └── robot4.py
 ```
 
   The tournament organization software would not know which three robots to

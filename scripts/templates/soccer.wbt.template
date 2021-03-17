@@ -514,7 +514,7 @@ DEF B1 Robot {
     density -1
     mass 0.2
   }
-  controller "$controller_b1"
+  controller "$controller_blue"
   synchronization FALSE
 }
 DEF B2 Robot {
@@ -639,7 +639,7 @@ DEF B2 Robot {
   name "B2"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "$controller_b2"
+  controller "$controller_blue"
   synchronization FALSE
 }
 DEF B3 Robot {
@@ -764,7 +764,7 @@ DEF B3 Robot {
   name "B3"
   boundingObject USE BLUE_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "$controller_b3"
+  controller "$controller_blue"
   synchronization FALSE
 }
 DEF Y1 Robot {
@@ -889,7 +889,7 @@ DEF Y1 Robot {
   name "Y1"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "$controller_y1"
+  controller "$controller_yellow"
   synchronization FALSE
 }
 DEF Y2 Robot {
@@ -1014,7 +1014,7 @@ DEF Y2 Robot {
   name "Y2"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "$controller_y2"
+  controller "$controller_yellow"
   synchronization FALSE
 }
 DEF Y3 Robot {
@@ -1139,7 +1139,7 @@ DEF Y3 Robot {
   name "Y3"
   boundingObject USE YELLOW_ROBOT_SHAPE
   physics USE ROBOT_PHYSICS
-  controller "$controller_y3"
+  controller "$controller_yellow"
   synchronization FALSE
 }
 Robot {

@@ -1,4 +1,4 @@
-# rcj_soccer_player controller - ROBOT Y1
+# rcj_soccer_player controller - ROBOT B2
 
 # Feel free to import built-in libraries
 import math
@@ -8,7 +8,7 @@ from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 import utils
 
 
-class MyRobot(RCJSoccerRobot):
+class MyRobot2(RCJSoccerRobot):
     def run(self):
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
@@ -38,7 +38,3 @@ class MyRobot(RCJSoccerRobot):
                 # Set the speed to motors
                 self.left_motor.setVelocity(left_speed)
                 self.right_motor.setVelocity(right_speed)
-
-
-my_robot = MyRobot()
-my_robot.run()
