@@ -37,7 +37,7 @@ from robot3 import MyRobot3
 
 robot = Robot()
 name = robot.getName()
-robot_number = name[1]
+robot_number = int(name[1])
 
 if robot_number == 1:
     robot_controller = MyRobot1(robot)
@@ -75,7 +75,7 @@ Initialize robot instance and get the name of the robot. The name is one of
 the following `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`.
 
 ```python
-robot_number = name[1]
+robot_number = int(name[1])
 if robot_number == 1:
     robot_controller = MyRobot1(robot)
 elif robot_number == 2:
