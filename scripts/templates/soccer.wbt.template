@@ -1150,6 +1150,6 @@ Robot {
     }
   ]
   controller "rcj_soccer_referee_supervisor"
-  synchronization FALSE
   supervisor TRUE
+  synchronization TRUE
 }
