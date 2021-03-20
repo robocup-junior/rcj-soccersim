@@ -7,7 +7,7 @@ from robot3 import MyRobot3
 
 robot = Robot()
 name = robot.getName()
-robot_number = name[1]
+robot_number = int(name[1])
 
 if robot_number == 1:
     robot_controller = MyRobot1(robot)
