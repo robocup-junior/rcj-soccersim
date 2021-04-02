@@ -218,6 +218,10 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 self.hide_goal_sign()
                 self.kickoff(self.team_to_kickoff)
 
+        # WORKAROUND: The proper way of moving the ball is to set its position
+        # and call resetPhysics on the ball. However, the ball has small velocity
+        # and is moving a bit.
+        # See https://github.com/cyberbotics/webots/issues/2899
         if self.ball_stop > 0:
             if self.ball_stop == 1:
                 self.reset_ball_velocity()
