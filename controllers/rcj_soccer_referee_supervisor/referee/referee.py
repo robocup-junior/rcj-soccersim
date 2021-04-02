@@ -218,4 +218,9 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 self.hide_goal_sign()
                 self.kickoff(self.team_to_kickoff)
 
+        if self.ball_stop > 0:
+            if self.ball_stop == 1:
+                self.reset_ball_velocity()
+            self.ball_stop -= 1
+
         return True

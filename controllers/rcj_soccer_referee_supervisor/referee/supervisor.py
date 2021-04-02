@@ -64,6 +64,8 @@ class RCJSoccerSupervisor(Supervisor):
 
         self.emitter = self.getDevice("emitter")
 
+        self.ball_stop = 2
+
         self.robot_translation = ROBOT_INITIAL_TRANSLATION.copy()
         self.robot_rotation = ROBOT_INITIAL_ROTATION.copy()
 
@@ -394,6 +396,7 @@ class RCJSoccerSupervisor(Supervisor):
         ball_translation_field = self.ball.getField("translation")
         ball_translation_field.setSFVec3f(position)
         self.reset_ball_velocity()
+        self.ball_stop = 2
         self.ball.resetPhysics()
         self.ball_translation = position
 
