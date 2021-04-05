@@ -1,8 +1,8 @@
 # Welcome to RCJ Soccer Sim!
 
 The RoboCupJunior Soccer Simulator is an attempt at playing RoboCupJunior
-Soccer in a virtualized environment. It is an experimental project organized by
-the RoboCupJunior Soccer Technical Committe.
+Soccer in a virtualized environment. It started as an experimental project organized by
+the RoboCupJunior Soccer Technical Committe in Feb 2021.
 
 ![Screenshot of RCJ Soccer Sim](images/soccer_sim.png)
 
