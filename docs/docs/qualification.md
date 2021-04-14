@@ -3,7 +3,7 @@
 ## Overview
 
 The RCJ Soccer Simulation League will be an additional league played at the 2021 RCJ
-and will be held in June fully-virtual. In order to participate in the **June Tournament**,
+and will be held in June, fully virtual. In order to participate in the **June Tournament**,
 you need to successfully qualify in one of our **Qualifiation Tournaments** in May.
 The qualification will be held centrally by the RCJ Soccer OC.
 
@@ -26,7 +26,7 @@ again for the 2021 RCJ Championships in June:
 
 - June **registration** deadline: &nbsp; June 7'th 2021
 - June **code submission** deadline: &nbsp; June 14'th 2021
-(yes you can send in new code!)
+_(yes you can send in new code!)_
  
 **Note:** Registering for the Qualification Tournament will be free from charge.
 The registration and code submission forms for the Qualification Tournament will be
@@ -50,8 +50,8 @@ Tournament in June.
 Of the remaining teams, the best teams in each Super-Regional (top-of-the-table)
 will also qualify, "per wildcard".
 Those wildcards will be given independently of country to the best teams.
-The number of wildcards will be proportionally to the size of the Super-Regional, meaning:
-The largest Super-Regional will receive the most wildcards (but 2/3rd of all Wildcards at most).
+The number of wildcards will be proportional to the size of the Super-Regional, meaning
+the largest Super-Regional will receive the most wildcards (but 2/3rd of all Wildcards at most).
 
 <img src="../images/qualification_numbers.png" style="width:500px; margin-left: auto; margin-right: auto; display:block;"/>
 

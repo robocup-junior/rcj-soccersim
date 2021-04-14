@@ -1,7 +1,7 @@
 
 # How do I try this out?
 
-It's set up in 10 minutes!  
+It's easy, you can set it up in about 10 minutes!
 (plus download time)
 
 ## Installation
