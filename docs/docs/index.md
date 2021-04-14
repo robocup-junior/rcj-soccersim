@@ -1,48 +1,39 @@
 # Welcome to RCJ Soccer Sim!
 
-The RoboCupJunior Soccer Simulator is an attempt at playing RoboCupJunior
-Soccer in a virtualized environment. It started as an experimental project organized by
-the RoboCupJunior Soccer Technical Committe in Feb 2021.
+The RCJ Soccer Simulation League will be an additional league held at the 2021 RoboCup Junior.
+After a successful Demo competition in February, the next event will be
+the official Qualification Tournaments in May 2021,
+open for participation to any team that would like to register.
 
-![Screenshot of RCJ Soccer Sim](images/soccer_sim.png)
+<!--![Screenshot of RCJ Soccer Sim](images/soccer_sim.png)-->
+<!-- TODO figure out how to scale image in markdown. In the meantime, use html: -->
+<img src="images/soccer_sim.png" style="width:500px; margin-left: auto; margin-right: auto; display:block;"/>
 
-The simulator is based on [Webots](https://github.com/cyberbotics/webots). The
-associated repository provides both the "automatic referee" (which implements
-the [Soccer Simulated Rules](https://github.com/RoboCupJuniorTC/soccer-rules-simulation))
+The simulator is based on [Webots](https://github.com/cyberbotics/webots).
+The associated [repository](https://github.com/RoboCupJuniorTC/rcj-soccer-sim)
+provides both the "automatic referee" (which implements the
+[Soccer Simulated Rules](rules.md))
 as well as a sample team of robots with some basic simulated strategy.
 
-# How do I try this out?
+## How do I participate?
 
-## Installation
+In order to participate in the RCJ Soccer Simulation League 2021 you must pass the Qualification
+stage that will be held centrally by the RCJ Soccer OC in May:
 
-1. Install Python 3.7 (or higher) 64 bit from the [official website](https://www.python.org/downloads/) (please make sure it is version 3.7 or higher for Windows, and 3.8 or higher if installing on MacOS or Linux). On Windows, please make sure your Python is referenced in Windows PATH by selecting the option "Add Python 3.x to PATH" during the installation. Check out this great [installation guide](https://realpython.com/installing-python/) if you need some help!
+- Qualification **Registration** deadline: &nbsp; May 17'th 2021  
+- Qualification **Code submission** deadline: &nbsp; May 24'th 2021
 
-2. Download [Webots](https://www.cyberbotics.com/#download) from their official website. Currently, version r2021a is stable with the Soccer Simulator. You can find detailed installation procedure on the official [Webots Installation guide](https://cyberbotics.com/doc/guide/installation-procedure).
+The registration form will be linked here in a few days.
+Please come back here for registration in late April.
+You can find more info at [Registration & Qualification](qualification.md).
 
-3. Clone the rcj-soccer-sim repository to your computer by downloading the ZIP file from [here](https://github.com/RoboCupJuniorTC/rcj-soccer-sim/archive/master.zip) or running
 
-        git clone https://github.com/RoboCupJuniorTC/rcj-soccer-sim.git
+## How do I try this out?
 
-4. Finally, run Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3` to point Webots to Python 3. Depending on your system, the reference to Python 3 can be via the command `python` or `python3`. More information on how to configure Webots to work with Python can be found [here](https://cyberbotics.com/doc/guide/using-python).
+Setting up is easy:
 
-## Running Soccer Sim
+- [Getting started](getting_started.md)
+- [How to program your robot](how_to_robot.md)
+- [Code submission](code_submission.md)
 
-1. Use Webots to open the downloaded `soccer.wbt` world located in the `worlds`
-   directory (via `File > Open World`)
-
-2. Run/pause the simulation by clicking the corresponding buttons on the top-part of Webots window. Note that the controllers that are responsible for the
-   various robots on the field can be found in the `controllers/` directory.
-
-## Notes
-
-A specific `webots` world can be executed directly from the command line as
-follows:
-
-        webots --mode=run worlds/soccer.wbt
-
-Which allows for at least some automation. Further info can be found in the
-[docs](https://cyberbotics.com/doc/guide/starting-webots).
-
-The sample players as well as the "automatic referee" are implemented in
-Python, which should allow for easily updating the code to match the rules and
-avoid any compilation issues.
+Please do not hesitate to ask any questions [on the forum](https://junior.forum.robocup.org/c/robocupjunior-soccer/5).
