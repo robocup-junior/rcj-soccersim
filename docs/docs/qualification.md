@@ -41,9 +41,9 @@ There will be 3 virtual Super-Regional Qualification Tournaments in May, one for
 - Asia + Pacific
 
 After the registration, teams will be assigned to their Super-Regional automatically.
-Each Super-Regional will play 7 rounds of Swiss System. After those rounds,
-the best team from each country will automatically qualify for the
-Tournament in June.
+Each Super-Regional will play 7 rounds of [Swiss System](https://en.wikipedia.org/wiki/Swiss-system_tournament).
+After those rounds, the best team from each country will automatically qualify
+for the Tournament in June.
 
 <img src="../images/qualification_scheme.png" style="width:500px; margin-left: auto; margin-right: auto; display:block;"/>
 
@@ -51,7 +51,7 @@ Of the remaining teams, the best teams in each Super-Regional (top-of-the-table)
 will also qualify, "per wildcard".
 Those wildcards will be given independently of country to the best teams.
 The number of wildcards will be proportional to the size of the Super-Regional, meaning
-the largest Super-Regional will receive the most wildcards (but 2/3rd of all Wildcards at most).
+the largest Super-Regional will receive the most wildcards (but 2/3rd of all wildcards at most).
 
 <img src="../images/qualification_numbers.png" style="width:500px; margin-left: auto; margin-right: auto; display:block;"/>
 
