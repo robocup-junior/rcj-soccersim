@@ -8,4 +8,4 @@ You can download the rule here:
 
 <!--[RCJ Soccer Simulation Rules 2021](../downloads/rcj_soccer_sim_2021_rules.pdf)-->
 <!-- TODO figure out how to open markdown link in new window. In the meantime, use html: -->
-> <a href="../downloads/rcj_soccer_sim_2021_rules.pdf" target="_blank">RCJ Soccer Simulation Rules 2021</a>
+> <a href="https://robocupjuniortc.github.io/soccer-rules-simulation/rules.pdf" target="_blank">RCJ Soccer Simulation Rules 2021</a>
