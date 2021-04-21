@@ -21,7 +21,7 @@ class BaseVideoRecordAssistant:
         self.fastforward_rate = fastforward_rate
         self.resolution = resolution
 
-        self.__recording = False
+        self._is_recording = False
 
         if not isinstance(self.supervisor, Supervisor):
             raise TypeError("Unexpected supervisor instance")
@@ -51,7 +51,7 @@ class BaseVideoRecordAssistant:
         raise NotImplementedError
 
     def is_recording(self):
-        return self.__recording
+        return self._is_recording
 
     def wait_processing(self):
         raise NotImplementedError
@@ -74,11 +74,11 @@ class MP4VideoRecordAssistant(BaseVideoRecordAssistant):
                                             acceleration=self.fastforward_rate,
                                             caption=False)
 
-        self.__recording = True
+        self._is_recording = True
 
     def stop_recording(self):
         self.supervisor.movieStopRecording()
-        self.__recording = False
+        self._is_recording = False
 
     def wait_processing(self):
         while not self.supervisor.movieIsReady():
@@ -91,11 +91,11 @@ class X3DVideoRecordAssistant(BaseVideoRecordAssistant):
     def start_recording(self):
         filename = self.create_title()
         self.supervisor.animationStartRecording(filename)
-        self.__recording = True
+        self._is_recording = True
 
     def stop_recording(self):
         self.supervisor.animationStopRecording()
-        self.__recording = False
+        self._is_recording = False
 
     def wait_processing(self):
         pass
