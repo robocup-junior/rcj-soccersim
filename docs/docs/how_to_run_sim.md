@@ -20,7 +20,7 @@ an output in form of either an MPEG-4 video or a HTML site.
 ## Preliminaries
 
 This guide makes a couple of assumptions:
-1. You use a UNIX-like environment (i.e. something like Linux or macOS)
+1. You use an UNIX-like environment (i.e. something like Linux or macOS)
 2. You have Webots installed and cloned the `rcj-soccer-sim` repository locally
    (check the [Getting Started](./getting_started.md) guide on how to do so)
 
