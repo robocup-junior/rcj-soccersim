@@ -14,7 +14,8 @@ an output in form of either an MPEG-4 video or a HTML site.
 - RoboCupJunior Soccer Sim
 
 **Output**
-- MPEG-4 video or HTML site
+- MPEG-4 video and/or HTML site
+- JSON file containing all the important events happened during the game
 
 ## Preliminaries
 
