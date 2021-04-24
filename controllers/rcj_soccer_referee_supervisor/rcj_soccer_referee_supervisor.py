@@ -43,7 +43,7 @@ def output_path(
     return directory / filename
 
 
-TEAM_YELLOW = os.environ.get("RCJ__SIM_TEAM_YELLOW_NAME", "The Yellows")
+TEAM_YELLOW = os.environ.get("RCJ_SIM_TEAM_YELLOW_NAME", "The Yellows")
 TEAM_YELLOW_ID = os.environ.get("RCJ_SIM_TEAM_YELLOW_ID", "The Yellows")
 YELLOW_INITIAL_SCORE = os.environ.get("RCJ_SIM_TEAM_Y_INITIAL_SCORE", "0")
 TEAM_YELLOW_INITIAL_SCORE = int(YELLOW_INITIAL_SCORE or "0")
