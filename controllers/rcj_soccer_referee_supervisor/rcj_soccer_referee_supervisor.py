@@ -38,24 +38,32 @@ def output_path(
     if not directory.exists():
         directory.mkdir(parents=True, exist_ok=True)
 
-    filename = Path(f'{match_id}_-_{half_id}_-_{team_blue}_vs_{team_yellow}-{now_str}')
+    name = f'{match_id}_-_{half_id}_-_{team_blue}_vs_{team_yellow}-{now_str}'
+    filename = Path(name)
     return directory / filename
 
 
-TEAM_YELLOW = os.environ.get("TEAM_YELLOW_NAME", "The Yellows")
-TEAM_YELLOW_ID = os.environ.get("TEAM_YELLOW_ID", "The Yellows")
-TEAM_YELLOW_INITIAL_SCORE = int(os.environ.get("TEAM_Y_INITIAL_SCORE", "0") or "0")
-TEAM_BLUE = os.environ.get("TEAM_BLUE_NAME", "The Blues")
-TEAM_BLUE_ID = os.environ.get("TEAM_BLUE_ID", "The Blues")
-TEAM_BLUE_INITIAL_SCORE = int(os.environ.get("TEAM_B_INITIAL_SCORE", "0") or "0")
-MATCH_ID = os.environ.get("MATCH_ID", 1)
-HALF_ID = os.environ.get("HALF_ID", 1)
-REC_FORMATS = [f for f in os.environ.get("REC_FORMATS", "").split(",") if f]
-MATCH_TIME = int(os.environ.get("MATCH_TIME", DEFAULT_MATCH_TIME))
+TEAM_YELLOW = os.environ.get("RCJ__SIM_TEAM_YELLOW_NAME", "The Yellows")
+TEAM_YELLOW_ID = os.environ.get("RCJ_SIM_TEAM_YELLOW_ID", "The Yellows")
+YELLOW_INITIAL_SCORE = os.environ.get("RCJ_SIM_TEAM_Y_INITIAL_SCORE", "0")
+TEAM_YELLOW_INITIAL_SCORE = int(YELLOW_INITIAL_SCORE or "0")
+
+TEAM_BLUE = os.environ.get("RCJ_SIM_TEAM_BLUE_NAME", "The Blues")
+TEAM_BLUE_ID = os.environ.get("RCJ_SIM_TEAM_BLUE_ID", "The Blues")
+BLUE_INITIAL_SCORE = os.environ.get("RCJ_SIM_TEAM_B_INITIAL_SCORE", "0")
+TEAM_BLUE_INITIAL_SCORE = int(BLUE_INITIAL_SCORE or "0")
+
+MATCH_ID = os.environ.get("RCJ_SIM_MATCH_ID", 1)
+HALF_ID = os.environ.get("RCJ_SIM_HALF_ID", 1)
+
+REC_FORMATS_RAW = os.environ.get("RCJ_SIM_REC_FORMATS", "").split(",")
+REC_FORMATS = [f for f in REC_FORMATS_RAW if f]
+MATCH_TIME = int(os.environ.get("RCJ_SIM_MATCH_TIME", DEFAULT_MATCH_TIME))
 
 automatic_mode = True if "RCJ_SIM_AUTO_MODE" in os.environ.keys() else False
 
-directory = Path('/out/') if automatic_mode else Path('reflog')
+REFLOG_OUTPUT_PATH = os.environ.get("RCJ_SIM_OUTPUT_PATH", 'reflog')
+directory = Path(REFLOG_OUTPUT_PATH)
 output_prefix = output_path(
     directory,
     TEAM_BLUE_ID,
