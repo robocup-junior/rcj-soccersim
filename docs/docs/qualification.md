@@ -1,8 +1,8 @@
-# Simulation League: Registration & Qualification
+# Simulation Challenge: Registration & Qualification
 
 ## Overview
 
-The RCJ Soccer Simulation League will be an additional league played at the 2021 RCJ
+The RCJ Soccer Simulation Challenge will be an additional championship played at the 2021 RCJ
 and will be held in June, fully virtual. In order to participate in the **June Tournament**,
 you need to successfully qualify in one of our **Qualifiation Tournaments** in May.
 The qualification will be held centrally by the RCJ Soccer OC.
@@ -15,7 +15,7 @@ You will need to register twice:
 
 ## Timeline
 
-In order to participate in the RCJ Soccer Simulation League 2021 you must pass the Qualification
+In order to participate in the RCJ Soccer Simulation Challenge 2021 you must pass the Qualification
 stage that will be held centrally by the RCJ Soccer OC in May.
 
 - Qualification **registration** deadline: &nbsp; May 17'th 2021  
@@ -62,7 +62,7 @@ number of teams per country before the registration deadline, a fixed-sized quot
 does not work.
 
 
-**Note:** This qualification process is for RCJ Soccer Simulation League only!
+**Note:** This qualification process is for RCJ Soccer Simulation Challenge only!
 It does not apply to *RCJ Soccer Lightweight League* or *RCJ Soccer Open League*!
 Please follow the official channels for qualification information on
 *Lightweight League* and *Open League*.

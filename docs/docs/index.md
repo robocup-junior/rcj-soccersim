@@ -1,6 +1,6 @@
 # Welcome to RCJ Soccer Sim!
 
-The RCJ Soccer Simulation League will be an additional league held at the 2021 RoboCup Junior.
+The RCJ Soccer Simulation Challenge will be an additional championship held at the 2021 RoboCup Junior.
 After a successful Demo competition in February, the next event will be
 the official Qualification Tournaments in May 2021,
 open for participation to any team that would like to register.
@@ -17,7 +17,7 @@ as well as a sample team of robots with some basic simulated strategy.
 
 ## How do I participate?
 
-In order to participate in the RCJ Soccer Simulation League 2021 you must pass the Qualification
+In order to participate in the RCJ Soccer Simulation Challenge 2021 you must pass the Qualification
 stage that will be held centrally by the RCJ Soccer OC in May:
 
 - Qualification **Registration** deadline: &nbsp; May 17'th 2021  
