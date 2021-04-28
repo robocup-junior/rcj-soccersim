@@ -8,7 +8,7 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Simulation League 2021: index.md
+  - Simulation Challenge 2021: index.md
   - Registration & Qualification: qualification.md
   - Rules: rules.md
   - Getting Started: getting_started.md
