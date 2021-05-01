@@ -4,7 +4,7 @@
 
 The RCJ Soccer Simulation Challenge will be an additional championship played at the 2021 RCJ
 and will be held in June, fully virtual. In order to participate in the **June Tournament**,
-you need to successfully qualify in one of our **Qualifiation Tournaments** in May.
+you need to successfully qualify in one of our **Qualification Tournaments** in May.
 The qualification will be held centrally by the RCJ Soccer OC.
 
 You will need to register twice:
