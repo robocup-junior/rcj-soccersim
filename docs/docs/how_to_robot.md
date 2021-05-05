@@ -213,7 +213,7 @@ We are not going to explain this deeply. This function is to parse the incoming
 data from supervisor. Feel free to copy and use it. The resulting dictionary
 contains positions of all of the robots as well as the position of the ball. Moreover,
 it contains information whether the goal gets scored and we are waiting for new kickoff.
-In case the goal gets scored, the value is `True` and is reset to `False` when the 
+In case the goal gets scored, the value is `True` and is reset to `False` when the
 referee fires new kickoff.
 
 ```python
@@ -280,3 +280,16 @@ import utils
 and use the shared code rather than copying it into each of the controllers.
 Do not import anything from `team_name.py` file, otherwise you might get
 cyclic import problem.
+
+## Supported external libraries
+
+In general, the whole Python's
+[standard library](https://docs.python.org/3/library/index.html) can be used in the
+robot's programs.
+
+Furthermore, to make the computations easier, the Soccer Sim environment
+supports the following two Python libraries that are normally used for what's
+called "scientific computing":
+
+- [`numpy`](https://numpy.org/doc/stable/) *(version 1.20.2)*
+- [`scipy`](https://docs.scipy.org/doc/scipy/reference/) *(version 1.6.3)*

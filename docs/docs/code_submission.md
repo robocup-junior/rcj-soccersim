@@ -97,8 +97,8 @@ as follows:
 ```
 
 Note that there is no `controllers/` folder anymore -- the `.ZIP` file only
-contains three folders and a single text file called `team_name.txt` (and
-optionally `logo.png`).
+contains a single `robot/` folder and a single text file called `team_name.txt`
+(and optionally the `logo.png` image).
 
 ## Uploading your submission
 
