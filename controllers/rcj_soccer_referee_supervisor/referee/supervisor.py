@@ -18,7 +18,6 @@ from referee.consts import (
     NEUTRAL_SPOTS,
     NeutralSpotDistanceType,
     DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
-    Team,
     OBJECT_DEPTH,
     BALL_DEPTH,
 )
@@ -31,6 +30,8 @@ class RCJSoccerSupervisor(Supervisor):
     def __init__(
         self,
         match_time: int,
+        match_id: int,
+        half_id: int,
         progress_check_steps: int,
         progress_check_threshold: int,
         ball_progress_check_steps: int,
@@ -48,6 +49,8 @@ class RCJSoccerSupervisor(Supervisor):
         super().__init__()
 
         self.match_time = match_time
+        self.match_id = match_id
+        self.half_id = half_id
         self.post_goal_wait_time = post_goal_wait_time
         self.initial_position_noise = initial_position_noise
 
@@ -538,4 +541,5 @@ class RCJSoccerSupervisor(Supervisor):
             self.set_ball_position([x, BALL_DEPTH, z])
         else:
             self.set_robot_position(object_name, [x, OBJECT_DEPTH, z])
-            self.set_robot_rotation(object_name, ROBOT_INITIAL_ROTATION[object_name])
+            self.set_robot_rotation(object_name,
+                                    ROBOT_INITIAL_ROTATION[object_name])
