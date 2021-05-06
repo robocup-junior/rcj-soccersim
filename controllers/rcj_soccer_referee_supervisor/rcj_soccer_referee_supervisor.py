@@ -53,8 +53,8 @@ TEAM_BLUE_ID = os.environ.get("RCJ_SIM_TEAM_BLUE_ID", "The Blues")
 BLUE_INITIAL_SCORE = os.environ.get("RCJ_SIM_TEAM_B_INITIAL_SCORE", "0")
 TEAM_BLUE_INITIAL_SCORE = int(BLUE_INITIAL_SCORE or "0")
 
-MATCH_ID = os.environ.get("RCJ_SIM_MATCH_ID", 1)
-HALF_ID = os.environ.get("RCJ_SIM_HALF_ID", 1)
+MATCH_ID = int(os.environ.get("RCJ_SIM_MATCH_ID", 1))
+HALF_ID = int(os.environ.get("RCJ_SIM_HALF_ID", 1))
 
 REC_FORMATS_RAW = os.environ.get("RCJ_SIM_REC_FORMATS", "").split(",")
 REC_FORMATS = [f for f in REC_FORMATS_RAW if f]
@@ -85,6 +85,8 @@ referee = RCJSoccerReferee(
     initial_score_yellow=TEAM_YELLOW_INITIAL_SCORE,
     penalty_area_allowed_time=15,
     penalty_area_reset_after=2,
+    match_id=MATCH_ID,
+    half_id=HALF_ID
 )
 
 recorders = []
