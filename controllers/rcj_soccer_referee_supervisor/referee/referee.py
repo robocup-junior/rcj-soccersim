@@ -177,6 +177,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     "score_yellow": self.score_yellow,
                     "score_blue": self.score_blue,
                     "total_match_time": self.match_time,
+                    "team_name_yellow": self.team_name_yellow,
+                    "team_name_blue": self.team_name_blue,
                 },
             )
 
@@ -191,6 +193,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     "total_match_time": self.match_time,
                     "score_yellow": self.score_yellow,
                     "score_blue": self.score_blue,
+                    "team_name_yellow": self.team_name_yellow,
+                    "team_name_blue": self.team_name_blue,
                 },
             )
 
