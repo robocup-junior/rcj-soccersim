@@ -53,8 +53,8 @@ TEAM_BLUE_ID = os.environ.get("RCJ_SIM_TEAM_BLUE_ID", "The Blues")
 BLUE_INITIAL_SCORE = os.environ.get("RCJ_SIM_TEAM_B_INITIAL_SCORE", "0")
 TEAM_BLUE_INITIAL_SCORE = int(BLUE_INITIAL_SCORE or "0")
 
-MATCH_ID = os.environ.get("RCJ_SIM_MATCH_ID", 1)
-HALF_ID = os.environ.get("RCJ_SIM_HALF_ID", 1)
+MATCH_ID = int(os.environ.get("RCJ_SIM_MATCH_ID", 1))
+HALF_ID = int(os.environ.get("RCJ_SIM_HALF_ID", 1))
 
 REC_FORMATS_RAW = os.environ.get("RCJ_SIM_REC_FORMATS", "").split(",")
 REC_FORMATS = [f for f in REC_FORMATS_RAW if f]
@@ -75,6 +75,7 @@ reflog_path = output_prefix.with_suffix('.jsonl')
 
 referee = RCJSoccerReferee(
     match_time=MATCH_TIME,
+    half_id=HALF_ID,
     progress_check_steps=ceil(15/(TIME_STEP/1000.0)),
     progress_check_threshold=0.5,
     ball_progress_check_steps=ceil(10/(TIME_STEP/1000.0)),

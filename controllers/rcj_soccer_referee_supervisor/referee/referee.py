@@ -179,6 +179,7 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                     "total_match_time": self.match_time,
                     "team_name_yellow": self.team_name_yellow,
                     "team_name_blue": self.team_name_blue,
+                    "halftime": self.half_id,
                 },
             )
 

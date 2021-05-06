@@ -31,6 +31,7 @@ class RCJSoccerSupervisor(Supervisor):
     def __init__(
         self,
         match_time: int,
+        half_id: int,
         progress_check_steps: int,
         progress_check_threshold: int,
         ball_progress_check_steps: int,
@@ -48,6 +49,7 @@ class RCJSoccerSupervisor(Supervisor):
         super().__init__()
 
         self.match_time = match_time
+        self.half_id = half_id
         self.post_goal_wait_time = post_goal_wait_time
         self.initial_position_noise = initial_position_noise
 
