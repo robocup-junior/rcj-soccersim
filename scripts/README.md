@@ -22,3 +22,14 @@ $ python generate-soccer-world.py \
 
 Among other things, this allows us to switch team sides without changing the
 internal logic of the simulation.
+
+## check-submission.py
+
+A script used for checking whether the zip file, which is to be submitted,
+conforms the required structure. If you want to check your submission,
+run the following command:
+
+```bash
+$ python check-submission.py <path_to_submission.zip>
+```
+

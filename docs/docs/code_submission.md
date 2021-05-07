@@ -100,6 +100,10 @@ Note that there is no `controllers/` folder anymore -- the `.ZIP` file only
 contains a single `robot/` folder and a single text file called `team_name.txt`
 (and optionally the `logo.png` image).
 
+**If you would like to check whether your `.ZIP` file conforms the required
+structure, we recommend checking it by running `check-submission.py` script,
+which can be found in `scripts` directory of the `rcj-soccer-sim`.**
+
 ## Uploading your submission
 
 Once you have your `.ZIP` file ready, the only thing left is to submit it to
