@@ -9,7 +9,8 @@ markdown_extensions:
 
 nav:
   - Simulation Challenge 2021: index.md
-  - Registration & Qualification: qualification.md
+  - Qualification: qualification.md
+  - Registration Form: registration.md
   - Rules: rules.md
   - Getting Started: getting_started.md
   - How to program your robot: how_to_robot.md
