@@ -1,4 +1,4 @@
-# Simulation Challenge: Registration & Qualification
+# Simulation Challenge: Qualification
 
 ## Overview
 
@@ -29,8 +29,8 @@ again for the 2021 RCJ Championships in June:
 _(yes you can send in new code!)_
  
 **Note:** Registering for the Qualification Tournament will be free from charge.
-The registration and code submission forms for the Qualification Tournament will be
-linked here in a few days. Please come back here for registration late April.
+
+>>> The registration is currently open: [Registration Form](registration.md)
 
 ## Qualification Tournaments
 
