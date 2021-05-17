@@ -107,6 +107,9 @@ the organizers. In practice, this generally means uploading it to a specific
 location that will be shared with all the participating teams well before the
 submission deadline.
 
+Feel free to test whether your ZIP file conforms to the required structure at
+our [Check of the ZIP Submission](submission_check.md) page.
+
 ## Things to keep in mind
 
 - The resulting `.ZIP` file can be at most 10MB in size.
