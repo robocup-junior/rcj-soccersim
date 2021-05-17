@@ -11,8 +11,8 @@ the submission conforms to the required structure and contains necessary data.
 <div id="zip-error" style="color: red; margin-top: 30px;"></div>
 <div id="zip-success" style="color: green;"></div>
 
-<script src="js/zip.min.js"></script>
-<script src="js/submission_check.js"></script>
+<script src="https://robocupjuniortc.github.io/rcj-soccer-sim/js/zip.min.js"></script>
+<script src="https://robocupjuniortc.github.io/rcj-soccer-sim/js/submission_check.js"></script>
 <script>
     function init() {
         var fileInput = document.getElementById("zipinput");
