@@ -25,7 +25,7 @@ the submission conforms to the required structure and contains necessary data.
             zip_success.innerHTML = "";
 
             reader.getEntries().then(function(entries) {
-                var errors = get_submission_errors(entries);
+                var errors = get_submission_errors(reader.reader.size, entries);
 
                 if (errors.length > 0) {
                     var error_msg = "<ul>";
