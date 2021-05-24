@@ -3,7 +3,7 @@
 ## Registration Form
 
 The easiest way to register is via the official RCJ Soccer Simulation 2021 Registration Form.
-Please register until May 17th and submit your code until May 24th. (All deadlines: [here](qualification.md))
+Please register until May 17th and submit your code until May ~~24th~~ 26th. (All deadlines: [here](qualification.md))
 
 >>> [Registration Form](https://docs.google.com/forms/d/1Gs7Mfv9m9dpA1mU-yp0OiOo_VdgIJlSWp3S6IqPnk-k).
 
