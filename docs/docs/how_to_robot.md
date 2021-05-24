@@ -8,7 +8,7 @@ one controller, implemented as a **Python3** program. There is an invisible refe
 which takes care of controlling the game and checking the rules.
 
 The controllers are located in the `controllers` directory. The name of the controller
-must be located in a subfolder with the same name (i.e. `my_controller/my_controller.py`)
+must be located in a subfolder with the same name (i.e. `robot/robot.py`)
 and this name ought to be specified in `soccer.wbt` file.
 
 ## Hello world, robot!
@@ -20,7 +20,7 @@ directory. The controllers for the robots of blue team are located in
 
 Team folders contain a file called `rcj_soccer_team_blue.py` (blue team)
 or `rcj_soccer_team_yellow.py` (yellow team). Each of the robots initially runs
-this file. Based on the unique identifier of the robot (which can be `1`, `2` or `3`)
+this file (for the competition, it should be `robot.py`). Based on the unique identifier of the robot (which can be `1`, `2` or `3`)
 we initialize the code for the particular robot.
 
 ### Script for determining and initializing the robot controller
@@ -262,8 +262,8 @@ Imagine you have the folder structure which looks like this
 
 ```
 controllers/
-├── team_name/
-│   └── team_name.py
+├── robot/
+│   └── robot.py
 │   └── robot1.py
 │   └── robot2.py
 │   └── robot3.py
@@ -278,7 +278,7 @@ import utils
 ```
 
 and use the shared code rather than copying it into each of the controllers.
-Do not import anything from `team_name.py` file, otherwise you might get
+Do not import anything from `robot.py` file, otherwise you might get
 cyclic import problem.
 
 ## Supported external libraries
