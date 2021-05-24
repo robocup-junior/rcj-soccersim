@@ -21,7 +21,7 @@ In order to participate in the RCJ Soccer Simulation Challenge 2021 you must pas
 [Qualification stage](qualification.md) that will be held centrally by the RCJ Soccer OC in May:
 
 - Qualification **Registration** deadline: &nbsp; May 17'th 2021  
-- Qualification **Code submission** deadline: &nbsp; May 24'th 2021
+- Qualification **Code submission** **New deadline: &nbsp; May 26'th 2021**
 
 >>> Registration is currently open: [Registration Form](registration.md)
 
