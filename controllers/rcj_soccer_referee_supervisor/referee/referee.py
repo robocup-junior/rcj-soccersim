@@ -75,7 +75,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                         nearest_spots[:LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS], # noqa
                     )
                     self.move_object_to_neutral_spot(robot, neutral_spot[0])
-                    self.reset_checkers(robot)
+
+                self.reset_checkers(robot)
 
         bpos = self.ball_translation.copy()
         self.progress_chck['ball'].track(bpos)
@@ -102,7 +103,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 )
 
                 self.move_object_to_neutral_spot("ball", neutral_spot[0])
-                self.reset_checkers("ball")
+
+            self.reset_checkers("ball")
 
     def check_goal(self):
         """Check if goal is scored"""
