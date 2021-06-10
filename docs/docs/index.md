@@ -17,13 +17,13 @@ as well as a sample team of robots with some basic simulated strategy.
 
 ## How do I participate?
 
-In order to participate in the RCJ Soccer Simulation Challenge 2021 you must pass the
-[Qualification stage](qualification.md) that will be held centrally by the RCJ Soccer OC in May:
+In order to participate in the RCJ Soccer Simulation Challenge 2021 you must have
+registered &amp; sent in code for the Qualification Tournament in May. If you did so,
+you must have registered for the RCJ Soccer Simulation Challenge in May via the official
+RoboCup Registration Form that was sent to you via e-Mail.
 
-- Qualification **Registration** deadline: &nbsp; May 17'th 2021  
-- Qualification **Code submission** **New deadline: &nbsp; May 26'th 2021**
-
->>> Registration is currently open: [Registration Form](registration.md)
+After the Code Submission deadline on **June 14th**, we will simulate your code in the Simulation Tournament.
+Also, there will be plenty of challenges during RoboCup Week from **June 22nd** through **June 28th**!
 
 
 ## How do I try this out?
