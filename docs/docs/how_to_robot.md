@@ -191,7 +191,7 @@ therefore make the code easier to read. We are going to continue with our OOP ap
 
 ```python
 def __init__(self, robot):
-    self.robot = Robot
+    self.robot = robot
     self.name = self.robot.getName()
     ...
 ```
@@ -203,6 +203,8 @@ like motor (for controlling the speed) or receiver (for reading data from Superv
 **The name and the team of your robot** can be determined by calling `self.robot.getName()`.
 It will give you one of `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`. The first letter determines
 the team ("Blue", "Yellow"), while the second one is the robot's identifier.
+If you want to know the side of your team (either "Blue" or "Yellow"), you can find out
+by checking `self.name[0]`, which essentially gives you `"B"` for Blue or `"Y"` for Yellow side.
 
 ```python
 def get_new_data(self):
