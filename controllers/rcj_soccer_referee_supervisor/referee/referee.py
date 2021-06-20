@@ -162,7 +162,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if not team:
             team = Team.BLUE.value if seed > 0.5 else Team.YELLOW.value
 
-        robot_name = self.reset_team_for_kickoff(team)
+        #robot_name = self.reset_team_for_kickoff(team)
+        robot_name = "Y3"
 
         self.eventer.event(
             supervisor=self,
@@ -216,8 +217,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         # robots to proper positions afterwards.
         if self.ball_reset_timer == 0:
             self.check_goal()
-            self.check_progress()
-            self.check_robots_in_penalty_area()
+            #self.check_progress()
+            #self.check_robots_in_penalty_area()
         else:
             self.ball_reset_timer -= TIME_STEP / 1000.0
             self.draw_goal_sign()
@@ -225,7 +226,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
             if self.ball_reset_timer <= 0:
-                self.reset_positions()
+                #self.reset_positions()
+                self.reset_ball_position()
                 self.ball_reset_timer = 0
                 self.hide_goal_sign()
                 self.kickoff(self.team_to_kickoff)

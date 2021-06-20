@@ -42,7 +42,7 @@ class RCJSoccerSupervisor(Supervisor):
         initial_score_yellow: int,
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
-        post_goal_wait_time: int = 3,
+        post_goal_wait_time: int = 1,
         initial_position_noise: float = 0.15
     ):
 
@@ -127,7 +127,7 @@ class RCJSoccerSupervisor(Supervisor):
     def _update_positions(self):
         self.ball_translation = self.ball_translation_field.getSFVec3f()
 
-        for robot in ROBOT_NAMES:
+        for robot in ROBOT_NAMES:  # JUST ONE ROBOT
             t = self.robot_translation_fields[robot].getSFVec3f()
             self.robot_translation[robot] = t
 
@@ -409,7 +409,9 @@ class RCJSoccerSupervisor(Supervisor):
 
     def reset_ball_position(self):
         """Reset the position of the ball."""
-        self.set_ball_position(BALL_INITIAL_TRANSLATION)
+        random_z = random.uniform(-0.45, 0.45)
+        initial = [BALL_INITIAL_TRANSLATION[0], BALL_INITIAL_TRANSLATION[1], random_z]
+        self.set_ball_position(initial)
         self.progress_chck['ball'].reset()
 
     def _add_initial_position_noise(
