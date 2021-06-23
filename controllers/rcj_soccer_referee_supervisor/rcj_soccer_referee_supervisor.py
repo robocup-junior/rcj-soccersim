@@ -114,7 +114,7 @@ if automatic_mode:
 referee.add_event_subscriber(JSONLoggerHandler(reflog_path))
 referee.add_event_subscriber(DrawMessageHandler())
 
-referee.kickoff()
+#referee.kickoff()
 
 # The "event" loop for the referee
 while referee.step(TIME_STEP) != -1:

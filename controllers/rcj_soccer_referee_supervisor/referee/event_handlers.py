@@ -82,6 +82,15 @@ class DrawMessageHandler(EventHandler):
     def create_match_finish_msg(self, total_match_time: int, **kwargs) -> str:
         return f"The match time {total_match_time}s is over."
 
+    def create_robot_left_quarter_msg(self, robot_name: str, **kwargs) -> str:
+        return f"Robot {robot_name} left its quarter."
+
+    def create_wrong_pass_msg(self, **kwargs) -> str:
+        return f"Ball not passed to correct quarter."
+
+    def create_successful_pass_msg(self, added_score: int, blue_goal: bool, yellow_goal: bool, **kwargs) -> str:
+        return f"Successful pass - score +{added_score} (+{blue_goal+yellow_goal} goals)."
+
     def handle(self, supervisor, type: str, payload: Optional[dict] = None):
         # Call formatter based on event type.
         msg_formatter = getattr(self, f"create_{type.lower()}_msg")

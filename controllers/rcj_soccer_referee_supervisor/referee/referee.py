@@ -115,37 +115,37 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         ball_x, ball_z = self.ball_translation[0], self.ball_translation[2]
 
         # ball in the blue goal
-        if is_in_blue_goal(ball_x, ball_z):
-            self.score_yellow += 1
+        if is_in_blue_goal(ball_x, ball_z) and self.current_q == 3:
+            self.was_blue_goal = True
 
-            team_goal = self.team_name_yellow
-            team_kickoff = Team.BLUE.value
+            # team_goal = self.team_name_yellow
+            # team_kickoff = Team.BLUE.value
 
         # ball in the yellow goal
-        elif is_in_yellow_goal(ball_x, ball_z):
-            self.score_blue += 1
+        elif is_in_yellow_goal(ball_x, ball_z) and self.current_q == 1:
+            self.was_yellow_goal = True
 
-            team_goal = self.team_name_blue
-            team_kickoff = Team.YELLOW.value
+            # team_goal = self.team_name_blue
+            # team_kickoff = Team.YELLOW.value
 
         # If a goal was scored, redraw the scores, set the timers, log what
         # happened and set the proper team for kickoff.
-        if team_goal and team_kickoff:
-            self.draw_scores(self.score_blue, self.score_yellow)
-            self.ball_reset_timer = self.post_goal_wait_time
-
-            self.eventer.event(
-                supervisor=self,
-                type=GameEvents.GOAL.value,
-                payload={
-                    "team_name": team_goal,
-                    "score_yellow": self.score_yellow,
-                    "score_blue": self.score_blue,
-                },
-            )
-
-            # Let the team that did not score the goal have a kickoff.
-            self.team_to_kickoff = team_kickoff
+        # if team_goal and team_kickoff:
+        #     self.draw_scores(self.score_blue, self.score_yellow)
+        #     self.ball_reset_timer = self.post_goal_wait_time
+        #
+        #     self.eventer.event(
+        #         supervisor=self,
+        #         type=GameEvents.GOAL.value,
+        #         payload={
+        #             "team_name": team_goal,
+        #             "score_yellow": self.score_yellow,
+        #             "score_blue": self.score_blue,
+        #         },
+        #     )
+        #
+        #     # Let the team that did not score the goal have a kickoff.
+        #     self.team_to_kickoff = team_kickoff
 
     def kickoff(self, team: Optional[str] = None):
         """Set up the kickoff by putting one of the robots of the team that is
@@ -162,7 +162,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if not team:
             team = Team.BLUE.value if seed > 0.5 else Team.YELLOW.value
 
-        robot_name = self.reset_team_for_kickoff(team)
+        #robot_name = self.reset_team_for_kickoff(team)
+        robot_name = "Y3"
 
         self.eventer.event(
             supervisor=self,
@@ -172,6 +173,105 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 "team_name": team,
             },
         )
+
+    def reset_scoreboard(self):
+        self.next_score = 1
+        self.current_q = 1
+        self.was_yellow_goal = False
+        self.was_blue_goal = False
+        self.streak = 0
+        self.draw_scores(self.score_blue, self.score_yellow)
+
+    def wrong_pass(self):
+        self.eventer.event(
+            supervisor=self,
+            type=GameEvents.WRONG_PASS.value,
+            payload={},
+        )
+        self.reset_positions()
+        self.reset_scoreboard()
+
+    def left_quarter(self, robot_name):
+        self.eventer.event(
+            supervisor=self,
+            type=GameEvents.ROBOT_LEFT_QUARTER.value,
+            payload={
+                "robot_name": robot_name,
+            },
+        )
+        self.reset_positions()
+        self.reset_scoreboard()
+
+    def check_pass(self):
+        x, _, z = self.ball_translation
+
+        # if in Q2
+        if x < -0.202 and z > 0.108 and self.current_q != 2:
+            if self.current_q == 1:
+                self.current_q = 2
+            else:
+                self.wrong_pass()
+
+        # if in Q3
+        if x > 0.202 and z > 0.108 and self.current_q != 3:
+            if self.current_q == 2:
+                self.current_q = 3
+            else:
+                self.wrong_pass()
+
+        # if in Q4
+        if x > 0.202 and z < -0.108 and self.current_q != 4:
+            if self.current_q == 3:
+                self.current_q = 4
+            else:
+                self.wrong_pass()
+
+        # if in Q1
+        if x < -0.202 and z < -0.108 and self.current_q != 1:
+            if self.current_q == 4:
+                self.current_q = 1
+                self.streak += 1
+                self.score_yellow += self.next_score
+                if self.was_yellow_goal:
+                    self.score_yellow += 1
+                if self.was_blue_goal:
+                    self.score_yellow += 1
+                self.draw_scores(self.score_blue, self.score_yellow)
+                self.eventer.event(
+                    supervisor=self,
+                    type=GameEvents.SUCCESSFUL_PASS.value,
+                    payload={
+                        "added_score": self.next_score,
+                        "blue_goal": self.was_blue_goal,
+                        "yellow_goal": self.was_yellow_goal
+                    },
+                )
+                self.was_yellow_goal = False
+                self.was_blue_goal = False
+                self.next_score += 1
+            else:
+                self.wrong_pass()
+
+    def check_robot_bounds(self):
+        pos = self.robot_translation["B1"]
+        x, z = pos[0], pos[2]
+        if x < 0.202 or z > -0.108:
+            self.left_quarter("B1")
+
+        pos = self.robot_translation["B2"]
+        x, z = pos[0], pos[2]
+        if x <  0.202 or z < 0.108:
+            self.left_quarter("B2")
+
+        pos = self.robot_translation["Y1"]
+        x, z = pos[0], pos[2]
+        if x > -0.202 or z > -0.108:
+            self.left_quarter("Y1")
+
+        pos = self.robot_translation["Y2"]
+        x, z = pos[0], pos[2]
+        if x > -0.202 or z < 0.108:
+            self.left_quarter("Y2")
 
     def tick(self) -> bool:
         # On the very first tick, note that the match has started
@@ -200,9 +300,9 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
                 payload={
                     "total_match_time": self.match_time,
                     "score_yellow": self.score_yellow,
-                    "score_blue": self.score_blue,
-                    "team_name_yellow": self.team_name_yellow,
-                    "team_name_blue": self.team_name_blue,
+                    #"score_blue": self.score_blue,
+                    #"team_name_yellow": self.team_name_yellow,
+                    #"team_name_blue": self.team_name_blue,
                 },
             )
 
@@ -211,24 +311,29 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         self.draw_time(self.time)
         self.draw_event_messages()
 
+        self.check_robot_bounds()
+        self.check_goal()
+        self.check_pass()
+
         # If we are currently not in the post-goal waiting period,
         # check if a goal took place, setup the waiting period and move the
         # robots to proper positions afterwards.
-        if self.ball_reset_timer == 0:
-            self.check_goal()
-            self.check_progress()
-            self.check_robots_in_penalty_area()
-        else:
-            self.ball_reset_timer -= TIME_STEP / 1000.0
-            self.draw_goal_sign()
+        #if self.ball_reset_timer == 0:
+            #self.check_goal()
+            #self.check_progress()
+            #self.check_robots_in_penalty_area()
+        #else:
+        #    self.ball_reset_timer -= TIME_STEP / 1000.0
+        #    self.draw_goal_sign()
 
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
-            if self.ball_reset_timer <= 0:
-                self.reset_positions()
-                self.ball_reset_timer = 0
-                self.hide_goal_sign()
-                self.kickoff(self.team_to_kickoff)
+            # if self.ball_reset_timer <= 0:
+            #     #self.reset_positions()
+            #     self.reset_ball_position()
+            #     self.ball_reset_timer = 0
+            #     self.hide_goal_sign()
+            #     self.kickoff(self.team_to_kickoff)
 
         # WORKAROUND: The proper way of moving the ball is to set its position
         # and call resetPhysics on the ball. However, the ball has small
