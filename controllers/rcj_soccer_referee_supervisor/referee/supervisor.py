@@ -42,11 +42,14 @@ class RCJSoccerSupervisor(Supervisor):
         initial_score_yellow: int,
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
-        post_goal_wait_time: int = 3,
+        post_goal_wait_time: int = 1,
         initial_position_noise: float = 0.15
     ):
 
         super().__init__()
+
+        self.scoring_to = "blue"
+        self.current_b = 0
 
         self.match_time = match_time
         self.match_id = match_id
@@ -147,28 +150,28 @@ class RCJSoccerSupervisor(Supervisor):
 
     def draw_team_names(self):
         """Visualize (draw) the names of the teams."""
+        pass
+        # self.setLabel(
+        #     LabelIDs.BLUE_TEAM.value,
+        #     self.team_name_blue,
+        #     0.92 - (len(self.team_name_blue) * 0.01),  # X position
+        #     0.05,  # Y position
+        #     0.1,  # Size
+        #     0x0000ff,  # Color
+        #     0.0,  # Transparency
+        #     "Tahoma",  # Font
+        # )
 
-        self.setLabel(
-            LabelIDs.BLUE_TEAM.value,
-            self.team_name_blue,
-            0.92 - (len(self.team_name_blue) * 0.01),  # X position
-            0.05,  # Y position
-            0.1,  # Size
-            0x0000ff,  # Color
-            0.0,  # Transparency
-            "Tahoma",  # Font
-        )
-
-        self.setLabel(
-            LabelIDs.YELLOW_TEAM.value,
-            self.team_name_yellow,
-            0.05,  # X position
-            0.05,  # Y position
-            0.1,  # Size
-            0xffff00,  # Color
-            0.0,  # Transparency
-            "Tahoma"  # Font
-        )
+        # self.setLabel(
+        #     LabelIDs.YELLOW_TEAM.value,
+        #     self.team_name_yellow,
+        #     0.05,  # X position
+        #     0.05,  # Y position
+        #     0.1,  # Size
+        #     0xffff00,  # Color
+        #     0.0,  # Transparency
+        #     "Tahoma"  # Font
+        # )
 
     def draw_scores(self, blue: int, yellow: int):
         """Visualize (draw) the provide scores for both the blue and
@@ -179,21 +182,21 @@ class RCJSoccerSupervisor(Supervisor):
             yellow (int): score of the yellow team
         """
 
-        self.setLabel(
-            LabelIDs.BLUE_SCORE.value,
-            str(blue),
-            0.92,  # X position
-            0.01,  # Y position
-            0.1,  # Size
-            0x0000ff,  # Color
-            0.0,  # Transparency
-            "Tahoma",  # Font
-        )
+        # self.setLabel(
+        #     LabelIDs.BLUE_SCORE.value,
+        #     str(blue),
+        #     0.92,  # X position
+        #     0.01,  # Y position
+        #     0.1,  # Size
+        #     0x0000ff,  # Color
+        #     0.0,  # Transparency
+        #     "Tahoma",  # Font
+        # )
 
         self.setLabel(
             LabelIDs.YELLOW_SCORE.value,
-            str(yellow),
-            0.05,  # X position
+            f"Score: {self.score_yellow}",
+            0.25,  # X position
             0.01,  # Y position
             0.1,  # Size
             0xffff00,  # Color
@@ -303,17 +306,18 @@ class RCJSoccerSupervisor(Supervisor):
         # X, Z and rotation for each robot
         # plus X and Z for ball
         # plus True/False telling whether the goal was scored
-        struct_fmt = 'ddd' * len(robot_translation) + 'dd' + '?'
+        #struct_fmt = 'ddd' * len(robot_translation) + 'dd' + '?'
+        struct_fmt = 'dd' + '?'
 
         data = []
-        for robot in ROBOT_NAMES:
-            data.append(robot_translation[robot][0])  # X
-            data.append(robot_translation[robot][2])  # Z
-
-            if robot_rotation[robot][1] > 0:
-                data.append(robot_rotation[robot][3])
-            else:
-                data.append(-robot_rotation[robot][3])
+        # for robot in ROBOT_NAMES:
+        #     data.append(robot_translation[robot][0])  # X
+        #     data.append(robot_translation[robot][2])  # Z
+        #
+        #     if robot_rotation[robot][1] > 0:
+        #         data.append(robot_rotation[robot][3])
+        #     else:
+        #         data.append(-robot_rotation[robot][3])
 
         data.append(ball_translation[0])
         data.append(ball_translation[2])
@@ -409,7 +413,9 @@ class RCJSoccerSupervisor(Supervisor):
 
     def reset_ball_position(self):
         """Reset the position of the ball."""
-        self.set_ball_position(BALL_INITIAL_TRANSLATION)
+        random_z = random.uniform(-0.3, 0.3)
+        initial = [BALL_INITIAL_TRANSLATION[0], BALL_INITIAL_TRANSLATION[1], random_z]
+        self.set_ball_position(initial)
         self.progress_chck['ball'].reset()
 
     def _add_initial_position_noise(
@@ -417,9 +423,9 @@ class RCJSoccerSupervisor(Supervisor):
         translation: List[float]
     ) -> List[float]:
 
-        level = self.initial_position_noise
-        translation[0] += (random.random() - 0.5) * level
-        translation[2] += (random.random() - 0.5) * level
+        #level = self.initial_position_noise
+        #translation[0] += (random.random() - 0.5) * level
+        #translation[2] += (random.random() - 0.5) * level
         return translation
 
     def reset_checkers(self, object_name: str):

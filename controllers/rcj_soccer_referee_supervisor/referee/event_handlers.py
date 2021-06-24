@@ -70,11 +70,17 @@ class DrawMessageHandler(EventHandler):
             return "Ball: Lack of progress."
         return f"Robot {robot_name}: Lack of progress."
 
-    def create_goal_msg(self, team_name: str, **kwargs) -> str:
-        return f"A goal was scored by {team_name}."
+    def create_goal_msg(self, **kwargs) -> str:
+        return f"A goal was scored. +1 point."
+
+    def create_bad_goal_msg(self, **kwargs) -> str:
+        return f"Ball in wrong goal. -1 point"
 
     def create_kickoff_msg(self, robot_name: str, **kwargs) -> str:
-        return f"Robot {robot_name} is kicking off."
+        return f"Robot is kicking off."
+
+    def create_pushing_msg(self, robot_name: str, **kwargs) -> str:
+        return f"Robot {robot_name} pushed. Reseting."
 
     def create_match_start_msg(self, total_match_time: int, **kwargs) -> str:
         return f"The match ({total_match_time}s) has started."

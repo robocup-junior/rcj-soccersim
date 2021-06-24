@@ -7,6 +7,9 @@ from referee.consts import (
     GameEvents,
     Team,
     NeutralSpotDistanceType,
+    OBSTACLE_TRANSLATIONS,
+    YELLOW_BOT_FACING_TRANSLATION,
+    YELLOW_BOT_FACING_ROTATION,
 )
 from referee.supervisor import RCJSoccerSupervisor
 from referee.utils import (
@@ -106,46 +109,100 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
 
             self.reset_checkers("ball")
 
+    def reset_and_change_facing(self, change_facing=True):
+        if change_facing:
+            if self.scoring_to == "blue":
+                self.scoring_to = "yellow"
+            else:
+                self.scoring_to = "blue"
+
+        positions = OBSTACLE_TRANSLATIONS[self.scoring_to]
+        rand_int = random.randint(0, len(positions)-1)
+        self.current_b = rand_int
+        coords = positions[rand_int]
+        for robot, c in coords.items():
+            self.set_robot_position(robot, c)
+            self.set_robot_rotation(robot, [0, 1, 0, 1.57])
+
+        self.reset_ball_position()
+
+        # yellow_pos = YELLOW_BOT_FACING_TRANSLATION[self.scoring_to]
+        # yellow_rot = YELLOW_BOT_FACING_ROTATION[self.scoring_to]
+        # self.set_robot_position("Y3", yellow_pos)
+        # self.set_robot_rotation("Y3", yellow_rot)
+
+    def check_pushing(self):
+        coords = OBSTACLE_TRANSLATIONS[self.scoring_to][self.current_b]
+        deviation = 0.01
+        for robot, c in coords.items():
+            current_x, _, current_z = self.robot_translation[robot]
+            if abs(current_x - c[0]) > deviation or abs(current_z - c[2]) > deviation:
+                self.reset_and_change_facing()
+                self.eventer.event(
+                    supervisor=self,
+                    type=GameEvents.PUSHING.value,
+                    payload={
+                        "robot_name": robot
+                    },
+                )
+                break
+
     def check_goal(self):
         """Check if goal is scored"""
-
-        team_goal = None
-        team_kickoff = None
+        # team_goal = None
+        # team_kickoff = None
 
         ball_x, ball_z = self.ball_translation[0], self.ball_translation[2]
 
+        bad_goal = False
+        good_goal = False
         # ball in the blue goal
         if is_in_blue_goal(ball_x, ball_z):
-            self.score_yellow += 1
+            if self.scoring_to == "blue":
+                good_goal = True
+                self.score_yellow += 1
+            else:
+                bad_goal = True
+                self.score_yellow -= 1
 
-            team_goal = self.team_name_yellow
-            team_kickoff = Team.BLUE.value
+            # team_goal = self.team_name_yellow
+            # team_kickoff = Team.BLUE.value
 
         # ball in the yellow goal
         elif is_in_yellow_goal(ball_x, ball_z):
-            self.score_blue += 1
+            if self.scoring_to == "yellow":
+                good_goal = True
+                self.score_yellow += 1
+            else:
+                bad_goal = True
+                self.score_yellow -= 1
 
-            team_goal = self.team_name_blue
-            team_kickoff = Team.YELLOW.value
+            # team_goal = self.team_name_blue
+            # team_kickoff = Team.YELLOW.value
 
         # If a goal was scored, redraw the scores, set the timers, log what
         # happened and set the proper team for kickoff.
-        if team_goal and team_kickoff:
+        if good_goal:
             self.draw_scores(self.score_blue, self.score_yellow)
             self.ball_reset_timer = self.post_goal_wait_time
 
             self.eventer.event(
                 supervisor=self,
                 type=GameEvents.GOAL.value,
-                payload={
-                    "team_name": team_goal,
-                    "score_yellow": self.score_yellow,
-                    "score_blue": self.score_blue,
-                },
+                payload={},
             )
+        elif bad_goal:
+            self.draw_scores(self.score_blue, self.score_yellow)
+
+            self.eventer.event(
+                supervisor=self,
+                type=GameEvents.BAD_GOAL.value,
+                payload={},
+            )
+            self.reset_and_change_facing()
 
             # Let the team that did not score the goal have a kickoff.
-            self.team_to_kickoff = team_kickoff
+            #self.team_to_kickoff = team_kickoff
 
     def kickoff(self, team: Optional[str] = None):
         """Set up the kickoff by putting one of the robots of the team that is
@@ -162,7 +219,8 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         if not team:
             team = Team.BLUE.value if seed > 0.5 else Team.YELLOW.value
 
-        robot_name = self.reset_team_for_kickoff(team)
+        #robot_name = self.reset_team_for_kickoff(team)
+        robot_name = "Y3"
 
         self.eventer.event(
             supervisor=self,
@@ -215,9 +273,10 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
         # check if a goal took place, setup the waiting period and move the
         # robots to proper positions afterwards.
         if self.ball_reset_timer == 0:
+            self.check_pushing()
             self.check_goal()
-            self.check_progress()
-            self.check_robots_in_penalty_area()
+            #self.check_progress()
+            #self.check_robots_in_penalty_area()
         else:
             self.ball_reset_timer -= TIME_STEP / 1000.0
             self.draw_goal_sign()
@@ -225,10 +284,12 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             # If the post-goal waiting period is over, reset the robots to
             # their starting positions
             if self.ball_reset_timer <= 0:
-                self.reset_positions()
+                #self.reset_positions()
+                #self.reset_ball_position()
                 self.ball_reset_timer = 0
                 self.hide_goal_sign()
-                self.kickoff(self.team_to_kickoff)
+                #self.kickoff(self.team_to_kickoff)
+                self.reset_and_change_facing()
 
         # WORKAROUND: The proper way of moving the ball is to set its position
         # and call resetPhysics on the ball. However, the ball has small
