@@ -10,7 +10,7 @@ class MyScoringRobot(RCJSoccerRobot):
         while self.robot.step(TIME_STEP) != -1:
             # Get the position of our robot
             robot_pos = self.get_posfrom_devices()
-            # Get lidar ranges in an array indexed 0..259, index 0 = front, 90-1 = right, 180-1 = back, 270-1 = left
+            # Get lidar ranges in an array indexed 0..360, index 0 = front, 90-1 = right, 180-1 = back, 270-1 = left
             lidar_ranges = self.lidar.getRangeImage()
             # just for experiments: print sensor values
             print(robot_pos, 'front range:', lidar_ranges[0])
