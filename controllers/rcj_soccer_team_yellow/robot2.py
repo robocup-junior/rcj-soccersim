@@ -14,6 +14,10 @@ class MyRobot2(RCJSoccerRobot):
             if self.is_new_data():
                 data = self.get_new_data()
 
+                while self.is_new_team_data():
+                    team_data = self.get_new_team_data()
+                    # Do something with team data
+
                 # Get the position of our robot
                 robot_pos = data[self.name]
                 # Get the position of the ball
@@ -38,3 +42,6 @@ class MyRobot2(RCJSoccerRobot):
                 # Set the speed to motors
                 self.left_motor.setVelocity(left_speed)
                 self.right_motor.setVelocity(right_speed)
+
+                # Send message to team robots
+                self.send_data_to_team(self.player_id)

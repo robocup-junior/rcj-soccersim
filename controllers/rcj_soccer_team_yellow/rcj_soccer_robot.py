@@ -14,8 +14,12 @@ class RCJSoccerRobot:
         self.team = self.name[0]
         self.player_id = int(self.name[1])
 
-        self.receiver = self.robot.getDevice("receiver")
+        self.receiver = self.robot.getDevice("supervisor receiver")
         self.receiver.enable(TIME_STEP)
+
+        self.team_emitter = self.robot.getDevice("team emitter")
+        self.team_receiver = self.robot.getDevice("team receiver")
+        self.team_receiver.enable(TIME_STEP)
 
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
@@ -72,16 +76,57 @@ class RCJSoccerRobot:
         """
         packet = self.receiver.getData()
         self.receiver.nextPacket()
-
         return self.parse_supervisor_msg(packet)
 
     def is_new_data(self) -> bool:
-        """Check if there are new data to be received
+        """Check if there is new data from supervisor to be received
 
         Returns:
             bool: Whether there is new data received from supervisor.
         """
         return self.receiver.getQueueLength() > 0
+
+    def parse_team_msg(self, packet: str) -> dict:
+        """Parse message received from team robot
+
+        Returns:
+            dict: Parsed message stored in dictionary.
+        """
+        struct_fmt = 'i'
+        unpacked = struct.unpack(struct_fmt, packet)
+        data = {
+            'robot_id': unpacked[0],
+        }
+        return data
+
+    def get_new_team_data(self) -> dict:
+        """Read new data from team robot
+
+        Returns:
+            dict: See `parse_team_msg` method
+        """
+        packet = self.team_receiver.getData()
+        self.team_receiver.nextPacket()
+        return self.parse_team_msg(packet)
+
+    def is_new_team_data(self) -> bool:
+        """Check if there is new data from team robots to be received
+
+        Returns:
+            bool: Whether there is new data received from team robots.
+        """
+        return self.team_receiver.getQueueLength() > 0
+
+    def send_data_to_team(self, robot_id) -> None:
+        """Send data to the team
+
+        Args:
+             robot_id (int): ID of the robot
+        """
+        struct_fmt = 'i'
+        data = [robot_id]
+        packet = struct.pack(struct_fmt, *data)
+        self.team_emitter.send(packet)
 
     def get_angles(self, ball_pos: dict, robot_pos: dict) -> Tuple[float, float]:
         """Get angles in degrees.

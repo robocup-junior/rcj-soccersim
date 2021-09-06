@@ -112,7 +112,7 @@ class MyRobot:
         self.robot = robot
         self.name = self.robot.getName()
 
-        self.receiver = self.robot.getDevice("receiver")
+        self.receiver = self.robot.getDevice("supervisor receiver")
         self.receiver.enable(TIME_STEP)
 
         self.left_motor = self.robot.getDevice("left wheel motor")

@@ -14,5 +14,6 @@ nav:
   - Rules: rules.md
   - Getting Started: getting_started.md
   - How to program your robot: how_to_robot.md
+  - Inter-robot communication: communication_between_robots.md
   - Code submission: code_submission.md
   - Submission check: submission_check.md
