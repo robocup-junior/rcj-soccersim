@@ -1,4 +1,4 @@
-#VRML_SIM R2020b utf8
+#VRML_SIM R2021b utf8
 WorldInfo {
   info [
     "A simple RCJ Soccer game simulated using Webots."
@@ -506,21 +506,27 @@ DEF B1 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
     }
   ]
   name "B1"
@@ -649,21 +655,27 @@ DEF B2 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
     }
   ]
   name "B2"
@@ -789,21 +801,27 @@ DEF B3 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
     }
   ]
   name "B3"
@@ -929,21 +947,27 @@ DEF Y1 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
     }
   ]
   name "Y1"
@@ -1069,21 +1093,27 @@ DEF Y2 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
     }
   ]
   name "Y2"
@@ -1209,21 +1239,27 @@ DEF Y3 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
     }
   ]
   name "Y3"
@@ -1236,9 +1272,11 @@ Robot {
   children [
     Emitter {
       range 10
-      baudRate 115200
       channel 1
-      allowedChannels [1]
+      baudRate 115200
+      allowedChannels [
+        1
+      ]
     }
   ]
   controller "rcj_soccer_referee_supervisor"
