@@ -11,37 +11,43 @@ import utils
 class MyRobot2(RCJSoccerRobot):
     def run(self):
         while self.robot.step(TIME_STEP) != -1:
-            if self.is_new_data():
-                data = self.get_new_data()
+            while self.robot.step(TIME_STEP) != -1:
+                if self.is_new_data():
+                    data = self.get_new_data()
 
-                while self.is_new_team_data():
-                    team_data = self.get_new_team_data()
-                    # Do something with team data
+                    while self.is_new_team_data():
+                        team_data = self.get_new_team_data()
+                        # Do something with team data
 
-                # Get the position of our robot
-                robot_pos = data[self.name]
-                # Get the position of the ball
-                ball_pos = data['ball']
+                    if self.is_new_ball_data():
+                        ball_data = self.get_new_ball_data()
+                    else:
+                        # If the robot does not see the ball, stop motors
+                        self.left_motor.setVelocity(0)
+                        self.right_motor.setVelocity(0)
+                        continue
 
-                # Get angle between the robot and the ball
-                # and between the robot and the north
-                ball_angle, robot_angle = self.get_angles(ball_pos, robot_pos)
+                    # Get data from compass
+                    heading = self.get_compass_heading()
 
-                # Compute the speed for motors
-                direction = utils.get_direction(ball_angle)
+                    # Get GPS coordinates of the robot
+                    robot_pos = self.get_gps_coordinates()
 
-                # If the robot has the ball right in front of it, go forward,
-                # rotate otherwise
-                if direction == 0:
-                    left_speed = -5
-                    right_speed = -5
-                else:
-                    left_speed = direction * 4
-                    right_speed = direction * -4
+                    # Compute the speed for motors
+                    direction = utils.get_direction(ball_data['direction'])
 
-                # Set the speed to motors
-                self.left_motor.setVelocity(left_speed)
-                self.right_motor.setVelocity(right_speed)
+                    # If the robot has the ball right in front of it, go forward,
+                    # rotate otherwise
+                    if direction == 0:
+                        left_speed = -5
+                        right_speed = -5
+                    else:
+                        left_speed = direction * 4
+                        right_speed = direction * -4
 
-                # Send message to team robots
-                self.send_data_to_team(self.player_id)
+                    # Set the speed to motors
+                    self.left_motor.setVelocity(left_speed)
+                    self.right_motor.setVelocity(right_speed)
+
+                    # Send message to team robots
+                    self.send_data_to_team(self.player_id)

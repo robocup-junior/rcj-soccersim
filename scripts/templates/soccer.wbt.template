@@ -1,4 +1,4 @@
-#VRML_SIM R2020b utf8
+#VRML_SIM R2021b utf8
 WorldInfo {
   info [
     "A simple RCJ Soccer game simulated using Webots."
@@ -383,11 +383,54 @@ DEF SOCCER_FIELD Solid {
   }
   locked TRUE
 }
-DEF BALL SoccerBall {
+DEF BALL Robot {
   translation -0.182283 0.05 -0.297774
   rotation 0.7071067811865477 0 0.7071067811865477 2.62318
-  radius 0.021
-  mass 0.05
+  children [
+    DEF FOOTBALL_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "soccer/football_base_color.jpg"
+          ]
+        }
+        roughness 0.4
+        metalness 0
+        normalMap ImageTexture {
+          url [
+            "soccer/football_normal.jpg"
+          ]
+        }
+      }
+      geometry Sphere {
+        radius 0.021
+        subdivision 3
+      }
+    }
+    Emitter {
+      name "ball emitter"
+      type "infra-red"
+      range $ir_range
+      channel 4
+      baudRate 115200
+      allowedChannels [
+        4
+      ]
+    }
+  ]
+  name "soccer ball"
+  model "soccer ball"
+  boundingObject USE FOOTBALL_SHAPE
+  physics Physics {
+    density -1
+    mass 0.05
+  }
+  recognitionColors [
+    1 1 1
+    0 0 0
+  ]
+  controller "rcj_soccer_ball"
+  synchronization FALSE
 }
 DEF B1 Robot {
   translation -0.0349213 0.0381772 -0.301715
@@ -506,21 +549,39 @@ DEF B1 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B1"
@@ -649,21 +710,39 @@ DEF B2 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B2"
@@ -789,21 +868,39 @@ DEF B3 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 2
-      allowedChannels [2]
       name "team receiver"
+      channel 2
+      allowedChannels [
+        2
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 2
-      allowedChannels [2]
       name "team emitter"
+      range 10
+      channel 2
+      baudRate 115200
+      allowedChannels [
+        2
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B3"
@@ -929,21 +1026,39 @@ DEF Y1 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y1"
@@ -1069,21 +1184,39 @@ DEF Y2 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y2"
@@ -1209,21 +1342,39 @@ DEF Y3 Robot {
       }
     }
     Receiver {
-      channel 1
-      allowedChannels [1]
       name "supervisor receiver"
+      channel 1
+      allowedChannels [
+        1
+      ]
     }
     Receiver {
-      channel 3
-      allowedChannels [3]
       name "team receiver"
+      channel 3
+      allowedChannels [
+        3
+      ]
+    }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
     }
     Emitter {
-      range 10
-      baudRate 115200
-      channel 3
-      allowedChannels [3]
       name "team emitter"
+      range 10
+      channel 3
+      baudRate 115200
+      allowedChannels [
+        3
+      ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y3"
@@ -1236,7 +1387,11 @@ Robot {
   children [
     Emitter {
       range 10
+      channel 1
       baudRate 115200
+      allowedChannels [
+        1
+      ]
     }
   ]
   controller "rcj_soccer_referee_supervisor"

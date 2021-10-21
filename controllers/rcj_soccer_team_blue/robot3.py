@@ -18,17 +18,22 @@ class MyRobot3(RCJSoccerRobot):
                     team_data = self.get_new_team_data()
                     # Do something with team data
 
-                # Get the position of our robot
-                robot_pos = data[self.name]
-                # Get the position of the ball
-                ball_pos = data['ball']
+                if self.is_new_ball_data():
+                    ball_data = self.get_new_ball_data()
+                else:
+                    # If the robot does not see the ball, stop motors
+                    self.left_motor.setVelocity(0)
+                    self.right_motor.setVelocity(0)
+                    continue
 
-                # Get angle between the robot and the ball
-                # and between the robot and the north
-                ball_angle, robot_angle = self.get_angles(ball_pos, robot_pos)
+                # Get data from compass
+                heading = self.get_compass_heading()
+
+                # Get GPS coordinates of the robot
+                robot_pos = self.get_gps_coordinates()
 
                 # Compute the speed for motors
-                direction = utils.get_direction(ball_angle)
+                direction = utils.get_direction(ball_data['direction'])
 
                 # If the robot has the ball right in front of it, go forward,
                 # rotate otherwise

@@ -118,7 +118,8 @@ referee.kickoff()
 
 # The "event" loop for the referee
 while referee.step(TIME_STEP) != -1:
-    referee.emit_positions()
+    referee.update_positions()
+    referee.emit_data()
 
     # If the tick does not return True, the match has ended and the event loop
     # can stop
