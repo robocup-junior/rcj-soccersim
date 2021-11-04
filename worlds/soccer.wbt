@@ -383,11 +383,54 @@ DEF SOCCER_FIELD Solid {
   }
   locked TRUE
 }
-DEF BALL SoccerBall {
+DEF BALL Robot {
   translation -0.182283 0.05 -0.297774
   rotation 0.7071067811865477 0 0.7071067811865477 2.62318
-  radius 0.021
-  mass 0.05
+  children [
+    DEF FOOTBALL_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "soccer/football_base_color.jpg"
+          ]
+        }
+        roughness 0.4
+        metalness 0
+        normalMap ImageTexture {
+          url [
+            "soccer/football_normal.jpg"
+          ]
+        }
+      }
+      geometry Sphere {
+        radius 0.021
+        subdivision 3
+      }
+    }
+    Emitter {
+      name "ball emitter"
+      type "infra-red"
+      range 0.6
+      channel 4
+      baudRate 115200
+      allowedChannels [
+        4
+      ]
+    }
+  ]
+  name "soccer ball"
+  model "soccer ball"
+  boundingObject USE FOOTBALL_SHAPE
+  physics Physics {
+    density -1
+    mass 0.05
+  }
+  recognitionColors [
+    1 1 1
+    0 0 0
+  ]
+  controller "rcj_soccer_ball"
+  synchronization FALSE
 }
 DEF B1 Robot {
   translation -0.0349213 0.0381772 -0.301715
@@ -519,6 +562,14 @@ DEF B1 Robot {
         2
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -527,6 +578,10 @@ DEF B1 Robot {
       allowedChannels [
         2
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B1"
@@ -668,6 +723,14 @@ DEF B2 Robot {
         2
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -676,6 +739,10 @@ DEF B2 Robot {
       allowedChannels [
         2
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B2"
@@ -814,6 +881,14 @@ DEF B3 Robot {
         2
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -822,6 +897,10 @@ DEF B3 Robot {
       allowedChannels [
         2
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "B3"
@@ -960,6 +1039,14 @@ DEF Y1 Robot {
         3
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -968,6 +1055,10 @@ DEF Y1 Robot {
       allowedChannels [
         3
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y1"
@@ -1106,6 +1197,14 @@ DEF Y2 Robot {
         3
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -1114,6 +1213,10 @@ DEF Y2 Robot {
       allowedChannels [
         3
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y2"
@@ -1252,6 +1355,14 @@ DEF Y3 Robot {
         3
       ]
     }
+    Receiver {
+      name "ball receiver"
+      type "infra-red"
+      channel 4
+      allowedChannels [
+        4
+      ]
+    }
     Emitter {
       name "team emitter"
       range 10
@@ -1260,6 +1371,10 @@ DEF Y3 Robot {
       allowedChannels [
         3
       ]
+    }
+    GPS {
+    }
+    Compass {
     }
   ]
   name "Y3"

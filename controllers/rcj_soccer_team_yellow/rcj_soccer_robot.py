@@ -1,6 +1,5 @@
 import math
 import struct
-from typing import Tuple
 
 TIME_STEP = 64
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
@@ -21,6 +20,15 @@ class RCJSoccerRobot:
         self.team_receiver = self.robot.getDevice("team receiver")
         self.team_receiver.enable(TIME_STEP)
 
+        self.ball_receiver = self.robot.getDevice("ball receiver")
+        self.ball_receiver.enable(TIME_STEP)
+
+        self.gps = self.robot.getDevice("gps")
+        self.gps.enable(TIME_STEP)
+
+        self.compass = self.robot.getDevice("compass")
+        self.compass.enable(TIME_STEP)
+
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
 
@@ -37,35 +45,16 @@ class RCJSoccerRobot:
             dict: Location info about each robot and the ball.
             Example:
                 {
-                    'B1': {'x': 0.0, 'y': 0.2, 'orientation': 1},
-                    'B2': {'x': 0.4, 'y': -0.2, 'orientation': 1},
-                    ...
-                    'ball': {'x': -0.7, 'y': 0.3},
                     'waiting_for_kickoff': False,
                 }
         """
-        # X, Z and rotation for each robot
-        # plus X and Z for ball
-        # plus True/False telling whether the goal was scored
-        struct_fmt = 'ddd' * N_ROBOTS + 'dd' + '?'
-
+        # True/False telling whether the goal was scored
+        struct_fmt = '?'
         unpacked = struct.unpack(struct_fmt, packet)
 
-        data = {}
-        for i, r in enumerate(ROBOT_NAMES):
-            data[r] = {
-                "x": unpacked[3 * i],
-                "y": unpacked[3 * i + 1],
-                "orientation": unpacked[3 * i + 2]
-            }
-        ball_data_index = 3 * N_ROBOTS
-        data["ball"] = {
-            "x": unpacked[ball_data_index],
-            "y": unpacked[ball_data_index + 1]
+        data = {
+            "waiting_for_kickoff": unpacked[0]
         }
-
-        waiting_for_kickoff_data_index = ball_data_index + 2
-        data["waiting_for_kickoff"] = unpacked[waiting_for_kickoff_data_index]
         return data
 
     def get_new_data(self) -> dict:
@@ -128,42 +117,63 @@ class RCJSoccerRobot:
         packet = struct.pack(struct_fmt, *data)
         self.team_emitter.send(packet)
 
-    def get_angles(self, ball_pos: dict, robot_pos: dict) -> Tuple[float, float]:
-        """Get angles in degrees.
-
-        Args:
-            ball_pos (dict): Dict containing info about position of the ball
-            robot_pos (dict): Dict containing info about position and rotation
-                of the robot
+    def get_new_ball_data(self) -> dict:
+        """Read new data from IR sensor
 
         Returns:
-            :rtype: (float, float):
-                Angle between the robot and the ball
-                Angle between the robot and the north
+            dict: Direction and strength of the ball signal
+            Direction is normalized vector indicating the direction of the
+            emitter with respect to the receiver's coordinate system.
+            Example:
+                {
+                    'direction': [0.23, -0.10, 0.96],
+                    'strength': 0.1
+                }
         """
-        robot_angle: float = robot_pos['orientation']
+        _ = self.ball_receiver.getData()
+        data = {
+            'direction': self.ball_receiver.getEmitterDirection(),
+            'strength': self.ball_receiver.getSignalStrength(),
+        }
+        self.ball_receiver.nextPacket()
+        return data
 
-        # Get the angle between the robot and the ball
-        angle = math.atan2(
-            ball_pos['y'] - robot_pos['y'],
-            ball_pos['x'] - robot_pos['x'],
-        )
+    def is_new_ball_data(self) -> bool:
+        """Check if there is new data from ball to be received
 
-        if angle < 0:
-            angle = 2 * math.pi + angle
+        Returns:
+            bool: Whether there is new data received from ball.
+        """
+        return self.ball_receiver.getQueueLength() > 0
 
-        if robot_angle < 0:
-            robot_angle = 2 * math.pi + robot_angle
+    def get_gps_coordinates(self):
+        """Get new GPS coordinates
 
-        robot_ball_angle = math.degrees(angle + robot_angle)
+        Returns:
+            List containing x and y values
+        """
+        gps_values = self.gps.getValues()
+        return [gps_values[0], gps_values[2]]
 
-        # Axis Z is forward
-        # TODO: change the robot's orientation so that X axis means forward
-        robot_ball_angle -= 90
-        if robot_ball_angle > 360:
-            robot_ball_angle -= 360
+    def get_compass_heading(self):
+        """Get compass heading in radians
 
-        return robot_ball_angle, robot_angle
+        Returns:
+            float: Compass value in radians
+        """
+        compass_values = self.compass.getValues()
+
+        # subtract math.pi/2 (90) so that the heading is 0 facing 'north'
+        # (given x going from left to right)
+        rad = math.atan2(compass_values[0], compass_values[2]) - (math.pi / 2)
+        if rad < -math.pi:
+            rad = rad + (2 * math.pi)
+
+        # This world is in NUE (not in EUN), so -1* has to be applied
+        # More info about the coordinate system at
+        # https://cyberbotics.com/doc/reference/worldinfo
+        rad *= -1
+        return rad
 
     def run(self):
         raise NotImplementedError

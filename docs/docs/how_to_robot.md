@@ -115,6 +115,15 @@ class MyRobot:
         self.receiver = self.robot.getDevice("supervisor receiver")
         self.receiver.enable(TIME_STEP)
 
+        self.ball_receiver = self.robot.getDevice("ball receiver")
+        self.ball_receiver.enable(TIME_STEP)
+
+        self.gps = self.robot.getDevice("gps")
+        self.gps.enable(TIME_STEP)
+
+        self.compass = self.robot.getDevice("compass")
+        self.compass.enable(TIME_STEP)
+
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
 
@@ -128,25 +137,12 @@ class MyRobot:
         packet = self.receiver.getData()
         self.receiver.nextPacket()
 
-        struct_fmt = 'ddd' * 6 + 'dd' + '?'
+        struct_fmt = '?'
 
         unpacked = struct.unpack(struct_fmt, packet)
-
-        data = {}
-        for i, r in enumerate(ROBOT_NAMES):
-            data[r] = {
-                "x": unpacked[3 * i],
-                "y": unpacked[3 * i + 1],
-                "orientation": unpacked[3 * i + 2]
-            }
-        ball_data_index = 3 * N_ROBOTS
-        data["ball"] = {
-            "x": unpacked[ball_data_index],
-            "y": unpacked[ball_data_index + 1]
+        data = {
+            "waiting_for_kickoff": unpacked[0]
         }
-
-        waiting_for_kickoff_data_index = ball_data_index + 2
-        data["waiting_for_kickoff"] = unpacked[waiting_for_kickoff_data_index]
         return data
 
     def run(self):
@@ -154,10 +150,15 @@ class MyRobot:
             if self.receiver.getQueueLength() > 0:
                 data = self.get_new_data()
 
-                # Get the position of our robot
-                robot_pos = data[self.name]
-                # Get the position of the ball
-                ball_pos = data['ball']
+                # Get data from compass
+                heading = self.get_compass_heading()
+
+                # Get GPS coordinates of the robot
+                robot_pos = self.get_gps_coordinates()
+
+                # Get direction and strength of the IR signal
+                if self.is_new_ball_data():
+                    ball_data = self.get_new_ball_data()
 
                 self.left_motor.setVelocity(1)
                 self.right_motor.setVelocity(-1)
@@ -199,7 +200,8 @@ def __init__(self, robot):
 The `__init__` function is something like a constructor of the class and is called when an instance of the `MyRobot` object
 is created. We use this function to initialize some important variables. The most important one
 is the `Robot` instance, which allows us to get access to the so called Webots devices
-like motor (for controlling the speed) or receiver (for reading data from Supervisor).
+like motor (for controlling the speed), receiver (for reading data from Supervisor),
+and sensors like GPS, Compass or IR Ball receiver.
 **The name and the team of your robot** can be determined by calling `self.robot.getName()`.
 It will give you one of `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`. The first letter determines
 the team ("Blue", "Yellow"), while the second one is the robot's identifier.
@@ -211,10 +213,9 @@ def get_new_data(self):
     ...
 ```
 
-We are not going to explain this deeply. This function is to parse the incoming
+We are not going to explain this deeply. This function simply parses the incoming
 data from supervisor. Feel free to copy and use it. The resulting dictionary
-contains positions of all of the robots as well as the position of the ball. Moreover,
-it contains information whether the goal gets scored and we are waiting for new kickoff.
+just contains a single bit of information: whether a goal was scored and we are waiting for a new kickoff.
 In case the goal gets scored, the value is `True` and is reset to `False` when the
 referee fires new kickoff.
 
@@ -243,16 +244,45 @@ in the queue that we can read.
 ```python
 data = self.get_new_data()
 
-robot_pos = data[self.name]
-ball_pos = data['ball']
+heading = self.get_compass_heading()
+robot_pos = self.get_gps_coordinates()
+if self.is_new_ball_data():
+    ball_data = self.get_new_ball_data()
 
 self.left_motor.setVelocity(1)
 self.right_motor.setVelocity(-1)
 ```
 
-And finally, after reading the new data received from supervisor, we do some calculations
-and set the speed of the motors.
+And finally, after reading the new data received from supervisor as well as data
+from sensors we do some calculations and set the speed of the motors.
 
+
+### Available sensors
+
+#### GPS
+
+This sensor gives you the exact position of the robot.
+For more information check [official GPS documentation](https://cyberbotics.com/doc/reference/gps).
+In `rcj_soccer_robot.py` you can find `get_gps_coordinates()`, which demonstrates
+how to work with GPS sensor.
+
+#### Compass 
+
+Useful sensor to determine the angle (rotation) of the robot from the north.
+For more information check [official compass documentation](https://cyberbotics.com/doc/reference/compass).
+In `rcj_soccer_robot.py` you can find `get_compass_heading()`, which demonstrates
+how to work with compass sensor.
+
+#### Ball IR Sensor
+
+There is an infra-red emitter mounted onto the ball.
+The emitter just emits a signal and each robot receives this signal if it is
+located within a pre-defined range. The receiver is able to determine the
+direction as well as strength of the signal, which can be used for navigating
+robots towards the ball.
+
+For more information check the [official receiver documentation](https://cyberbotics.com/doc/reference/receiver)
+or our `get_new_ball_data()` method in `rcj_soccer_robot.py`.
 
 ## Importing shared code
 

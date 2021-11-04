@@ -16,6 +16,7 @@ try:
          'yellow_png_url=',
          'controller_blue=',
          'controller_yellow=',
+         'ir_range='
          ]
     )
 except getopt.GetoptError as err:
@@ -24,7 +25,8 @@ except getopt.GetoptError as err:
 
 
 template_path = None
-params = {}
+# Default params
+params = {'ir_range': '0.6'}
 for option, value in options:
     if option == '--template':
         template_path = Path(value)
