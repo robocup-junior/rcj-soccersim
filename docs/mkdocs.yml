@@ -8,12 +8,8 @@ markdown_extensions:
   - pymdownx.superfences
 
 nav:
-  - Simulation Challenge 2021: index.md
-  - Qualification: qualification.md
-  - Qualification Results: qualification_results.md
-  - Rules: rules.md
+  - Introduction: index.md
   - Getting Started: getting_started.md
   - How to program your robot: how_to_robot.md
   - Inter-robot communication: communication_between_robots.md
-  - Code submission: code_submission.md
-  - Submission check: submission_check.md
+  - How to run the simulation: how_to_run_sim.md
