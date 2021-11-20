@@ -1,19 +1,16 @@
 import random
 from typing import Optional
+
 from referee.consts import (
-    TIME_STEP,
-    LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS,
-    ROBOT_NAMES,
     GameEvents,
-    Team,
+    LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS,
     NeutralSpotDistanceType,
+    ROBOT_NAMES,
+    Team,
+    TIME_STEP,
 )
 from referee.supervisor import RCJSoccerSupervisor
-from referee.utils import (
-    is_in_blue_goal,
-    is_in_yellow_goal,
-    is_outside,
-)
+from referee.utils import is_in_blue_goal, is_in_yellow_goal, is_outside
 
 
 class RCJSoccerReferee(RCJSoccerSupervisor):
@@ -55,15 +52,16 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
             self.progress_chck[robot].track(pos)
 
             x, z = pos[0], pos[2]
-            if (is_outside(x, z) or
-                    not self.progress_chck[robot].is_progress(robot)):
+            if is_outside(x, z) or not self.progress_chck[robot].is_progress(
+                robot
+            ):
                 self.eventer.event(
                     supervisor=self,
                     type=GameEvents.LACK_OF_PROGRESS.value,
                     payload={
                         "type": "robot",
                         "robot_name": robot,
-                    }
+                    },
                 )
                 nearest_spots = self.get_unoccupied_neutral_spots_sorted(
                     NeutralSpotDistanceType.NEAREST.value,
@@ -72,25 +70,26 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
 
                 if nearest_spots:
                     neutral_spot = random.choice(
-                        nearest_spots[:LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS], # noqa
+                        nearest_spots[
+                            :LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS
+                        ],  # noqa
                     )
                     self.move_object_to_neutral_spot(robot, neutral_spot[0])
 
                 self.reset_checkers(robot)
 
         bpos = self.ball_translation.copy()
-        self.progress_chck['ball'].track(bpos)
+        self.progress_chck["ball"].track(bpos)
         bx, bz = bpos[0], bpos[2]
 
-        if (is_outside(bx, bz)
-                or not self.progress_chck['ball'].is_progress('ball')):
+        if is_outside(bx, bz) or not self.progress_chck["ball"].is_progress(
+            "ball"
+        ):
 
             self.eventer.event(
                 supervisor=self,
                 type=GameEvents.LACK_OF_PROGRESS.value,
-                payload={
-                    "type": "ball"
-                },
+                payload={"type": "ball"},
             )
             nearest_spots = self.get_unoccupied_neutral_spots_sorted(
                 NeutralSpotDistanceType.NEAREST.value,
@@ -99,7 +98,9 @@ class RCJSoccerReferee(RCJSoccerSupervisor):
 
             if nearest_spots:
                 neutral_spot = random.choice(
-                    nearest_spots[:LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS], # noqa
+                    nearest_spots[
+                        :LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS
+                    ],  # noqa
                 )
 
                 self.move_object_to_neutral_spot("ball", neutral_spot[0])

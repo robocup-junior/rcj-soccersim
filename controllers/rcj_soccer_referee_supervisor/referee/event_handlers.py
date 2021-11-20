@@ -1,9 +1,7 @@
 import json
-from pathlib import Path
 from datetime import datetime
+from pathlib import Path
 from typing import Optional
-
-from referee.consts import GameEvents
 
 
 class EventHandler:
@@ -37,17 +35,17 @@ class JSONLoggerHandler(EventHandler):
     def handle(self, supervisor, type: str, payload: Optional[dict] = None):
         matchtime = supervisor.match_time - supervisor.time
         data = {
-            "datetime": datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+            "datetime": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
             "matchtime": matchtime,
             "event": type,
         }
 
         if payload is not None:
-            data['payload'] = payload
+            data["payload"] = payload
 
-        with self.logfile.open('a') as outfile:
+        with self.logfile.open("a") as outfile:
             json.dump(data, outfile)
-            outfile.write('\n')
+            outfile.write("\n")
 
 
 class DrawMessageHandler(EventHandler):

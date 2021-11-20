@@ -1,0 +1,29 @@
+[tool.black]
+line-length = 79
+exclude = '''
+(
+    /(
+        .git
+     |  .github
+     |  docs
+     |  venv
+     |  worlds
+     )/
+)
+'''
+
+[tool.isort]
+skip_glob = '.git,.github,docs,venv,worlds'
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+indent = 4
+length_sort = false
+default_section = 'THIRDPARTY'
+known_third_party = 'controller'
+known_first_party = 'referee,recorder'
+order_by_type = false
+atomic = true
+combine_as_imports = true
+combine_star = true

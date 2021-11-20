@@ -1,8 +1,8 @@
-from controller import Supervisor
-
-from pathlib import Path
 import datetime
 import time
+from pathlib import Path
+
+from controller import Supervisor
 
 from recorder.consts import RecordingFileSuffix
 
@@ -10,11 +10,13 @@ from recorder.consts import RecordingFileSuffix
 class BaseVideoRecordAssistant:
     output_suffix = ""
 
-    def __init__(self,
-                 supervisor: Supervisor,
-                 output_path: str = "",
-                 fastforward_rate: int = 1,
-                 resolution: str = "720p"):
+    def __init__(
+        self,
+        supervisor: Supervisor,
+        output_path: str = "",
+        fastforward_rate: int = 1,
+        resolution: str = "720p",
+    ):
 
         self.supervisor = supervisor
         self.output_path = output_path
@@ -30,14 +32,18 @@ class BaseVideoRecordAssistant:
         if self.output_path == "":
             # When output path is not specified
             time_str = datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")
-            return "{}/{}.{}".format(str(Path.home()), time_str, self.output_suffix)
+            return "{}/{}.{}".format(
+                str(Path.home()), time_str, self.output_suffix
+            )
 
         return self.output_path
 
     def get_resolution(self):
-        res_table = {"480p": (720, 480),
-                     "720p": (1280, 720),
-                     "1080p": (1920, 1080)}
+        res_table = {
+            "480p": (720, 480),
+            "720p": (1280, 720),
+            "1080p": (1920, 1080),
+        }
 
         if self.resolution not in res_table:
             raise ValueError("Invalid Resolution")
@@ -66,13 +72,15 @@ class MP4VideoRecordAssistant(BaseVideoRecordAssistant):
 
         # API details for movieStartRecording
         # https://www.cyberbotics.com/doc/reference/supervisor?tab-language=python#wb_supervisor_movie_start_recording
-        self.supervisor.movieStartRecording(filename,
-                                            width,
-                                            height,
-                                            quality=100,
-                                            codec=0,
-                                            acceleration=self.fastforward_rate,
-                                            caption=False)
+        self.supervisor.movieStartRecording(
+            filename,
+            width,
+            height,
+            quality=100,
+            codec=0,
+            acceleration=self.fastforward_rate,
+            caption=False,
+        )
 
         self._is_recording = True
 
