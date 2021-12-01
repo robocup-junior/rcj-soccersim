@@ -32,8 +32,8 @@ class RCJSoccerRobot:
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
 
-        self.left_motor.setPosition(float('+inf'))
-        self.right_motor.setPosition(float('+inf'))
+        self.left_motor.setPosition(float("+inf"))
+        self.right_motor.setPosition(float("+inf"))
 
         self.left_motor.setVelocity(0.0)
         self.right_motor.setVelocity(0.0)
@@ -49,12 +49,10 @@ class RCJSoccerRobot:
                 }
         """
         # True/False telling whether the goal was scored
-        struct_fmt = '?'
+        struct_fmt = "?"
         unpacked = struct.unpack(struct_fmt, packet)
 
-        data = {
-            "waiting_for_kickoff": unpacked[0]
-        }
+        data = {"waiting_for_kickoff": unpacked[0]}
         return data
 
     def get_new_data(self) -> dict:
@@ -81,10 +79,10 @@ class RCJSoccerRobot:
         Returns:
             dict: Parsed message stored in dictionary.
         """
-        struct_fmt = 'i'
+        struct_fmt = "i"
         unpacked = struct.unpack(struct_fmt, packet)
         data = {
-            'robot_id': unpacked[0],
+            "robot_id": unpacked[0],
         }
         return data
 
@@ -112,7 +110,7 @@ class RCJSoccerRobot:
         Args:
              robot_id (int): ID of the robot
         """
-        struct_fmt = 'i'
+        struct_fmt = "i"
         data = [robot_id]
         packet = struct.pack(struct_fmt, *data)
         self.team_emitter.send(packet)
@@ -132,8 +130,8 @@ class RCJSoccerRobot:
         """
         _ = self.ball_receiver.getData()
         data = {
-            'direction': self.ball_receiver.getEmitterDirection(),
-            'strength': self.ball_receiver.getSignalStrength(),
+            "direction": self.ball_receiver.getEmitterDirection(),
+            "strength": self.ball_receiver.getSignalStrength(),
         }
         self.ball_receiver.nextPacket()
         return data

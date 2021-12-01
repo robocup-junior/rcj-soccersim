@@ -1,28 +1,28 @@
 import math
-import struct
 import random
-
+import struct
 from typing import List, Tuple
 
 from controller import Supervisor
-from referee.progress_checker import ProgressChecker
-from referee.penalty_area_checker import PenaltyAreaChecker
+
 from referee.consts import (
-    ROBOT_NAMES,
-    ROBOT_INITIAL_TRANSLATION,
-    ROBOT_INITIAL_ROTATION,
+    BALL_DEPTH,
     BALL_INITIAL_TRANSLATION,
+    DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
     KICKOFF_TRANSLATION,
     LabelIDs,
     MAX_EVENT_MESSAGES_IN_QUEUE,
     NEUTRAL_SPOTS,
     NeutralSpotDistanceType,
-    DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
     OBJECT_DEPTH,
-    BALL_DEPTH,
+    ROBOT_INITIAL_ROTATION,
+    ROBOT_INITIAL_TRANSLATION,
+    ROBOT_NAMES,
 )
-from referee.eventer import Eventer
 from referee.event_handlers import EventHandler
+from referee.eventer import Eventer
+from referee.penalty_area_checker import PenaltyAreaChecker
+from referee.progress_checker import ProgressChecker
 from referee.utils import time_to_string
 
 
@@ -43,7 +43,7 @@ class RCJSoccerSupervisor(Supervisor):
         penalty_area_allowed_time: int,
         penalty_area_reset_after: int,
         post_goal_wait_time: int = 3,
-        initial_position_noise: float = 0.15
+        initial_position_noise: float = 0.15,
     ):
 
         super().__init__()
@@ -84,18 +84,17 @@ class RCJSoccerSupervisor(Supervisor):
         for robot in ROBOT_NAMES:
             robot_node = self.getFromDef(robot)
             self.robot_nodes[robot] = robot_node
-            field = robot_node.getField('translation')
+            field = robot_node.getField("translation")
 
             self.robot_translation_fields[robot] = field
 
-            field = robot_node.getField('rotation')
+            field = robot_node.getField("rotation")
             self.robot_rotation_fields[robot] = field
 
             self.robot_in_penalty_counter[robot] = 0
 
             self.progress_chck[robot] = ProgressChecker(
-                progress_check_steps,
-                progress_check_threshold
+                progress_check_steps, progress_check_threshold
             )
 
             self.penalty_area_chck[robot] = PenaltyAreaChecker(
@@ -106,9 +105,10 @@ class RCJSoccerSupervisor(Supervisor):
         self.ball = self.getFromDef("BALL")
         self.ball_translation_field = self.ball.getField("translation")
 
-        bpc = ProgressChecker(ball_progress_check_steps,
-                              ball_progress_check_threshold)
-        self.progress_chck['ball'] = bpc
+        bpc = ProgressChecker(
+            ball_progress_check_steps, ball_progress_check_threshold
+        )
+        self.progress_chck["ball"] = bpc
 
         self.reset_positions()
 
@@ -156,7 +156,7 @@ class RCJSoccerSupervisor(Supervisor):
             0.92 - (len(self.team_name_blue) * 0.01),  # X position
             0.05,  # Y position
             0.1,  # Size
-            0x0000ff,  # Color
+            0x0000FF,  # Color
             0.0,  # Transparency
             "Tahoma",  # Font
         )
@@ -167,9 +167,9 @@ class RCJSoccerSupervisor(Supervisor):
             0.05,  # X position
             0.05,  # Y position
             0.1,  # Size
-            0xffff00,  # Color
+            0xFFFF00,  # Color
             0.0,  # Transparency
-            "Tahoma"  # Font
+            "Tahoma",  # Font
         )
 
     def draw_scores(self, blue: int, yellow: int):
@@ -187,7 +187,7 @@ class RCJSoccerSupervisor(Supervisor):
             0.92,  # X position
             0.01,  # Y position
             0.1,  # Size
-            0x0000ff,  # Color
+            0x0000FF,  # Color
             0.0,  # Transparency
             "Tahoma",  # Font
         )
@@ -198,9 +198,9 @@ class RCJSoccerSupervisor(Supervisor):
             0.05,  # X position
             0.01,  # Y position
             0.1,  # Size
-            0xffff00,  # Color
+            0xFFFF00,  # Color
             0.0,  # Transparency
-            "Tahoma"  # Font
+            "Tahoma",  # Font
         )
 
     def draw_time(self, time: int):
@@ -237,7 +237,7 @@ class RCJSoccerSupervisor(Supervisor):
             0.30,
             0.40,
             0.4,
-            0xff0000,
+            0xFF0000,
             transparency,
             "Verdana",
         )
@@ -251,7 +251,7 @@ class RCJSoccerSupervisor(Supervisor):
             0.30,
             0.40,
             0.4,
-            0xff0000,
+            0xFF0000,
             1.0,
             "Verdana",
         )
@@ -267,9 +267,9 @@ class RCJSoccerSupervisor(Supervisor):
                 LabelIDs.EVENT_MESSAGES.value,
                 "\n".join(messages),
                 0.01,
-                0.95 - ((len(messages)-1) * 0.025),
+                0.95 - ((len(messages) - 1) * 0.025),
                 0.05,
-                0xffffff,
+                0xFFFFFF,
                 0.0,
                 "Tahoma",
             )
@@ -287,7 +287,7 @@ class RCJSoccerSupervisor(Supervisor):
             str: the packed packet.
         """
         # True/False telling whether the goal was scored
-        struct_fmt = '?'
+        struct_fmt = "?"
         data = list()
 
         # Add Notification if the goal is scored and we are waiting for kickoff
@@ -377,11 +377,10 @@ class RCJSoccerSupervisor(Supervisor):
     def reset_ball_position(self):
         """Reset the position of the ball."""
         self.set_ball_position(BALL_INITIAL_TRANSLATION)
-        self.progress_chck['ball'].reset()
+        self.progress_chck["ball"].reset()
 
     def _add_initial_position_noise(
-        self,
-        translation: List[float]
+        self, translation: List[float]
     ) -> List[float]:
 
         level = self.initial_position_noise
@@ -396,13 +395,13 @@ class RCJSoccerSupervisor(Supervisor):
             object_name (str): Either "ball" or the robot's name.
         """
         self.progress_chck[object_name].reset()
-        if object_name != 'ball':
+        if object_name != "ball":
             self.penalty_area_chck[object_name].reset()
 
     def robot_name_to_team_name(self, robot_name: str) -> str:
-        if robot_name.startswith('Y'):
+        if robot_name.startswith("Y"):
             return self.team_name_yellow
-        elif robot_name.startswith('B'):
+        elif robot_name.startswith("B"):
             return self.team_name_blue
         else:
             raise ValueError(f"Unrecognized robot's name {robot_name}")
@@ -416,7 +415,7 @@ class RCJSoccerSupervisor(Supervisor):
             str: Name of the robot that is kicking off.
         """
         # Always kickoff with the third robot
-        robot = f'{team}3'
+        robot = f"{team}3"
 
         self.set_robot_position(robot, KICKOFF_TRANSLATION[team])
         self.set_robot_rotation(robot, ROBOT_INITIAL_ROTATION[robot])
@@ -436,7 +435,7 @@ class RCJSoccerSupervisor(Supervisor):
         # Check whether any of the robots is blocking the neutral spot
         for _, pos in self.robot_translation.items():
             rx, rz = pos[0], pos[2]
-            distance = math.sqrt((rx - ns_x)**2 + (rz - ns_z)**2)
+            distance = math.sqrt((rx - ns_x) ** 2 + (rz - ns_z) ** 2)
             if distance < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
                 return True
 
@@ -475,7 +474,7 @@ class RCJSoccerSupervisor(Supervisor):
         spot_distance_pairs = []
         for ns, ns_pos in NEUTRAL_SPOTS.items():
             ns_x, ns_z = ns_pos
-            spot_distance = math.sqrt((x - ns_x)**2 + (z - ns_z)**2)
+            spot_distance = math.sqrt((x - ns_x) ** 2 + (z - ns_z) ** 2)
 
             if not self.is_neutral_spot_occupied(ns_x, ns_z):
                 spot_distance_pairs.append((ns, spot_distance))
@@ -508,5 +507,6 @@ class RCJSoccerSupervisor(Supervisor):
             self.set_ball_position([x, BALL_DEPTH, z])
         else:
             self.set_robot_position(object_name, [x, OBJECT_DEPTH, z])
-            self.set_robot_rotation(object_name,
-                                    ROBOT_INITIAL_ROTATION[object_name])
+            self.set_robot_rotation(
+                object_name, ROBOT_INITIAL_ROTATION[object_name]
+            )

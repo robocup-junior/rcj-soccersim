@@ -29,8 +29,10 @@ class ProgressChecker:
 
         prev_position = self.prev_position
 
-        delta = math.sqrt((prev_position[0] - position[0]) ** 2 +
-                          (prev_position[2] - position[2]) ** 2)
+        delta = math.sqrt(
+            (prev_position[0] - position[0]) ** 2
+            + (prev_position[2] - position[2]) ** 2
+        )
 
         # store the currently computed delta sample
         self.samples[self.iterator % self.steps] = delta

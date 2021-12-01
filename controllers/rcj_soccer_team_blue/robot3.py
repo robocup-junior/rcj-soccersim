@@ -1,21 +1,21 @@
 # rcj_soccer_player controller - ROBOT B3
 
 # Feel free to import built-in libraries
-import math
+import math  # noqa: F401
 
 # You can also import scripts that you put into the folder with controller
-from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 import utils
+from rcj_soccer_robot import RCJSoccerRobot, TIME_STEP
 
 
 class MyRobot3(RCJSoccerRobot):
     def run(self):
         while self.robot.step(TIME_STEP) != -1:
             if self.is_new_data():
-                data = self.get_new_data()
+                data = self.get_new_data()  # noqa: F841
 
                 while self.is_new_team_data():
-                    team_data = self.get_new_team_data()
+                    team_data = self.get_new_team_data()  # noqa: F841
                     # Do something with team data
 
                 if self.is_new_ball_data():
@@ -27,13 +27,13 @@ class MyRobot3(RCJSoccerRobot):
                     continue
 
                 # Get data from compass
-                heading = self.get_compass_heading()
+                heading = self.get_compass_heading()  # noqa: F841
 
                 # Get GPS coordinates of the robot
-                robot_pos = self.get_gps_coordinates()
+                robot_pos = self.get_gps_coordinates()  # noqa: F841
 
                 # Compute the speed for motors
-                direction = utils.get_direction(ball_data['direction'])
+                direction = utils.get_direction(ball_data["direction"])
 
                 # If the robot has the ball right in front of it, go forward,
                 # rotate otherwise

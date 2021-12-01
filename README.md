@@ -45,3 +45,20 @@ Which allows for at least some automation. Further info can be found in the
 The sample players as well as the "automatic referee" are implemented in
 Python, which should allow for easily updating the code to match the rules and
 avoid any compilation issues.
+
+## Development
+
+We are open to contributions! Have a look at our [issues](https://github.com/RoboCupJuniorTC/rcj-soccer-sim/issues).
+Before you make a pull request, make sure the code is formatted
+with `black` and `isort`, and `flake8` issues are fixed.
+
+To do so, follow these steps:
+
+1. Create virtualenv `python3 -m venv venv`
+2. Install development modules `pip install -r requirements/development.txt`
+3. Setup pre-commit hook `pre-commit install`. This hook will not allow you to
+commit in case one of the checkers raises an error.
+4. In order format the code, run the formatters in this order
+    * `isort .`
+    * `black .`
+5. Manually fix error raised by `flake8 .`
