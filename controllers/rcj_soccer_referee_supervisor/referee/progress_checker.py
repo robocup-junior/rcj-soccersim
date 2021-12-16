@@ -1,4 +1,5 @@
 import math
+from typing import List
 
 
 class ProgressChecker:
@@ -13,12 +14,14 @@ class ProgressChecker:
         self.iterator = 0
         self.prev_position = None
 
-    def track(self, position):
-        """
-        Make ProgressChecker react to a new position. Internally, it computes
+    def track(self, position: List[float]):
+        """Make ProgressChecker react to a new position. Internally, it computes
         the Euclidian distance from the previous position and saves it so that
         it can be used when computing whether the given object has made
         progress.
+
+        Args:
+            position (list): Current position of the object
         """
         # If the track function gets called for the first time (i.e. we do not
         # remember the previous position), store the current position as the
@@ -40,23 +43,15 @@ class ProgressChecker:
 
         self.prev_position = position
 
-    def is_progress(self, robot=None) -> bool:
-        """
-        Detect whether the object which is being tracked has made some
+    def is_progress(self) -> bool:
+        """Detect whether the object which is being tracked has made some
         "progress". In other words, check whether we have tracked enough
         movement (more than the threshold) since the last reset.
 
-        Args:
-            robot (optional): name of robot, used only for debugging purposes.
+        Returns:
+            bool: Whether the object has made some "progress"
         """
         s = sum(self.samples)
-
-        # if robot:
-        #     print(f'Robot {robot} iterator: {self.iterator}, '
-        #           f's: {s}, thr: {self.threshold}')
-        # else:
-        #     print(f'iterator: {self.iterator}, s: {s}, '
-        #           f'thr: {self.threshold}')
 
         # We we haven't tracked at least as many samples as the number of
         # steps, our default position is "benefit of doubt": we assume enough

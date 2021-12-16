@@ -17,10 +17,10 @@ class PenaltyAreaChecker:
         self.time_entered_penalty = None
         self.time_left_penalty = None
 
-    def is_in_yellow_penalty(self, x: int, z: int) -> bool:
+    def is_in_yellow_penalty(self, x: float, z: float) -> bool:
         return x < self.y_vertical and self.y_lower < z < self.y_upper
 
-    def is_in_blue_penalty(self, x: int, z: int) -> bool:
+    def is_in_blue_penalty(self, x: float, z: float) -> bool:
         return x > self.b_vertical and self.b_lower < z < self.b_upper
 
     @property
@@ -40,6 +40,12 @@ class PenaltyAreaChecker:
         return self.time_left_penalty is not None
 
     def track(self, position: List[float], time: int):
+        """Make PenaltyAreaChecker react to a new position.
+
+        Args:
+            position (list): Current position of the object
+            time (int): Current game time
+        """
         self.time = time
         x, z = position[0], position[2]
 
@@ -58,13 +64,12 @@ class PenaltyAreaChecker:
             elif self.has_left and self.has_been_outside_penalty_for_longer:
                 self.reset()
 
-    def is_violating(self) -> int:
-        """
-        Detect whether the robot stays for longer period of time inside
+    def is_violating(self) -> bool:
+        """Detect whether the robot stays for longer period of time inside
         the penalty area.
 
         Returns:
-            bool - whether the robot is violating this rule
+            bool: whether the robot is violating this rule
         """
         if self.has_entered and not self.has_left:
             if self.is_inside_penalty_over_limit:

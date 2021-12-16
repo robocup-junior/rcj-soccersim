@@ -13,6 +13,7 @@ from recorder.recorder import (
 from referee.consts import DEFAULT_MATCH_TIME, TIME_STEP
 from referee.event_handlers import DrawMessageHandler, JSONLoggerHandler
 from referee.referee import RCJSoccerReferee
+from referee.supervisor import RCJSoccerSupervisor
 
 
 def get_video_recorder_class(rec_format: str) -> BaseVideoRecordAssistant:
@@ -73,7 +74,9 @@ output_prefix = output_path(
 )
 reflog_path = output_prefix.with_suffix(".jsonl")
 
+supervisor = RCJSoccerSupervisor()
 referee = RCJSoccerReferee(
+    supervisor=supervisor,
     match_time=MATCH_TIME,
     progress_check_steps=ceil(15 / (TIME_STEP / 1000.0)),
     progress_check_threshold=0.5,
@@ -100,14 +103,14 @@ for rec_format in REC_FORMATS:
 
     recorders.append(
         recorder_class(
-            supervisor=referee,
+            supervisor=supervisor,
             output_path=str(output_prefix.with_suffix(f".{rec_suffix}")),
             resolution="720p",
         )
     )
 
 if automatic_mode:
-    referee.simulationSetMode(referee.SIMULATION_MODE_FAST)
+    supervisor.simulationSetMode(supervisor.SIMULATION_MODE_FAST)
     for recorder in recorders:
         recorder.start_recording()
 
@@ -117,17 +120,14 @@ referee.add_event_subscriber(DrawMessageHandler())
 referee.kickoff()
 
 # The "event" loop for the referee
-while referee.step(TIME_STEP) != -1:
-    referee.update_positions()
-    referee.emit_data()
-
+while supervisor.step(TIME_STEP) != -1:
     # If the tick does not return True, the match has ended and the event loop
     # can stop
     if not referee.tick():
         break
 
 # When end of match, pause simulator immediately
-referee.simulationSetMode(referee.SIMULATION_MODE_PAUSE)
+supervisor.simulationSetMode(supervisor.SIMULATION_MODE_PAUSE)
 
 for recorder in recorders:
     if recorder.is_recording():
@@ -136,4 +136,4 @@ for recorder in recorders:
         recorder.wait_processing()
 
 if automatic_mode:
-    referee.simulationQuit(0)
+    supervisor.simulationQuit(0)
