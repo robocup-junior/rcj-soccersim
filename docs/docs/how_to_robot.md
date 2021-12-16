@@ -124,6 +124,15 @@ class MyRobot:
         self.compass = self.robot.getDevice("compass")
         self.compass.enable(TIME_STEP)
 
+        self.sonar_left = self.robot.getDevice("distancesensor left")
+        self.sonar_left.enable(TIME_STEP)
+        self.sonar_right = self.robot.getDevice("distancesensor right")
+        self.sonar_right.enable(TIME_STEP)
+        self.sonar_front = self.robot.getDevice("distancesensor front")
+        self.sonar_front.enable(TIME_STEP)
+        self.sonar_back = self.robot.getDevice("distancesensor back")
+        self.sonar_back.enable(TIME_STEP)
+
         self.left_motor = self.robot.getDevice("left wheel motor")
         self.right_motor = self.robot.getDevice("right wheel motor")
 
@@ -155,6 +164,9 @@ class MyRobot:
 
                 # Get GPS coordinates of the robot
                 robot_pos = self.get_gps_coordinates()
+
+                # Get data from sonars
+                sonar_values = self.get_sonar_values()
 
                 # Get direction and strength of the IR signal
                 if self.is_new_ball_data():
@@ -201,7 +213,7 @@ The `__init__` function is something like a constructor of the class and is call
 is created. We use this function to initialize some important variables. The most important one
 is the `Robot` instance, which allows us to get access to the so called Webots devices
 like motor (for controlling the speed), receiver (for reading data from Supervisor),
-and sensors like GPS, Compass or IR Ball receiver.
+and sensors like GPS, Compass, Sonars or IR Ball receiver.
 **The name and the team of your robot** can be determined by calling `self.robot.getName()`.
 It will give you one of `{"B1", "B2", "B3", "Y1", "Y2", "Y3"}`. The first letter determines
 the team ("Blue", "Yellow"), while the second one is the robot's identifier.
@@ -246,6 +258,7 @@ data = self.get_new_data()
 
 heading = self.get_compass_heading()
 robot_pos = self.get_gps_coordinates()
+sonar_values = self.get_sonar_values()
 if self.is_new_ball_data():
     ball_data = self.get_new_ball_data()
 
@@ -272,6 +285,24 @@ Useful sensor to determine the angle (rotation) of the robot from the north.
 For more information check [official compass documentation](https://cyberbotics.com/doc/reference/compass).
 In `rcj_soccer_robot.py` you can find `get_compass_heading()`, which demonstrates
 how to work with compass sensor.
+
+#### Sonars
+
+There are four **sonars** mounted on the robot (each side having one). Since the
+exact position of the robot may be retrieved from GPS, these sensors are useful
+for detecting the opponent's robots. For more information check
+[official distance sensor documentation](https://cyberbotics.com/doc/reference/distancesensor).
+
+Note that you may encounter some error in measurements. When the robot is next to an
+obstacle, the value returned is 0 with error of 0%. On the other hand, when the
+sesnsor does not see anything, the value returned is 1000 with error of 5%.
+The values and errors in between are linearly interpolated.
+
+In `rcj_soccer_robot.py` you can find `get_sonar_values()`, which demonstrates
+how to work with sonar sensors.
+For debugging purposes, you may find it useful to turn on rendering rays of
+distance sensors. This option is available in Webots GUI under
+`View -> Optional Rendering -> Show DistanceSensor Rays`.
 
 #### Ball IR Sensor
 

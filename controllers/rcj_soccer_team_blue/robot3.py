@@ -32,6 +32,9 @@ class MyRobot3(RCJSoccerRobot):
                 # Get GPS coordinates of the robot
                 robot_pos = self.get_gps_coordinates()  # noqa: F841
 
+                # Get data from sonars
+                sonar_values = self.get_sonar_values()  # noqa: F841
+
                 # Compute the speed for motors
                 direction = utils.get_direction(ball_data["direction"])
 
