@@ -122,17 +122,17 @@ DEF SOCCER_FIELD Solid {
             -0.76 0 0.21
             -0.76 0 0.65
             -0.76 0 0.66
-            0.76 0.05 0.66
-            0.76 0.05 0.21
-            0.75 0.05 0.21
-            0.75 0.05 0.59
-            0.69 0.05 0.65
-            -0.69 0.05 0.65
-            -0.75 0.05 0.59
-            -0.75 0.05 0.21
-            -0.76 0.05 0.21
-            -0.76 0.05 0.65
-            -0.76 0.05 0.66
+            0.76 0.09 0.66
+            0.76 0.09 0.21
+            0.75 0.09 0.21
+            0.75 0.09 0.59
+            0.69 0.09 0.65
+            -0.69 0.09 0.65
+            -0.75 0.09 0.59
+            -0.75 0.09 0.21
+            -0.76 0.09 0.21
+            -0.76 0.09 0.65
+            -0.76 0.09 0.66
           ]
         }
         coordIndex [
@@ -156,17 +156,17 @@ DEF SOCCER_FIELD Solid {
             0.75 0 -0.59
             0.75 0 -0.21
             0.76 0 -0.21
-            0.76 0.05 -0.66
-            -0.76 0.05 -0.66
-            -0.76 0.05 -0.65
-            -0.76 0.05 -0.21
-            -0.75 0.05 -0.21
-            -0.75 0.05 -0.59
-            -0.69 0.05 -0.65
-            0.69 0.05 -0.65
-            0.75 0.05 -0.59
-            0.75 0.05 -0.21
-            0.76 0.05 -0.21
+            0.76 0.09 -0.66
+            -0.76 0.09 -0.66
+            -0.76 0.09 -0.65
+            -0.76 0.09 -0.21
+            -0.75 0.09 -0.21
+            -0.75 0.09 -0.59
+            -0.69 0.09 -0.65
+            0.69 0.09 -0.65
+            0.75 0.09 -0.59
+            0.75 0.09 -0.21
+            0.76 0.09 -0.21
           ]
         }
         coordIndex [
@@ -248,86 +248,86 @@ DEF SOCCER_FIELD Solid {
     children [
       USE GROUND
       DEF NOTH_BBOX Transform {
-        translation 0 0.0251 -0.655
+        translation 0 0.045 -0.655
         children [
           Box {
-            size 1.5 0.05 0.01
+            size 1.5 0.09 0.01
           }
         ]
       }
       DEF SOUTH_BBOX Transform {
-        translation 0 0.0251 0.655
+        translation 0 0.045 0.655
         children [
           Box {
-            size 1.5 0.05 0.01
+            size 1.5 0.09 0.01
           }
         ]
       }
       DEF NW_BBOX Transform {
-        translation -0.755 0.0251 -0.43
+        translation -0.755 0.045 -0.43
         children [
           Box {
-            size 0.01 0.05 0.435
+            size 0.01 0.09 0.435
           }
         ]
       }
       DEF NE_BBOX Transform {
-        translation 0.755 0.0251 -0.43
+        translation 0.755 0.045 -0.43
         children [
           Box {
-            size 0.01 0.05 0.435
+            size 0.01 0.09 0.435
           }
         ]
       }
       DEF SW_BBOX Transform {
-        translation -0.755 0.0251 0.43
+        translation -0.755 0.045 0.43
         children [
           Box {
-            size 0.01 0.05 0.435
+            size 0.01 0.09 0.435
           }
         ]
       }
       DEF SE_BBOX Transform {
-        translation 0.755 0.0251 0.43
+        translation 0.755 0.045 0.43
         children [
           Box {
-            size 0.01 0.05 0.435
+            size 0.01 0.09 0.435
           }
         ]
       }
       DEF NWC_BBOX Transform {
-        translation 0.725 0.0251 0.62
+        translation 0.725 0.045 0.62
         rotation 0 1 0 -0.7853
         children [
           Box {
-            size 0.01 0.05 0.09
+            size 0.01 0.09 0.09
           }
         ]
       }
       DEF NEC_BBOX Transform {
-        translation -0.725 0.0251 0.62
+        translation -0.725 0.045 0.62
         rotation 0 1 0 0.7853
         children [
           Box {
-            size 0.01 0.05 0.09
+            size 0.01 0.09 0.09
           }
         ]
       }
       DEF SWC_BBOX Transform {
-        translation 0.725 0.0251 -0.62
+        translation 0.725 0.045 -0.62
         rotation 0 1 0 0.7853
         children [
           Box {
-            size 0.01 0.05 0.09
+            size 0.01 0.09 0.09
           }
         ]
       }
       DEF SEC_BBOX Transform {
-        translation -0.725 0.0251 -0.62
+        translation -0.725 0.045 -0.62
         rotation 0 1 0 -0.7853
         children [
           Box {
-            size 0.01 0.05 0.09
+            size 0.01 0.09 0.09
           }
         ]
       }
@@ -548,6 +548,97 @@ DEF B1 Robot {
         size 0.075 0.075 0.075
       }
     }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
+    }
     Receiver {
       name "supervisor receiver"
       channel 1
@@ -709,6 +800,97 @@ DEF B2 Robot {
         size 0.075 0.075 0.075
       }
     }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
+    }
     Receiver {
       name "supervisor receiver"
       channel 1
@@ -866,6 +1048,97 @@ DEF B3 Robot {
       geometry Box {
         size 0.075 0.075 0.075
       }
+    }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 0.1 100 0, 0.2 200 0, 0.3 300 0, 0.4 400 0, 0.5 500 0, 0.6 600 0, 0.7 700 0, 0.8 800 0, 0.9 900 0, 1 1000 0]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
     }
     Receiver {
       name "supervisor receiver"
@@ -1025,6 +1298,97 @@ DEF Y1 Robot {
         size 0.075 0.075 0.075
       }
     }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
+    }
     Receiver {
       name "supervisor receiver"
       channel 1
@@ -1183,6 +1547,97 @@ DEF Y2 Robot {
         size 0.075 0.075 0.075
       }
     }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
+    }
     Receiver {
       name "supervisor receiver"
       channel 1
@@ -1340,6 +1795,97 @@ DEF Y3 Robot {
       geometry Box {
         size 0.075 0.075 0.075
       }
+    }
+    Solid {
+      translation 0.0385 0.02 0
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation -0.0385 0.02 0
+      rotation 0 1 0 3.14159
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0 0.02 0.0385
+      rotation 0 1 0 4.71239
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation 0 0.02 -0.0385
+      rotation 0 1 0 1.5708
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 1 0
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          type "sonar"
+          numberOfRays 1
+          lookupTable [ 0 0 0, 1 1000 0.05 ]
+        }
+      ]
+      name "back sonar"
     }
     Receiver {
       name "supervisor receiver"
