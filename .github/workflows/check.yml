@@ -1,4 +1,4 @@
-name: code-style-check
+name: code-check
 on:
   push:
     branches:
@@ -18,3 +18,4 @@ jobs:
       - run: isort --check-only .
       - run: black --check .
       - run: flake8 .
+      - run: pytest --cov

@@ -27,3 +27,7 @@ order_by_type = false
 atomic = true
 combine_as_imports = true
 combine_star = true
+
+[tool.coverage.run]
+omit = ["controllers/rcj_soccer_referee_supervisor/referee/tests/*"]
+
