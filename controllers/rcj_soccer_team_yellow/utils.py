@@ -8,6 +8,6 @@ def get_direction(ball_vector: list) -> int:
     Returns:
         int: 0 = forward, -1 = right, 1 = left
     """
-    if -0.13 <= ball_vector[0] <= 0.13:
+    if -0.13 <= ball_vector[1] <= 0.13:
         return 0
-    return -1 if ball_vector[0] < 0 else 1
+    return -1 if ball_vector[1] < 0 else 1

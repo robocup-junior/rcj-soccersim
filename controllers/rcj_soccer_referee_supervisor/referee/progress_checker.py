@@ -34,7 +34,7 @@ class ProgressChecker:
 
         delta = math.sqrt(
             (prev_position[0] - position[0]) ** 2
-            + (prev_position[2] - position[2]) ** 2
+            + (prev_position[1] - position[1]) ** 2
         )
 
         # store the currently computed delta sample
