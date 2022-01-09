@@ -121,26 +121,26 @@ class RCJSoccerSupervisor(Supervisor):
         """Reset the ball's velocity."""
         self.ball.setVelocity([0, 0, 0, 0, 0, 0])
 
-    def is_neutral_spot_occupied(self, ns_x: float, ns_z: float) -> bool:
+    def is_neutral_spot_occupied(self, ns_x: float, ns_y: float) -> bool:
         """Check whether the specific neutral spot is occupied
 
         Args:
             ns_x (float): x position of the neutral spot
-            ns_z (float): z position of the neutral spot
+            ns_y (float): y position of the neutral spot
 
         Returns:
             bool: Whether the neutral spot is unoccupied
         """
         # Check whether any of the robots is blocking the neutral spot
         for _, pos in self.robot_translation.items():
-            rx, rz = pos[0], pos[2]
-            distance = math.sqrt((rx - ns_x) ** 2 + (rz - ns_z) ** 2)
+            rx, ry = pos[0], pos[1]
+            distance = math.sqrt((rx - ns_x) ** 2 + (ry - ns_y) ** 2)
             if distance < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
                 return True
 
         # Check whether the ball is blocking the neutral spot
-        bx, bz = self.ball_translation[0], self.ball_translation[2]
-        distance = math.sqrt((bx - ns_x) ** 2 + (bz - ns_z) ** 2)
+        bx, by = self.ball_translation[0], self.ball_translation[1]
+        distance = math.sqrt((bx - ns_x) ** 2 + (by - ns_y) ** 2)
         if distance < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
             return True
 
@@ -165,17 +165,17 @@ class RCJSoccerSupervisor(Supervisor):
         """
         if object_name == "ball":
             x = self.ball_translation[0]
-            z = self.ball_translation[2]
+            y = self.ball_translation[1]
         else:
             x = self.robot_translation[object_name][0]
-            z = self.robot_translation[object_name][2]
+            y = self.robot_translation[object_name][1]
 
         spot_distance_pairs = []
         for ns, ns_pos in NEUTRAL_SPOTS.items():
-            ns_x, ns_z = ns_pos
-            spot_distance = math.sqrt((x - ns_x) ** 2 + (z - ns_z) ** 2)
+            ns_x, ns_y = ns_pos
+            spot_distance = math.sqrt((x - ns_x) ** 2 + (y - ns_y) ** 2)
 
-            if not self.is_neutral_spot_occupied(ns_x, ns_z):
+            if not self.is_neutral_spot_occupied(ns_x, ns_y):
                 spot_distance_pairs.append((ns, spot_distance))
 
         do_reverse = distance_type == NeutralSpotDistanceType.FURTHEST.value
@@ -196,11 +196,11 @@ class RCJSoccerSupervisor(Supervisor):
             object_name (str): Name of the object (Ball or robot's name)
             neutral_spot (str): The spot the robot will be moved to
         """
-        x, z = NEUTRAL_SPOTS[neutral_spot]
+        x, y = NEUTRAL_SPOTS[neutral_spot]
         if object_name == "ball":
-            self.set_ball_position([x, BALL_DEPTH, z])
+            self.set_ball_position([x, y, BALL_DEPTH])
         else:
-            self.set_robot_position(object_name, [x, OBJECT_DEPTH, z])
+            self.set_robot_position(object_name, [x, y, OBJECT_DEPTH])
             self.set_robot_rotation(
                 object_name, ROBOT_INITIAL_ROTATION[object_name]
             )

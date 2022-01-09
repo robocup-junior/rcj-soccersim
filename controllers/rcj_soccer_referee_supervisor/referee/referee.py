@@ -123,8 +123,8 @@ class RCJSoccerReferee:
         level = self.initial_position_noise
         return [
             translation[0] + (random.random() - 0.5) * level,
-            translation[1],
-            translation[2] + (random.random() - 0.5) * level,
+            translation[1] + (random.random() - 0.5) * level,
+            translation[2],
         ]
 
     def add_event_subscriber(self, subscriber: EventHandler):
@@ -255,9 +255,9 @@ class RCJSoccerReferee:
             pos = self.sv.get_robot_translation(robot)
             self.progress_check[robot].track(pos)
 
-            x, z = pos[0], pos[2]
+            x, y = pos[0], pos[1]
             if (
-                is_outside(x, z)
+                is_outside(x, y)
                 or not self.progress_check[robot].is_progress()
             ):
                 self.eventer.event(
@@ -285,9 +285,9 @@ class RCJSoccerReferee:
 
         bpos = self.sv.get_ball_translation()
         self.progress_check["ball"].track(bpos)
-        bx, bz = bpos[0], bpos[2]
+        bx, by = bpos[0], bpos[1]
 
-        if is_outside(bx, bz) or not self.progress_check["ball"].is_progress():
+        if is_outside(bx, by) or not self.progress_check["ball"].is_progress():
             self.eventer.event(
                 referee=self,
                 type=GameEvents.LACK_OF_PROGRESS.value,
@@ -317,17 +317,17 @@ class RCJSoccerReferee:
         team_kickoff = None
 
         ball_translation = self.sv.get_ball_translation()
-        ball_x, ball_z = ball_translation[0], ball_translation[2]
+        ball_x, ball_y = ball_translation[0], ball_translation[1]
 
         # ball in the blue goal
-        if is_in_blue_goal(ball_x, ball_z):
+        if is_in_blue_goal(ball_x, ball_y):
             self.score_yellow += 1
 
             team_goal = self.team_name_yellow
             team_kickoff = Team.BLUE.value
 
         # ball in the yellow goal
-        elif is_in_yellow_goal(ball_x, ball_z):
+        elif is_in_yellow_goal(ball_x, ball_y):
             self.score_blue += 1
 
             team_goal = self.team_name_blue

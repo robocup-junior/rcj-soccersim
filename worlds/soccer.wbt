@@ -1,15 +1,14 @@
-#VRML_SIM R2021b utf8
+#VRML_SIM R2022a utf8
 WorldInfo {
   info [
     "A simple RCJ Soccer game simulated using Webots."
   ]
   title "RCJ Soccer Sim"
   optimalThreadCount 8
-  coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation 0.7514920402341333 -0.6392670342257186 -0.16308700873151558 5.42412
-  position 1.25037 1.41585 1.7555
+  orientation -0.3718171524084895 -0.11726675761807528 0.920869433053669 3.706903255785043
+  position 1.7483931840718845 1.2701664687979481 1.965968373123659
 }
 TexturedBackground {
 }
@@ -17,21 +16,26 @@ TexturedBackgroundLight {
 }
 DEF SOCCER_FIELD Solid {
   children [
-    DEF GROUND Shape {
-      appearance PBRAppearance {
-        baseColorMap ImageTexture {
-          url [
-            "soccer/soccer-256.jpg"
-          ]
+    DEF GROUND Transform {
+      rotation 0 0 1 1.5707996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "soccer/soccer-256.jpg"
+              ]
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 1.5 1.5
+          }
         }
-        roughness 1
-        metalness 0
-      }
-      geometry Plane {
-        size 1.5 1.5
-      }
+      ]
     }
-    DEF BLUE_GOAL_GROUND Shape {
+    DEF YELLOW_GOAL_GROUND Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -44,10 +48,10 @@ DEF SOCCER_FIELD Solid {
       geometry IndexedFaceSet {
         coord Coordinate {
           point [
-            0.95 0 0.75
-            0.75 0 0.75
-            0.75 0 -0.75
-            0.95 0 -0.75
+            -0.75 -0.95 0
+            -0.75 -0.75 0
+            0.75 -0.75 0
+            0.75 -0.95 0
           ]
         }
         texCoord TextureCoordinate {
@@ -67,7 +71,7 @@ DEF SOCCER_FIELD Solid {
         ]
       }
     }
-    DEF YELLOW_GOAL_GROUND Shape {
+    DEF BLUE_GOAL_GROUND Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -80,10 +84,10 @@ DEF SOCCER_FIELD Solid {
       geometry IndexedFaceSet {
         coord Coordinate {
           point [
-            -0.95 0 0.75
-            -0.75 0 0.75
-            -0.75 0 -0.75
-            -0.95 0 -0.75
+            -0.75 0.95 0
+            -0.75 0.75 0
+            0.75 0.75 0
+            0.75 0.95 0
           ]
         }
         texCoord TextureCoordinate {
@@ -111,28 +115,28 @@ DEF SOCCER_FIELD Solid {
       geometry IndexedFaceSet {
         coord Coordinate {
           point [
-            0.76 0 0.66
-            0.76 0 0.21
-            0.75 0 0.21
-            0.75 0 0.59
-            0.69 0 0.65
-            -0.69 0 0.65
-            -0.75 0 0.59
-            -0.75 0 0.21
-            -0.76 0 0.21
-            -0.76 0 0.65
-            -0.76 0 0.66
-            0.76 0.09 0.66
-            0.76 0.09 0.21
-            0.75 0.09 0.21
-            0.75 0.09 0.59
-            0.69 0.09 0.65
-            -0.69 0.09 0.65
-            -0.75 0.09 0.59
-            -0.75 0.09 0.21
-            -0.76 0.09 0.21
-            -0.76 0.09 0.65
-            -0.76 0.09 0.66
+            -0.66 -0.76 0
+            -0.21 -0.76 0
+            -0.21 -0.75 0
+            -0.59 -0.75 0
+            -0.65 -0.69 0
+            -0.65 0.69 0
+            -0.59 0.75 0
+            -0.21 0.75 0
+            -0.21 0.76 0
+            -0.65 0.76 0
+            -0.66 0.76 0
+            -0.66 -0.76 0.09
+            -0.21 -0.76 0.09
+            -0.21 -0.75 0.09
+            -0.59 -0.75 0.09
+            -0.65 -0.69 0.09
+            -0.65 0.69 0.09
+            -0.59 0.75 0.09
+            -0.21 0.75 0.09
+            -0.21 0.76 0.09
+            -0.65 0.76 0.09
+            -0.66 0.76 0.09
           ]
         }
         coordIndex [
@@ -145,66 +149,32 @@ DEF SOCCER_FIELD Solid {
       geometry IndexedFaceSet {
         coord Coordinate {
           point [
-            0.76 0 -0.66
-            -0.76 0 -0.66
-            -0.76 0 -0.65
-            -0.76 0 -0.21
-            -0.75 0 -0.21
-            -0.75 0 -0.59
-            -0.69 0 -0.65
-            0.69 0 -0.65
-            0.75 0 -0.59
-            0.75 0 -0.21
-            0.76 0 -0.21
-            0.76 0.09 -0.66
-            -0.76 0.09 -0.66
-            -0.76 0.09 -0.65
-            -0.76 0.09 -0.21
-            -0.75 0.09 -0.21
-            -0.75 0.09 -0.59
-            -0.69 0.09 -0.65
-            0.69 0.09 -0.65
-            0.75 0.09 -0.59
-            0.75 0.09 -0.21
-            0.76 0.09 -0.21
+            0.66 -0.76 0
+            0.66 0.76 0
+            0.65 0.76 0
+            0.21 0.76 0
+            0.21 0.75 0
+            0.59 0.75 0
+            0.65 0.69 0
+            0.65 -0.69 0
+            0.59 -0.75 0
+            0.21 -0.75 0
+            0.21 -0.76 0
+            0.66 -0.76 0.09
+            0.66 0.76 0.09
+            0.65 0.76 0.09
+            0.21 0.76 0.09
+            0.21 0.75 0.09
+            0.59 0.75 0.09
+            0.65 0.69 0.09
+            0.65 -0.69 0.09
+            0.59 -0.75 0.09
+            0.21 -0.75 0.09
+            0.21 -0.76 0.09
           ]
         }
         coordIndex [
           0, 10, 9, -1, 0, 9, 8, -1, 2, 1, 0, -1, 4, 3, 2, -1, 5, 4, 2, -1, 0, 8, 7, -1, 6, 5, 2, -1, 0, 7, 6, -1, 0, 6, 2, -1, 11, 12, 13, -1, 13, 14, 15, -1, 13, 15, 16, -1, 20, 21, 11, -1, 19, 20, 11, -1, 13, 16, 17, -1, 18, 19, 11, -1, 11, 13, 17, -1, 11, 17, 18, -1, 0, 1, 12, 11, -1, 1, 2, 13, 12, -1, 2, 3, 14, 13, -1, 3, 4, 15, 14, -1, 4, 5, 16, 15, -1, 5, 6, 17, 16, -1, 6, 7, 18, 17, -1, 7, 8, 19, 18, -1, 8, 9, 20, 19, -1, 9, 10, 21, 20, -1, 10, 0, 11, 21, -1
-        ]
-      }
-    }
-    DEF BLUE_GOAL Shape {
-      appearance PBRAppearance {
-        baseColor 0 0 1
-        roughness 1
-        metalness 0
-      }
-      geometry IndexedFaceSet {
-        coord Coordinate {
-          point [
-            0.86 0 0.21
-            0.86 0 -0.21
-            0.75 0 -0.21
-            0.75 0 -0.2
-            0.85 0 -0.2
-            0.85 0 0.2
-            0.75 0 0.2
-            0.75 0 0.21
-            0.86 0 0.21
-            0.86 0.12 0.21
-            0.86 0.12 -0.21
-            0.75 0.12 -0.21
-            0.75 0.12 -0.2
-            0.85 0.12 -0.2
-            0.85 0.12 0.2
-            0.75 0.12 0.2
-            0.75 0.12 0.21
-            0.86 0.12 0.21
-          ]
-        }
-        coordIndex [
-          0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 0, 1, 10, 9, -1, 1, 2, 11, 10, -1, 2, 3, 12, 11, -1, 3, 4, 13, 12, -1, 4, 5, 14, 13, -1, 5, 6, 15, 14, -1, 6, 7, 16, 15, -1, 7, 8, 17, 16, -1
         ]
       }
     }
@@ -217,24 +187,58 @@ DEF SOCCER_FIELD Solid {
       geometry IndexedFaceSet {
         coord Coordinate {
           point [
-            -0.86 0 0.21
-            -0.75 0 0.21
-            -0.75 0 0.2
-            -0.85 0 0.2
-            -0.85 0 -0.2
-            -0.75 0 -0.2
-            -0.75 0 -0.21
-            -0.86 0 -0.21
-            -0.86 0 0.21
-            -0.86 0.12 0.21
-            -0.75 0.12 0.21
-            -0.75 0.12 0.2
-            -0.85 0.12 0.2
-            -0.85 0.12 -0.2
-            -0.75 0.12 -0.2
-            -0.75 0.12 -0.21
-            -0.86 0.12 -0.21
-            -0.86 0.12 0.21
+            -0.21 -0.86 0
+            0.21 -0.86 0
+            0.21 -0.75 0
+            0.2 -0.75 0
+            0.2 -0.85 0
+            -0.2 -0.85 0
+            -0.2 -0.75 0
+            -0.21 -0.75 0
+            -0.21 -0.86 0
+            -0.21 -0.86 0.12
+            0.21 -0.86 0.12
+            0.21 -0.75 0.12
+            0.2 -0.75 0.12
+            0.2 -0.85 0.12
+            -0.2 -0.85 0.12
+            -0.2 -0.75 0.12
+            -0.21 -0.75 0.12
+            -0.21 -0.86 0.12
+          ]
+        }
+        coordIndex [
+          0, 1, 2, 3, 4, 5, 6, 7, 8, -1, 0, 1, 10, 9, -1, 1, 2, 11, 10, -1, 2, 3, 12, 11, -1, 3, 4, 13, 12, -1, 4, 5, 14, 13, -1, 5, 6, 15, 14, -1, 6, 7, 16, 15, -1, 7, 8, 17, 16, -1
+        ]
+      }
+    }
+    DEF BLUE_GOAL Shape {
+      appearance PBRAppearance {
+        baseColor 0 0 1
+        roughness 1
+        metalness 0
+      }
+      geometry IndexedFaceSet {
+        coord Coordinate {
+          point [
+            -0.21 0.86 0
+            -0.21 0.75 0
+            -0.2 0.75 0
+            -0.2 0.85 0
+            0.2 0.85 0
+            0.2 0.75 0
+            0.21 0.75 0
+            0.21 0.86 0
+            -0.21 0.86 0
+            -0.21 0.86 0.12
+            -0.21 0.75 0.12
+            -0.2 0.75 0.12
+            -0.2 0.85 0.12
+            0.2 0.85 0.12
+            0.2 0.75 0.12
+            0.21 0.75 0.12
+            0.21 0.86 0.12
+            -0.21 0.86 0.12
           ]
         }
         coordIndex [
@@ -248,134 +252,134 @@ DEF SOCCER_FIELD Solid {
     children [
       USE GROUND
       DEF NOTH_BBOX Transform {
-        translation 0 0.045 -0.655
+        translation 0.655 0 0.045
         children [
           Box {
-            size 1.5 0.09 0.01
+            size 0.01 1.5 0.09
           }
         ]
       }
       DEF SOUTH_BBOX Transform {
-        translation 0 0.045 0.655
+        translation -0.655 0 0.045
         children [
           Box {
-            size 1.5 0.09 0.01
+            size 0.01 1.5 0.09
           }
         ]
       }
       DEF NW_BBOX Transform {
-        translation -0.755 0.045 -0.43
+        translation 0.43 0.755 0.045
         children [
           Box {
-            size 0.01 0.09 0.435
+            size 0.435 0.01 0.09
           }
         ]
       }
       DEF NE_BBOX Transform {
-        translation 0.755 0.045 -0.43
+        translation 0.43 -0.755 0.045
         children [
           Box {
-            size 0.01 0.09 0.435
+            size 0.435 0.01 0.09
           }
         ]
       }
       DEF SW_BBOX Transform {
-        translation -0.755 0.045 0.43
+        translation -0.43 0.755 0.045
         children [
           Box {
-            size 0.01 0.09 0.435
+            size 0.435 0.01 0.09
           }
         ]
       }
       DEF SE_BBOX Transform {
-        translation 0.755 0.045 0.43
+        translation -0.43 -0.755 0.045
         children [
           Box {
-            size 0.01 0.09 0.435
+            size 0.435 0.01 0.09
           }
         ]
       }
       DEF NWC_BBOX Transform {
-        translation 0.725 0.045 0.62
-        rotation 0 1 0 -0.7853
+        translation -0.62 -0.725 0.045
+        rotation 0 0 1 -0.7853
         children [
           Box {
-            size 0.01 0.09 0.09
+            size 0.09 0.01 0.09
           }
         ]
       }
       DEF NEC_BBOX Transform {
-        translation -0.725 0.045 0.62
-        rotation 0 1 0 0.7853
+        translation -0.62 0.725 0.045
+        rotation 0 0 1 0.7853
         children [
           Box {
-            size 0.01 0.09 0.09
+            size 0.09 0.01 0.09
           }
         ]
       }
       DEF SWC_BBOX Transform {
-        translation 0.725 0.045 -0.62
-        rotation 0 1 0 0.7853
+        translation 0.62 -0.725 0.045
+        rotation 0 0 1 0.7853
         children [
           Box {
-            size 0.01 0.09 0.09
+            size 0.09 0.01 0.09
           }
         ]
       }
       DEF SEC_BBOX Transform {
-        translation -0.725 0.045 -0.62
-        rotation 0 1 0 -0.7853
+        translation 0.62 0.725 0.045
+        rotation 0 0 1 -0.7853
         children [
           Box {
-            size 0.01 0.09 0.09
+            size 0.09 0.01 0.09
           }
         ]
       }
       DEF YG_BBOX Transform {
-        translation -0.855 0.061 0
+        translation 0 0.855 0.061
         children [
           Box {
-            size 0.01 0.12 0.42
+            size 0.42 0.01 0.12
           }
         ]
       }
       DEF BG_BBOX Transform {
-        translation 0.855 0.061 0
+        translation 0 -0.855 0.061
         children [
           Box {
-            size 0.01 0.12 0.42
+            size 0.42 0.01 0.12
           }
         ]
       }
       DEF BGS_BBOX Transform {
-        translation 0.8 0.061 0.205
+        translation -0.205 -0.8 0.061
         children [
           Box {
-            size 0.1 0.12 0.01
+            size 0.01 0.1 0.12
           }
         ]
       }
       DEF BGN_BBOX Transform {
-        translation 0.8 0.061 -0.205
+        translation 0.205 -0.8 0.061
         children [
           Box {
-            size 0.1 0.12 0.01
+            size 0.01 0.1 0.12
           }
         ]
       }
       DEF YGS_BBOX Transform {
-        translation -0.8 0.061 0.205
+        translation -0.205 0.8 0.061
         children [
           Box {
-            size 0.1 0.12 0.01
+            size 0.01 0.1 0.12
           }
         ]
       }
       DEF YGN_BBOX Transform {
-        translation -0.8 0.061 -0.205
+        translation 0.205 0.8 0.061
         children [
           Box {
-            size 0.1 0.12 0.01
+            size 0.01 0.1 0.12
           }
         ]
       }
@@ -384,8 +388,8 @@ DEF SOCCER_FIELD Solid {
   locked TRUE
 }
 DEF BALL Robot {
-  translation -0.182283 0.05 -0.297774
-  rotation 0.7071067811865477 0 0.7071067811865477 2.62318
+  translation -0.00878554 0.0770576 0.0208079
+  rotation 0.7071067811865474 0.7071067811865475 0 -2.62318
   children [
     DEF FOOTBALL_SHAPE Shape {
       appearance PBRAppearance {
@@ -433,13 +437,14 @@ DEF BALL Robot {
   synchronization FALSE
 }
 DEF B1 Robot {
-  translation -0.0349213 0.0381772 -0.301715
-  rotation 0 1 0 7.82208
+  translation 0.369438 0.409009 0.0374016
+  rotation 1.0823634158639528e-06 1.0483773613787562e-06 -0.9999999999988647 1.6026953071807208
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position -7.771629997904354e-09
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -450,11 +455,11 @@ DEF B1 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -471,7 +476,7 @@ DEF B1 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -484,8 +489,9 @@ DEF B1 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position -7.74663356251063e-09
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -496,11 +502,11 @@ DEF B1 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -517,7 +523,7 @@ DEF B1 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -534,97 +540,6 @@ DEF B1 Robot {
         physics USE WHEEL_PHYSICS
       }
     }
-    Solid {
-      translation 0.0385 0.02 0
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 1
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
-        }
-        DistanceSensor {
-          name "distancesensor left"
-          type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
-        }
-      ]
-      name "left sonar"
-    }
-    Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 1
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
-        }
-        DistanceSensor {
-          name "distancesensor right"
-          type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
-        }
-      ]
-      name "right sonar"
-    }
-    Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 1
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
-        }
-        DistanceSensor {
-          name "distancesensor front"
-          type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
-        }
-      ]
-      name "front sonar"
-    }
-    Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 0 0 1
-            roughness 1
-            metalness 0
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
-        }
-        DistanceSensor {
-          name "distancesensor back"
-          type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
-        }
-      ]
-      name "back sonar"
-    }
     DEF BLUE_ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
@@ -638,6 +553,105 @@ DEF B1 Robot {
       geometry Box {
         size 0.075 0.075 0.075
       }
+    }
+    Solid {
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5707903061004251
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
+          type "sonar"
+        }
+      ]
+      name "left sonar"
+    }
+    Solid {
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
+          type "sonar"
+        }
+      ]
+      name "right sonar"
+    }
+    Solid {
+      translation 0.0385 0 0.02
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
+          type "sonar"
+        }
+      ]
+      name "front sonar"
+    }
+    Solid {
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+        DistanceSensor {
+          name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
+          type "sonar"
+        }
+      ]
+      name "back sonar"
     }
     Receiver {
       name "supervisor receiver"
@@ -685,13 +699,14 @@ DEF B1 Robot {
   synchronization FALSE
 }
 DEF B2 Robot {
-  translation 0.271657 0.0381772 0.289311
-  rotation 0 1 0 13.716
+  translation -0.227682 0.452902 0.0373044
+  rotation -1.60589e-06 -5.64273e-07 1 -1.4683653071795861
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position -7.771629997904354e-09
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -702,11 +717,11 @@ DEF B2 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -723,7 +738,7 @@ DEF B2 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -736,8 +751,9 @@ DEF B2 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position -7.74663356251063e-09
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -748,11 +764,11 @@ DEF B2 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -769,7 +785,7 @@ DEF B2 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -801,7 +817,8 @@ DEF B2 Robot {
       }
     }
     Solid {
-      translation 0.0385 0.02 0
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5707903061004251
       children [
         Shape {
           appearance PBRAppearance {
@@ -815,16 +832,18 @@ DEF B2 Robot {
         }
         DistanceSensor {
           name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "left sonar"
     }
     Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
@@ -838,16 +857,17 @@ DEF B2 Robot {
         }
         DistanceSensor {
           name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "right sonar"
     }
     Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
+      translation 0.0385 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -861,16 +881,18 @@ DEF B2 Robot {
         }
         DistanceSensor {
           name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "front sonar"
     }
     Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
@@ -884,9 +906,11 @@ DEF B2 Robot {
         }
         DistanceSensor {
           name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "back sonar"
@@ -934,13 +958,14 @@ DEF B2 Robot {
   synchronization FALSE
 }
 DEF B3 Robot {
-  translation 0.718395 0.0381772 -0.0459804
-  rotation 0 1 0 9.46366
+  translation 0.0646362 0.431265 0.0373044
+  rotation -1.24817e-06 1.20797e-06 -1 1.53191
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position -7.771629997904354e-09
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -951,11 +976,11 @@ DEF B3 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -972,7 +997,7 @@ DEF B3 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -985,8 +1010,9 @@ DEF B3 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position -7.74663356251063e-09
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -997,11 +1023,11 @@ DEF B3 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -1018,7 +1044,7 @@ DEF B3 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -1050,7 +1076,8 @@ DEF B3 Robot {
       }
     }
     Solid {
-      translation 0.0385 0.02 0
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5707903061004251
       children [
         Shape {
           appearance PBRAppearance {
@@ -1064,16 +1091,18 @@ DEF B3 Robot {
         }
         DistanceSensor {
           name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "left sonar"
     }
     Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
@@ -1087,16 +1116,17 @@ DEF B3 Robot {
         }
         DistanceSensor {
           name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "right sonar"
     }
     Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
+      translation 0.0385 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -1110,16 +1140,18 @@ DEF B3 Robot {
         }
         DistanceSensor {
           name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 0.1 100 0, 0.2 200 0, 0.3 300 0, 0.4 400 0, 0.5 500 0, 0.6 600 0, 0.7 700 0, 0.8 800 0, 0.9 900 0, 1 1000 0]
         }
       ]
       name "front sonar"
     }
     Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
@@ -1133,9 +1165,11 @@ DEF B3 Robot {
         }
         DistanceSensor {
           name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "back sonar"
@@ -1183,13 +1217,14 @@ DEF B3 Robot {
   synchronization FALSE
 }
 DEF Y1 Robot {
-  translation -0.344136 0.0381772 -0.407555
-  rotation 0 1 0 10.529
+  translation -0.274383 -0.359359 0.0373044
+  rotation -4.81452e-07 1.47473e-06 1 1.57
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position 8.806153362894452e-12
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1200,11 +1235,11 @@ DEF Y1 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation -3.9627690133025035e-11 3.9627544572658754e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1221,7 +1256,7 @@ DEF Y1 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -1234,8 +1269,9 @@ DEF Y1 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position 8.614402906181159e-12
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1246,11 +1282,11 @@ DEF Y1 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation -3.876481307781522e-11 3.876467068696751e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -1267,7 +1303,7 @@ DEF Y1 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -1299,7 +1335,8 @@ DEF Y1 Robot {
       }
     }
     Solid {
-      translation 0.0385 0.02 0
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5708
       children [
         Shape {
           appearance PBRAppearance {
@@ -1313,16 +1350,18 @@ DEF Y1 Robot {
         }
         DistanceSensor {
           name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "left sonar"
     }
     Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
@@ -1336,16 +1375,17 @@ DEF Y1 Robot {
         }
         DistanceSensor {
           name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "right sonar"
     }
     Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
+      translation 0.0385 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -1359,16 +1399,18 @@ DEF Y1 Robot {
         }
         DistanceSensor {
           name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "front sonar"
     }
     Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
@@ -1382,9 +1424,11 @@ DEF Y1 Robot {
         }
         DistanceSensor {
           name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "back sonar"
@@ -1432,13 +1476,14 @@ DEF Y1 Robot {
   synchronization FALSE
 }
 DEF Y2 Robot {
-  translation -0.392446 0.0381772 0.0946615
-  rotation 0 1 0 5.17646
+  translation 0.335061 -0.346269 0.0373044
+  rotation -1.56377e-06 5.12393e-07 1 1.51127
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position 8.629983611817959e-12
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1449,11 +1494,11 @@ DEF Y2 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation -3.020494264136286e-11 3.020483169261717e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1470,7 +1515,7 @@ DEF Y2 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -1483,8 +1528,9 @@ DEF Y2 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position 8.730131650988922e-12
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1495,11 +1541,11 @@ DEF Y2 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation -3.055546077846123e-11 3.055534854219291e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -1516,7 +1562,7 @@ DEF Y2 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -1548,7 +1594,8 @@ DEF Y2 Robot {
       }
     }
     Solid {
-      translation 0.0385 0.02 0
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5708
       children [
         Shape {
           appearance PBRAppearance {
@@ -1562,16 +1609,18 @@ DEF Y2 Robot {
         }
         DistanceSensor {
           name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "left sonar"
     }
     Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
@@ -1585,16 +1634,17 @@ DEF Y2 Robot {
         }
         DistanceSensor {
           name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "right sonar"
     }
     Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
+      translation 0.0385 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -1608,16 +1658,18 @@ DEF Y2 Robot {
         }
         DistanceSensor {
           name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "front sonar"
     }
     Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
@@ -1631,9 +1683,11 @@ DEF Y2 Robot {
         }
         DistanceSensor {
           name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "back sonar"
@@ -1681,13 +1735,14 @@ DEF Y2 Robot {
   synchronization FALSE
 }
 DEF Y3 Robot {
-  translation -0.710919 0.0381772 -0.114706
-  rotation 0 1 0 9.43427
+  translation -0.0123017 -0.368377 0.0373044
+  rotation 1.19416e-06 1.20388e-06 1 1.58029
   children [
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor 0.045 -0.0176 0
+        position -6.5218941358580196e-12
+        axis 0 1 0
+        anchor 0 -0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1698,11 +1753,11 @@ DEF Y3 Robot {
         }
       ]
       endPoint Solid {
-        translation 0.045 -0.0176 0
-        rotation 1 0 0 0.526885
+        translation 0 -0.045 -0.0176
+        rotation 2.2826629475503072e-11 -2.2826545628765183e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1719,7 +1774,7 @@ DEF Y3 Robot {
         ]
         name "right wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
           ]
@@ -1732,8 +1787,9 @@ DEF Y3 Robot {
     }
     HingeJoint {
       jointParameters HingeJointParameters {
-        axis -1 0 0
-        anchor -0.045 -0.0176 0
+        position -6.5139005300807185e-12
+        axis 0 1 0
+        anchor 0 0.045 -0.0176
       }
       device [
         RotationalMotor {
@@ -1744,11 +1800,11 @@ DEF Y3 Robot {
         }
       ]
       endPoint Solid {
-        translation -0.045 -0.0176 0
-        rotation 1 0 0 0.526054
+        translation 0 0.045 -0.0176
+        rotation 2.2798651855282515e-11 -2.2798568111311978e-11 -1 1.5708
         children [
           Transform {
-            rotation 0 0 1 1.57
+            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
                 appearance PBRAppearance {
@@ -1765,7 +1821,7 @@ DEF Y3 Robot {
         ]
         name "left wheel"
         boundingObject Transform {
-          rotation 0 0 1 1.57
+          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
               appearance PBRAppearance {
@@ -1797,7 +1853,8 @@ DEF Y3 Robot {
       }
     }
     Solid {
-      translation 0.0385 0.02 0
+      translation 0 0.0385 0.02
+      rotation 0 0 1 1.5708
       children [
         Shape {
           appearance PBRAppearance {
@@ -1811,16 +1868,18 @@ DEF Y3 Robot {
         }
         DistanceSensor {
           name "distancesensor left"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "left sonar"
     }
     Solid {
-      translation -0.0385 0.02 0
-      rotation 0 1 0 3.14159
+      translation 0 -0.0385 0.02
+      rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
@@ -1834,16 +1893,17 @@ DEF Y3 Robot {
         }
         DistanceSensor {
           name "distancesensor right"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "right sonar"
     }
     Solid {
-      translation 0 0.02 0.0385
-      rotation 0 1 0 4.71239
+      translation 0.0385 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -1857,16 +1917,18 @@ DEF Y3 Robot {
         }
         DistanceSensor {
           name "distancesensor front"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "front sonar"
     }
     Solid {
-      translation 0 0.02 -0.0385
-      rotation 0 1 0 1.5708
+      translation -0.0385 0 0.02
+      rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
@@ -1880,9 +1942,11 @@ DEF Y3 Robot {
         }
         DistanceSensor {
           name "distancesensor back"
+          lookupTable [
+            0 0 0
+            1 1000 0.05
+          ]
           type "sonar"
-          numberOfRays 1
-          lookupTable [ 0 0 0, 1 1000 0.05 ]
         }
       ]
       name "back sonar"

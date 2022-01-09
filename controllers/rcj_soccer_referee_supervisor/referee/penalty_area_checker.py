@@ -17,11 +17,11 @@ class PenaltyAreaChecker:
         self.time_entered_penalty = None
         self.time_left_penalty = None
 
-    def is_in_yellow_penalty(self, x: float, z: float) -> bool:
-        return x < self.y_vertical and self.y_lower < z < self.y_upper
+    def is_in_yellow_penalty(self, x: float, y: float) -> bool:
+        return y < self.y_vertical and self.y_lower < x < self.y_upper
 
-    def is_in_blue_penalty(self, x: float, z: float) -> bool:
-        return x > self.b_vertical and self.b_lower < z < self.b_upper
+    def is_in_blue_penalty(self, x: float, y: float) -> bool:
+        return y > self.b_vertical and self.b_lower < x < self.b_upper
 
     @property
     def has_been_outside_penalty_for_longer(self) -> bool:
@@ -47,9 +47,9 @@ class PenaltyAreaChecker:
             time (int): Current game time
         """
         self.time = time
-        x, z = position[0], position[2]
+        x, y = position[0], position[1]
 
-        if self.is_in_blue_penalty(x, z) or self.is_in_yellow_penalty(x, z):
+        if self.is_in_blue_penalty(x, y) or self.is_in_yellow_penalty(x, y):
             # the robot enters the penalty area for the first time
             if not self.has_entered:
                 self.time_entered_penalty = self.time

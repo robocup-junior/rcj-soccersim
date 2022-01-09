@@ -41,8 +41,8 @@ class MyRobot3(RCJSoccerRobot):
                 # If the robot has the ball right in front of it, go forward,
                 # rotate otherwise
                 if direction == 0:
-                    left_speed = -5
-                    right_speed = -5
+                    left_speed = 5
+                    right_speed = 5
                 else:
                     left_speed = direction * 4
                     right_speed = direction * -4
