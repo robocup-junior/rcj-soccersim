@@ -21,15 +21,17 @@ def time_to_string(time: int) -> str:
     Returns:
         str: Time in MM:SS format
     """
+    if time < 0:
+        raise ValueError("Negative integer not supported")
     return "%02d:%02d" % (time // 60, time % 60)
 
 
-def is_in_yellow_goal(x: int, y: int) -> bool:
+def is_in_yellow_goal(x: float, y: float) -> bool:
     """Return whether object is located in the yellow goal.
 
     Args:
-        x (int): X position
-        y (int): Y position
+        x (float): X position
+        y (float): Y position
 
     Returns:
         bool: True if the object is located in the yellow goal
@@ -40,12 +42,12 @@ def is_in_yellow_goal(x: int, y: int) -> bool:
     return False
 
 
-def is_in_blue_goal(x: int, y: int) -> bool:
+def is_in_blue_goal(x: float, y: float) -> bool:
     """Return whether object is located in the blue goal.
 
     Args:
-        x (int): X position
-        y (int): Y position
+        x (float): X position
+        y (float): Y position
 
     Returns:
         bool: True if the object is located in the blue goal
@@ -56,12 +58,12 @@ def is_in_blue_goal(x: int, y: int) -> bool:
     return False
 
 
-def is_outside(x: int, y: int) -> bool:
+def is_outside(x: float, y: float) -> bool:
     """Return whether object is located outside the field.
 
     Args:
-        x (int): X position
-        y (int): Y position
+        x (float): X position
+        y (float): Y position
 
     Returns:
         bool: True if the object is located outside

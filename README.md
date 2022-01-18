@@ -55,10 +55,23 @@ with `black` and `isort`, and `flake8` issues are fixed.
 To do so, follow these steps:
 
 1. Create virtualenv `python3 -m venv venv`
-2. Install development modules `pip install -r requirements/development.txt`
-3. Setup pre-commit hook `pre-commit install`. This hook will not allow you to
+2. Install `pip-tools` by running `pip install pip-tools`
+3. Install development modules `pip-sync requirements/development.txt`
+4. Setup pre-commit hook `pre-commit install`. This hook will not allow you to
 commit in case one of the checkers raises an error.
-4. In order format the code, run the formatters in this order
+5. In order format the code, run the formatters in this order
     * `isort .`
     * `black .`
-5. Manually fix error raised by `flake8 .`
+6. Manually fix error raised by `flake8 .`
+
+### Updating dependencies
+
+Dependencies for development are managed by pip-tools. To compile current
+dependencies run
+
+```bash
+$ pip-compile -o requirements/development.txt requirements/development.in
+```
+
+In order to update dependencies, use `--upgrade` switch.
+
