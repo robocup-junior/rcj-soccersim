@@ -6,13 +6,12 @@ from controller import Supervisor
 from referee.consts import (
     BALL_DEPTH,
     DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
-    LabelIDs,
     NEUTRAL_SPOTS,
-    NeutralSpotDistanceType,
     OBJECT_DEPTH,
     ROBOT_INITIAL_ROTATION,
     ROBOT_NAMES,
 )
+from referee.enums import LabelIDs, NeutralSpotDistanceType
 from referee.utils import time_to_string
 
 
