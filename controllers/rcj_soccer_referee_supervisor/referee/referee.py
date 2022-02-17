@@ -6,17 +6,15 @@ from controller import Supervisor
 
 from referee.consts import (
     BALL_INITIAL_TRANSLATION,
-    GameEvents,
     KICKOFF_TRANSLATION,
     LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS,
     MAX_EVENT_MESSAGES_IN_QUEUE,
-    NeutralSpotDistanceType,
     ROBOT_INITIAL_ROTATION,
     ROBOT_INITIAL_TRANSLATION,
     ROBOT_NAMES,
-    Team,
     TIME_STEP,
 )
+from referee.enums import GameEvents, NeutralSpotDistanceType, Team
 from referee.event_handlers import EventHandler
 from referee.eventer import Eventer
 from referee.penalty_area_checker import PenaltyAreaChecker
