@@ -102,7 +102,7 @@ Let's put together a simple program to showcase how you can go about programming
 ```python
 import struct
 
-TIME_STEP = 64
+TIME_STEP = 32
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
@@ -186,7 +186,7 @@ This library is a [built-in Python library](https://docs.python.org/3/library/st
 which is required to unpack the data sent by the supervisor.
 
 ```python
-TIME_STEP = 64
+TIME_STEP = 32
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 ```

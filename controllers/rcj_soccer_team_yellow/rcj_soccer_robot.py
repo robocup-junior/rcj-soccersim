@@ -1,7 +1,7 @@
 import math
 import struct
 
-TIME_STEP = 64
+TIME_STEP = 32
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
