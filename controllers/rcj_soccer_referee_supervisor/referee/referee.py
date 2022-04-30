@@ -377,6 +377,8 @@ class RCJSoccerReferee:
         )
 
     def tick(self) -> bool:
+        self.sv.check_reset_physics_counters()
+
         # On the very first tick, note that the match has started
         if self.time == self.match_time:
             self.eventer.event(
