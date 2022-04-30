@@ -24,7 +24,7 @@ an output in form of either an MPEG-4 video or a HTML site.
 This guide makes a couple of assumptions:
 
 1. You use an UNIX-like environment (i.e. something like Linux or macOS)
-2. You have Webots installed and cloned the `rcj-soccer-sim` repository locally
+2. You have Webots installed and cloned the `rcj-soccersim` repository locally
    (check the [Getting Started](./getting_started.md) guide on how to do so)
 
 ## Running Soccer Sim (and Webots) in Automatic Mode
@@ -60,21 +60,21 @@ provided by Webots and mentioned in the [official
 guide](https://cyberbotics.com/doc/guide/installation-procedure#installing-the-docker-image).
 
 
-Assuming the `rcj-soccer-sim` repository is located in the current directory,
+Assuming the `rcj-soccersim` repository is located in the current directory,
 running Soccer Sim within docker is as simple as executing
 
     docker run \
-        -v $(pwd)/rcj-soccer-sim:/rcj-soccer-sim \
+        -v $(pwd)/rcj-soccersim:/rcj-soccersim \
         -e RCJ_SIM_AUTO_MODE=True \
         -e RCJ_SIM_REC_FORMATS=x3d \
-        cyberbotics/webots:latest /rcj-soccer-sim/run-in-docker.sh /rcj-soccer-sim/worlds/soccer.wbt
+        cyberbotics/webots:latest /rcj-soccersim/run-in-docker.sh /rcj-soccersim/worlds/soccer.wbt
 
 Let us briefly discuss the respective lines. On the first one the `docker`
-command starts the Docker container, on the second one, the `rcj-soccer-sim`
-folder in the current directory is mapped to `/rcj-soccer-sim` in the
+command starts the Docker container, on the second one, the `rcj-soccersim`
+folder in the current directory is mapped to `/rcj-soccersim` in the
 container, on the following two the `RCJ_SIM_AUTO_MODE` and
 `RCJ_SIM_REC_FORMATS` environment variables are being set and on the last one
-the `worlds/soccer.wbt` world from the `rcj-soccer-sim` repository is executed
+the `worlds/soccer.wbt` world from the `rcj-soccersim` repository is executed
 in the Webex environment using the `run-in-docker.sh` script (also part of the
 very same repository).
 
@@ -82,7 +82,7 @@ very same repository).
 
 By default, the output (recording and reflog) of a match is saved in the
 `reflog/` folder in `controllers/rcj_soccer_referee_supervisor/` of the
-`rcj-soccer-sim` repository. This is relatively inconveniet when it comes to
+`rcj-soccersim` repository. This is relatively inconveniet when it comes to
 running multiple games and getting data out of the Docker container and hence
 the path can be changed using the `RCJ_SIM_OUTPUT_PATH` environment variable.
 
@@ -91,12 +91,12 @@ the container and maps it to the `outputs/` directory in the current working
 directory on the host:
 
     docker run \
-        -v $(pwd)/rcj-soccer-sim:/rcj-soccer-sim \
+        -v $(pwd)/rcj-soccersim:/rcj-soccersim \
         -v $(pwd)/outputs:/tmp/outputs  \
         -e RCJ_SIM_AUTO_MODE=True \
         -e RCJ_SIM_REC_FORMATS=x3d \
         -e RCJ_SIM_OUTPUT_PATH=/tmp/outputs/ \
-        cyberbotics/webots:latest /rcj-soccer-sim/run-in-docker.sh /rcj-soccer-sim/worlds/soccer.wbt
+        cyberbotics/webots:latest /rcj-soccersim/run-in-docker.sh /rcj-soccersim/worlds/soccer.wbt
 
 ## Environment variables
 
