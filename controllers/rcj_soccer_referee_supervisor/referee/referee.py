@@ -1,3 +1,4 @@
+import math
 import random
 import struct
 from typing import List, Optional, Tuple
@@ -6,6 +7,7 @@ from controller import Supervisor
 
 from referee.consts import (
     BALL_INITIAL_TRANSLATION,
+    DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT,
     KICKOFF_TRANSLATION,
     LACK_OF_PROGRESS_NUMBER_OF_NEUTRAL_SPOTS,
     MAX_EVENT_MESSAGES_IN_QUEUE,
@@ -164,7 +166,9 @@ class RCJSoccerReferee:
 
     def reset_ball_position(self):
         """Reset the position of the ball."""
-        self.sv.set_ball_position(BALL_INITIAL_TRANSLATION)
+        x = random.uniform(-0.5, 0.5)
+        y = random.uniform(0.2, 0.6)
+        self.sv.set_ball_position([x, y, 0])
         self.ball_stop = 2
         self.reset_checkers("ball")
 
@@ -179,7 +183,16 @@ class RCJSoccerReferee:
         translation = ROBOT_INITIAL_TRANSLATION[robot_name].copy()
         translation = self._add_initial_position_noise(translation)
 
-        self.sv.set_robot_position(robot_name, translation)
+        x = random.uniform(-0.5, 0.5)
+        if robot_name == "Y1":
+            y = random.uniform(-0.7, -0.4)
+        elif robot_name == "Y2":
+            y = random.uniform(0.1, 0.6)
+            ball_x, ball_y, _ = self.sv.get_ball_translation()
+            while math.sqrt((x-ball_x)**2 + (y-ball_y)**2) < DISTANCE_AROUND_UNOCCUPIED_NEUTRAL_SPOT:
+                y = random.uniform(0.1, 0.6)
+
+        self.sv.set_robot_position(robot_name, [x, y, 0.042])
         self.sv.set_robot_rotation(
             robot_name, ROBOT_INITIAL_ROTATION[robot_name]
         )
@@ -208,13 +221,14 @@ class RCJSoccerReferee:
         Returns:
             str: Name of the robot that is kicking off.
         """
-        # Always kickoff with the third robot
-        robot = f"{team}3"
-
-        self.sv.set_robot_position(robot, KICKOFF_TRANSLATION[team])
-        self.sv.set_robot_rotation(robot, ROBOT_INITIAL_ROTATION[robot])
-
-        return robot
+        pass
+        # # Always kickoff with the third robot
+        # robot = f"{team}3"
+        #
+        # self.sv.set_robot_position(robot, KICKOFF_TRANSLATION[team])
+        # self.sv.set_robot_rotation(robot, ROBOT_INITIAL_ROTATION[robot])
+        #
+        # return robot
 
     def check_robots_in_penalty_area(self):
         """
@@ -326,7 +340,8 @@ class RCJSoccerReferee:
 
         # ball in the yellow goal
         elif is_in_yellow_goal(ball_x, ball_y):
-            self.score_blue += 1
+            #self.score_blue += 1
+            self.score_yellow -= 1
 
             team_goal = self.team_name_blue
             team_kickoff = Team.YELLOW.value
@@ -367,14 +382,31 @@ class RCJSoccerReferee:
 
         robot_name = self.reset_team_for_kickoff(team)
 
-        self.eventer.event(
-            referee=self,
-            type=GameEvents.KICKOFF.value,
-            payload={
-                "robot_name": robot_name,
-                "team_name": team,
-            },
-        )
+        # self.eventer.event(
+        #     referee=self,
+        #     type=GameEvents.KICKOFF.value,
+        #     payload={
+        #         "robot_name": robot_name,
+        #         "team_name": team,
+        #     },
+        # )
+
+    def check_wrong_side(self):
+        robot_y1 = self.sv.get_robot_translation("Y1")
+        robot_y2 = self.sv.get_robot_translation("Y2")
+
+        if robot_y1[1] > 0 or robot_y2[1] < 0:
+            self.score_yellow -= 2
+            self.sv.draw_scores(self.score_blue, self.score_yellow)
+            self.reset_positions()
+            robot_name = "Y1" if robot_y1[1] > 0 else "Y2"
+            self.eventer.event(
+                referee=self,
+                type=GameEvents.HALF_CROSS.value,
+                payload={
+                    "robot_name": robot_name,
+                },
+            )
 
     def tick(self) -> bool:
         self.sv.check_reset_physics_counters()
@@ -423,8 +455,9 @@ class RCJSoccerReferee:
         # robots to proper positions afterwards.
         if self.ball_reset_timer == 0:
             self.check_goal()
-            self.check_progress()
-            self.check_robots_in_penalty_area()
+            self.check_wrong_side()
+            #self.check_progress()
+            #self.check_robots_in_penalty_area()
         else:
             self.ball_reset_timer -= TIME_STEP / 1000.0
             self.sv.draw_goal_sign()

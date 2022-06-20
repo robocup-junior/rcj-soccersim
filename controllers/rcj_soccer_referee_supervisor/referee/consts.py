@@ -1,6 +1,6 @@
 from referee.enums import Team
 
-DEFAULT_MATCH_TIME = 10 * 60  # 10 minutes
+DEFAULT_MATCH_TIME = 2 * 60  # 2 minutes
 
 GOAL_YELLOW_Y_LIMIT = -0.745
 GOAL_BLUE_Y_LIMIT = 0.745
@@ -15,11 +15,11 @@ FIELD_X_UPPER_LIMIT = 0.655
 FIELD_X_LOWER_LIMIT = -0.655
 
 TIME_STEP = 32
-ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
+ROBOT_NAMES = ["Y1", "Y2"]
 N_ROBOTS = len(ROBOT_NAMES)
 
 BALL_DEPTH = 0
-BALL_INITIAL_TRANSLATION = [0, 0, BALL_DEPTH]
+BALL_INITIAL_TRANSLATION = [-0.167108, 0.423784, BALL_DEPTH]
 
 CENTER_NS = "center_ns"
 YELLOW_LEFT_NS = "yellow_left_ns"
@@ -41,21 +41,21 @@ NEUTRAL_SPOTS = {
 OBJECT_DEPTH = 0.042
 
 ROBOT_INITIAL_TRANSLATION = {
-    "B1": [0.3, 0.3, OBJECT_DEPTH],
-    "B2": [-0.3, 0.3, OBJECT_DEPTH],
-    "B3": [0, 0.3, OBJECT_DEPTH],
-    "Y1": [-0.3, -0.3, OBJECT_DEPTH],
-    "Y2": [0.3, -0.3, OBJECT_DEPTH],
-    "Y3": [0, -0.3, OBJECT_DEPTH],
+    #"B1": [0.3, 0.3, OBJECT_DEPTH],
+    #"B2": [-0.3, 0.3, OBJECT_DEPTH],
+    #"B3": [0, 0.3, OBJECT_DEPTH],
+    "Y1": [-0.0221481, -0.456864, OBJECT_DEPTH],
+    "Y2": [-0.0148969, 0.327479, OBJECT_DEPTH],
+    #"Y3": [0, -0.3, OBJECT_DEPTH],
 }
 
 ROBOT_INITIAL_ROTATION = {
-    "B1": [0, 0, 1, -1.57],
-    "B2": [0, 0, 1, -1.57],
-    "B3": [0, 0, 1, -1.57],
+    #"B1": [0, 0, 1, -1.57],
+    #"B2": [0, 0, 1, -1.57],
+    #"B3": [0, 0, 1, -1.57],
     "Y1": [0, 0, 1, 1.57],
     "Y2": [0, 0, 1, 1.57],
-    "Y3": [0, 0, 1, 1.57],
+    #"Y3": [0, 0, 1, 1.57],
 }
 
 BLUE_KICKOFF_TRANSLATION = [0, 0.1, OBJECT_DEPTH]

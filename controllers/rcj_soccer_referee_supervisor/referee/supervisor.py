@@ -232,20 +232,20 @@ class RCJSoccerSupervisor(Supervisor):
             team_name_blue (str): name of the blue team
             team_name_yellow (str): name of the yellow team
         """
-        self.setLabel(
-            LabelIDs.BLUE_TEAM.value,
-            team_name_blue,
-            0.92 - (len(team_name_blue) * 0.01),  # X position
-            0.05,  # Y position
-            0.1,  # Size
-            0x0000FF,  # Color
-            0.0,  # Transparency
-            "Tahoma",  # Font
-        )
+        # self.setLabel(
+        #     LabelIDs.BLUE_TEAM.value,
+        #     team_name_blue,
+        #     0.92 - (len(team_name_blue) * 0.01),  # X position
+        #     0.05,  # Y position
+        #     0.1,  # Size
+        #     0x0000FF,  # Color
+        #     0.0,  # Transparency
+        #     "Tahoma",  # Font
+        # )
 
         self.setLabel(
             LabelIDs.YELLOW_TEAM.value,
-            team_name_yellow,
+            "Score",
             0.05,  # X position
             0.05,  # Y position
             0.1,  # Size
@@ -262,16 +262,16 @@ class RCJSoccerSupervisor(Supervisor):
             blue (int): score of the blue team
             yellow (int): score of the yellow team
         """
-        self.setLabel(
-            LabelIDs.BLUE_SCORE.value,
-            str(blue),
-            0.92,  # X position
-            0.01,  # Y position
-            0.1,  # Size
-            0x0000FF,  # Color
-            0.0,  # Transparency
-            "Tahoma",  # Font
-        )
+        # self.setLabel(
+        #     LabelIDs.BLUE_SCORE.value,
+        #     str(blue),
+        #     0.92,  # X position
+        #     0.01,  # Y position
+        #     0.1,  # Size
+        #     0x0000FF,  # Color
+        #     0.0,  # Transparency
+        #     "Tahoma",  # Font
+        # )
 
         self.setLabel(
             LabelIDs.YELLOW_SCORE.value,
