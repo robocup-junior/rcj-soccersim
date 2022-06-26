@@ -25,6 +25,7 @@ class GameEvents(Enum):
     INSIDE_PENALTY_FOR_TOO_LONG = "INSIDE_PENALTY_FOR_TOO_LONG"
     KICKOFF = "KICKOFF"
     GOAL = "GOAL"
+    PUSHING = "PUSHING"
 
 
 class NeutralSpotDistanceType(Enum):

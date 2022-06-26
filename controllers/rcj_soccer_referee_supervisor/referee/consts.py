@@ -1,6 +1,6 @@
 from referee.enums import Team
 
-DEFAULT_MATCH_TIME = 10 * 60  # 10 minutes
+DEFAULT_MATCH_TIME = 2 * 60  # 10 minutes
 
 GOAL_YELLOW_Y_LIMIT = -0.745
 GOAL_BLUE_Y_LIMIT = 0.745
@@ -15,7 +15,7 @@ FIELD_X_UPPER_LIMIT = 0.655
 FIELD_X_LOWER_LIMIT = -0.655
 
 TIME_STEP = 32
-ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
+ROBOT_NAMES = ["Y1", "Y2", "B3", "B1", "B2"]
 N_ROBOTS = len(ROBOT_NAMES)
 
 BALL_DEPTH = 0

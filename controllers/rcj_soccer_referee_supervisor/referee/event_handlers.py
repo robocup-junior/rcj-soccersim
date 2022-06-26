@@ -68,7 +68,7 @@ class DrawMessageHandler(EventHandler):
         return f"Robot {robot_name}: Lack of progress."
 
     def create_goal_msg(self, team_name: str, **kwargs) -> str:
-        return f"A goal was scored by {team_name}."
+        return f"A goal was scored."
 
     def create_kickoff_msg(self, robot_name: str, **kwargs) -> str:
         return f"Robot {robot_name} is kicking off."
@@ -78,6 +78,9 @@ class DrawMessageHandler(EventHandler):
 
     def create_match_finish_msg(self, total_match_time: int, **kwargs) -> str:
         return f"The match time {total_match_time}s is over."
+
+    def create_pushing_msg(self, robot_name: str, **kwargs) -> str:
+        return f"Robot {robot_name} pushed. Reseting."
 
     def handle(self, referee, type: str, payload: Optional[dict] = None):
         # Call formatter based on event type.
