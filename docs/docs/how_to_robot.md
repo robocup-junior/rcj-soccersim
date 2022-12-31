@@ -102,7 +102,7 @@ Let's put together a simple program to showcase how you can go about programming
 ```python
 import struct
 
-TIME_STEP = 32
+TIME_STEP = 8
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
@@ -111,9 +111,15 @@ class MyRobot:
     def __init__(self, robot):
         self.robot = robot
         self.name = self.robot.getName()
+        self.team = self.name[0]
+        self.player_id = int(self.name[1])
 
         self.receiver = self.robot.getDevice("supervisor receiver")
         self.receiver.enable(TIME_STEP)
+
+        self.team_emitter = self.robot.getDevice("team emitter")
+        self.team_receiver = self.robot.getDevice("team receiver")
+        self.team_receiver.enable(TIME_STEP)
 
         self.ball_receiver = self.robot.getDevice("ball receiver")
         self.ball_receiver.enable(TIME_STEP)
@@ -133,14 +139,26 @@ class MyRobot:
         self.sonar_back = self.robot.getDevice("distancesensor back")
         self.sonar_back.enable(TIME_STEP)
 
-        self.left_motor = self.robot.getDevice("left wheel motor")
-        self.right_motor = self.robot.getDevice("right wheel motor")
+        self.front_left_motor = self.robot.getDevice("front left motor")
+        self.front_right_motor = self.robot.getDevice("front right motor")
+        self.rear_left_motor = self.robot.getDevice("rear left motor")
+        self.rear_right_motor = self.robot.getDevice("rear right motor")
+        self.dribbler_motor = self.robot.getDevice("dribbler motor")
+        self.kicker_motor = self.robot.getDevice("kicker motor")
 
-        self.left_motor.setPosition(float('+inf'))
-        self.right_motor.setPosition(float('+inf'))
+        self.front_left_motor.setPosition(float("+inf"))
+        self.front_right_motor.setPosition(float("+inf"))
+        self.rear_left_motor.setPosition(float("+inf"))
+        self.rear_right_motor.setPosition(float("+inf"))
+        self.dribbler_motor.setPosition(float("+inf"))
+        self.kicker_motor.setPosition(0)
 
-        self.left_motor.setVelocity(0.0)
-        self.right_motor.setVelocity(0.0)
+        self.front_left_motor.setVelocity(0.0)
+        self.front_right_motor.setVelocity(0.0)
+        self.rear_left_motor.setVelocity(0.0)
+        self.rear_right_motor.setVelocity(0.0)
+        self.dribbler_motor.setVelocity(0.0)
+        self.kicker_motor.setVelocity(5.0)
 
     def get_new_data(self):
         packet = self.receiver.getData()
@@ -172,8 +190,10 @@ class MyRobot:
                 if self.is_new_ball_data():
                     ball_data = self.get_new_ball_data()
 
-                self.left_motor.setVelocity(1)
-                self.right_motor.setVelocity(-1)
+                self.front_left_motor.setVelocity(10)
+                self.rear_left_motor.setVelocity(10)
+                self.front_right_motor.setVelocity(-10)
+                self.rear_right_motor.setVelocity(-10)
 ```
 
 Let's explain the code in detail:
@@ -186,7 +206,7 @@ This library is a [built-in Python library](https://docs.python.org/3/library/st
 which is required to unpack the data sent by the supervisor.
 
 ```python
-TIME_STEP = 32
+TIME_STEP = 8
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 ```
@@ -262,8 +282,10 @@ sonar_values = self.get_sonar_values()
 if self.is_new_ball_data():
     ball_data = self.get_new_ball_data()
 
-self.left_motor.setVelocity(1)
-self.right_motor.setVelocity(-1)
+self.front_left_motor.setVelocity(10)
+self.rear_left_motor.setVelocity(10)
+self.front_right_motor.setVelocity(-10)
+self.rear_right_motor.setVelocity(-10)
 ```
 
 And finally, after reading the new data received from supervisor as well as data
