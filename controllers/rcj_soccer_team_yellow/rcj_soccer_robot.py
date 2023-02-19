@@ -1,7 +1,7 @@
 import math
 import struct
 
-TIME_STEP = 32
+TIME_STEP = 8
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
 N_ROBOTS = len(ROBOT_NAMES)
 
@@ -38,14 +38,26 @@ class RCJSoccerRobot:
         self.sonar_back = self.robot.getDevice("distancesensor back")
         self.sonar_back.enable(TIME_STEP)
 
-        self.left_motor = self.robot.getDevice("left wheel motor")
-        self.right_motor = self.robot.getDevice("right wheel motor")
+        self.front_left_motor = self.robot.getDevice("front left motor")
+        self.front_right_motor = self.robot.getDevice("front right motor")
+        self.rear_left_motor = self.robot.getDevice("rear left motor")
+        self.rear_right_motor = self.robot.getDevice("rear right motor")
+        self.dribbler_motor = self.robot.getDevice("dribbler motor")
+        self.kicker_motor = self.robot.getDevice("kicker motor")
 
-        self.left_motor.setPosition(float("+inf"))
-        self.right_motor.setPosition(float("+inf"))
+        self.front_left_motor.setPosition(float("+inf"))
+        self.front_right_motor.setPosition(float("+inf"))
+        self.rear_left_motor.setPosition(float("+inf"))
+        self.rear_right_motor.setPosition(float("+inf"))
+        self.dribbler_motor.setPosition(float("+inf"))
+        self.kicker_motor.setPosition(0)
 
-        self.left_motor.setVelocity(0.0)
-        self.right_motor.setVelocity(0.0)
+        self.front_left_motor.setVelocity(0.0)
+        self.front_right_motor.setVelocity(0.0)
+        self.rear_left_motor.setVelocity(0.0)
+        self.rear_right_motor.setVelocity(0.0)
+        self.dribbler_motor.setVelocity(0.0)
+        self.kicker_motor.setVelocity(5.0)
 
     def parse_supervisor_msg(self, packet: str) -> dict:
         """Parse message received from supervisor
@@ -72,6 +84,7 @@ class RCJSoccerRobot:
         """
         packet = self.receiver.getData()
         self.receiver.nextPacket()
+
         return self.parse_supervisor_msg(packet)
 
     def is_new_data(self) -> bool:
@@ -138,6 +151,7 @@ class RCJSoccerRobot:
                 }
         """
         _ = self.ball_receiver.getData()
+
         data = {
             "direction": self.ball_receiver.getEmitterDirection(),
             "strength": self.ball_receiver.getSignalStrength(),
@@ -170,9 +184,8 @@ class RCJSoccerRobot:
         """
         compass_values = self.compass.getValues()
 
-        # Subtract math.pi/2 (90) so that the heading 0 means that
-        # robot is facing opponent's goal
-        rad = math.atan2(compass_values[0], compass_values[1]) - (math.pi / 2)
+        # Add math.pi/2 (90) so that the heading 0 is facing opponent's goal
+        rad = math.atan2(compass_values[0], compass_values[1]) + (math.pi / 2)
         if rad < -math.pi:
             rad = rad + (2 * math.pi)
 
@@ -190,6 +203,15 @@ class RCJSoccerRobot:
             "front": self.sonar_front.getValue(),
             "back": self.sonar_back.getValue(),
         }
+
+
+    def kick_ball(self, state, velocity=20):
+        if state == 1:
+            self.kicker_motor.setVelocity(velocity)
+            self.kicker_motor.setPosition(0.042)
+        elif state == 0:
+            self.kicker_motor.setVelocity(velocity)
+            self.kicker_motor.setPosition(0)
 
     def run(self):
         raise NotImplementedError

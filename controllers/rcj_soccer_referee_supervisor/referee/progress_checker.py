@@ -53,7 +53,7 @@ class ProgressChecker:
         """
         s = sum(self.samples)
 
-        # We we haven't tracked at least as many samples as the number of
+        # We haven't tracked at least as many samples as the number of
         # steps, our default position is "benefit of doubt": we assume enough
         # progress has been made.
         if self.iterator < self.steps:

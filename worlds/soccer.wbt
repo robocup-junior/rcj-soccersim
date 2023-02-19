@@ -1,14 +1,45 @@
-#VRML_SIM R2022a utf8
+#VRML_SIM R2022b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+
 WorldInfo {
   info [
     "A simple RCJ Soccer game simulated using Webots."
   ]
   title "RCJ Soccer Sim"
-  optimalThreadCount 8
+  basicTimeStep 8
+  contactProperties [
+    ContactProperties {
+      material1 "ball"
+      material2 "field"
+    }
+    ContactProperties {
+      material1 "dribbler"
+      material2 "ball"
+      coulombFriction [
+        -1
+      ]
+      bounce 0
+      bounceVelocity 0
+    }
+    ContactProperties {
+      material1 "field"
+      material2 "wheel"
+      coulombFriction [
+        5000
+      ]
+      bounce 0
+      bounceVelocity 0
+      forceDependentSlip [
+        1
+      ]
+    }
+  ]
 }
 Viewpoint {
-  orientation -0.3718171524084895 -0.11726675761807528 0.920869433053669 3.706903255785043
-  position 1.7483931840718845 1.2701664687979481 1.965968373123659
+  orientation 0.7128275532730471 -0.0002870894638722765 -0.7013392879872061 3.1421565475318576
+  position -0.08984100000000017 7.541420000006793e-05 4.400000000000001
 }
 TexturedBackground {
 }
@@ -248,6 +279,7 @@ DEF SOCCER_FIELD Solid {
     }
   ]
   name "soccer field"
+  contactMaterial "field"
   boundingObject Group {
     children [
       USE GROUND
@@ -388,8 +420,7 @@ DEF SOCCER_FIELD Solid {
   locked TRUE
 }
 DEF BALL Robot {
-  translation -0.00878554 0.0770576 0.0208079
-  rotation 0.7071067811865474 0.7071067811865475 0 -2.62318
+  rotation -0.2668107316298671 0.9277349714423769 0.26099780889874713 -2.412528199579081
   children [
     DEF FOOTBALL_SHAPE Shape {
       appearance PBRAppearance {
@@ -407,7 +438,7 @@ DEF BALL Robot {
         }
       }
       geometry Sphere {
-        radius 0.021
+        radius 0.015
         subdivision 3
       }
     }
@@ -424,10 +455,11 @@ DEF BALL Robot {
   ]
   name "soccer ball"
   model "soccer ball"
+  contactMaterial "ball"
   boundingObject USE FOOTBALL_SHAPE
   physics Physics {
     density -1
-    mass 0.05
+    mass 0.08
   }
   recognitionColors [
     1 1 1
@@ -437,29 +469,29 @@ DEF BALL Robot {
   synchronization FALSE
 }
 DEF B1 Robot {
-  translation 0.369438 0.409009 0.0374016
-  rotation 1.0823634158639528e-06 1.0483773613787562e-06 -0.9999999999988647 1.6026953071807208
+  translation 0.30348334291402934 0.26429752545093194 0.0380918
+  rotation 0 0 -1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.771629997904354e-09
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
+        translation 0.03040390000000004 0.030403899999999984 -0.032
+        rotation 0 0 1 -2.3561900000000002
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -467,80 +499,188 @@ DEF B1 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.74663356251063e-09
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
+        translation -0.030403899999999984 0.030403899999999984 -0.032
+        rotation 0 0 1 -0.785395307179586
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.030403899999999928 -0.030403899999999984 -0.032
+        rotation 0 0 1 0.7853979999999997
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.030403899999999984 -0.030403899999999984 -0.032
+        rotation 0 0 1 2.35619
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.025990457192025113 1.7981358380048107e-07 -0.008000095794128182
+        rotation -0.26043941330881704 -0.2608143585831204 0.9295951712182214 1.643491160171936
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF BLUE_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.893445048499387e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.020000130667441773 -0.0004198494222769633 -0.024061894469276958
+        rotation -1.1810691308402516e-06 0.9999999999985407 1.2343786774001837e-06 1.5708018510118937
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -550,12 +690,14 @@ DEF B1 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
+      translation 0 0.043 0.02
       rotation 0 0 1 1.5707903061004251
       children [
         Shape {
@@ -580,7 +722,7 @@ DEF B1 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
@@ -605,7 +747,7 @@ DEF B1 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -629,7 +771,7 @@ DEF B1 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
@@ -690,38 +832,42 @@ DEF B1 Robot {
     }
   ]
   name "B1"
-  boundingObject USE BLUE_ROBOT_SHAPE
+  boundingObject USE ROBOT_SHAPE
   physics DEF ROBOT_PHYSICS Physics {
-    density -1
-    mass 0.2
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
   }
   controller "rcj_soccer_team_blue"
   synchronization FALSE
 }
 DEF B2 Robot {
-  translation -0.227682 0.452902 0.0373044
-  rotation -1.60589e-06 -5.64273e-07 1 -1.4683653071795861
+  translation -0.24977097895142505 0.32718919138947045 0.0380918
+  rotation 0 0 -1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.771629997904354e-09
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
+        translation 0.03040390000000004 0.030403899999999956 -0.032
+        rotation 0 0 1 -2.3561900000000002
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -729,80 +875,188 @@ DEF B2 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.74663356251063e-09
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
+        translation -0.030403899999999928 0.030403899999999984 -0.032
+        rotation 0 0 1 -0.785395307179586
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.030403899999999873 -0.030403899999999984 -0.032
+        rotation 0 0 1 0.7853979999999997
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.03040390000000004 -0.030403899999999984 -0.032
+        rotation 0 0 1 2.35619
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.02599045719202514 1.798135837727255e-07 -0.008000095794128182
+        rotation -0.26043941330881704 -0.2608143585831204 0.9295951712182214 1.643491160171936
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF BLUE_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.893445048499387e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.020000130667441718 -0.0004198494222769633 -0.024061894469276958
+        rotation -1.1810691308402516e-06 0.9999999999985407 1.2343786774001837e-06 1.5708018510118937
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -812,12 +1066,14 @@ DEF B2 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
+      translation 0 0.043 0.02
       rotation 0 0 1 1.5707903061004251
       children [
         Shape {
@@ -842,7 +1098,7 @@ DEF B2 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
@@ -867,7 +1123,7 @@ DEF B2 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -891,7 +1147,7 @@ DEF B2 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
@@ -952,35 +1208,42 @@ DEF B2 Robot {
     }
   ]
   name "B2"
-  boundingObject USE BLUE_ROBOT_SHAPE
-  physics USE ROBOT_PHYSICS
+  boundingObject USE ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
+  }
   controller "rcj_soccer_team_blue"
   synchronization FALSE
 }
 DEF B3 Robot {
-  translation 0.0646362 0.431265 0.0373044
-  rotation -1.24817e-06 1.20797e-06 -1 1.53191
+  translation 0.05877033369583943 0.33136063122172477 0.0380918
+  rotation 0 0 -1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.771629997904354e-09
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
+        translation 0.03040390000000004 0.03040389999999999 -0.032
+        rotation 0 0 1 -2.3561900000000002
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -988,80 +1251,188 @@ DEF B3 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -7.74663356251063e-09
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
+        translation -0.030403899999999984 0.030403900000000005 -0.032
+        rotation 0 0 1 -0.785395307179586
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.030403899999999928 -0.030403899999999977 -0.032
+        rotation 0 0 1 0.7853979999999997
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.030403899999999984 -0.030403900000000005 -0.032
+        rotation 0 0 1 2.35619
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.025990457192025085 1.7981358379354218e-07 -0.008000095794128182
+        rotation -0.26043941330881704 -0.2608143585831204 0.9295951712182214 1.643491160171936
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF BLUE_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.8934450484999394e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.020000130667441773 -0.0004198494222769633 -0.024061894469276958
+        rotation -1.1810691308402516e-06 0.9999999999985407 1.2343786774001837e-06 1.5708018510118937
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -1071,12 +1442,14 @@ DEF B3 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
+      translation 0 0.043 0.02
       rotation 0 0 1 1.5707903061004251
       children [
         Shape {
@@ -1101,7 +1474,7 @@ DEF B3 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
@@ -1126,7 +1499,7 @@ DEF B3 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
@@ -1150,7 +1523,7 @@ DEF B3 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
@@ -1211,35 +1584,42 @@ DEF B3 Robot {
     }
   ]
   name "B3"
-  boundingObject USE BLUE_ROBOT_SHAPE
-  physics USE ROBOT_PHYSICS
+  boundingObject USE ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
+  }
   controller "rcj_soccer_team_blue"
   synchronization FALSE
 }
 DEF Y1 Robot {
-  translation -0.274383 -0.359359 0.0373044
-  rotation -4.81452e-07 1.47473e-06 1 1.57
+  translation -0.33289712767451507 -0.2420316680351436 0.0380918
+  rotation 0 0 1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position 8.806153362894452e-12
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation -3.9627690133025035e-11 3.9627544572658754e-11 -1 1.5708
+        translation 0.030403899999999984 0.030403899999999984 -0.032
+        rotation 0 0 -1 2.35619
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1247,80 +1627,188 @@ DEF Y1 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position 8.614402906181159e-12
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation -3.876481307781522e-11 3.876467068696751e-11 -1 1.5708
+        translation -0.03040390000000001 0.030403899999999984 -0.032
+        rotation 0 0 -1 0.7853953071795856
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0304038999999999 -0.030403899999999984 -0.032
+        rotation 0 0 0.9999999999999999 0.785398
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.030403899999999984 -0.030403899999999984 -0.032
+        rotation 0 0 1 2.3561900000000002
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.02599045719202514 1.7981358380048107e-07 -0.008000095794128182
+        rotation -0.260439413308817 -0.2608143585831204 0.9295951712182215 1.6434911601719364
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF YELLOW_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.893445048499387e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.0200001306674418 -0.0004198494222770188 -0.024061894469276958
+        rotation -1.181069130918756e-06 0.9999999999985407 1.2343786776356968e-06 1.570801851011894
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -1330,17 +1818,19 @@ DEF Y1 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
-      rotation 0 0 1 1.5708
+      translation 0 0.043 0.02
+      rotation 0 0 1 1.5707903061004251
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1360,12 +1850,12 @@ DEF Y1 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1385,11 +1875,11 @@ DEF Y1 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1409,12 +1899,12 @@ DEF Y1 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1442,9 +1932,9 @@ DEF Y1 Robot {
     }
     Receiver {
       name "team receiver"
-      channel 3
+      channel 2
       allowedChannels [
-        3
+        2
       ]
     }
     Receiver {
@@ -1458,10 +1948,10 @@ DEF Y1 Robot {
     Emitter {
       name "team emitter"
       range 10
-      channel 3
+      channel 2
       baudRate 115200
       allowedChannels [
-        3
+        2
       ]
     }
     GPS {
@@ -1470,35 +1960,42 @@ DEF Y1 Robot {
     }
   ]
   name "Y1"
-  boundingObject USE YELLOW_ROBOT_SHAPE
-  physics USE ROBOT_PHYSICS
+  boundingObject USE ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
+  }
   controller "rcj_soccer_team_yellow"
   synchronization FALSE
 }
 DEF Y2 Robot {
-  translation 0.335061 -0.346269 0.0373044
-  rotation -1.56377e-06 5.12393e-07 1 1.51127
+  translation 0.36976800254147835 -0.2886410833124659 0.0380918
+  rotation 0 0 1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position 8.629983611817959e-12
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation -3.020494264136286e-11 3.020483169261717e-11 -1 1.5708
+        translation 0.030403899999999984 0.030403899999999984 -0.032
+        rotation 0 0 -1 2.35619
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1506,80 +2003,188 @@ DEF Y2 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position 8.730131650988922e-12
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation -3.055546077846123e-11 3.055534854219291e-11 -1 1.5708
+        translation -0.030403899999999984 0.030403899999999984 -0.032
+        rotation 0 0 -1 0.7853953071795856
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.030403899999999928 -0.030403899999999984 -0.032
+        rotation 0 0 0.9999999999999999 0.785398
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.030403899999999928 -0.030403899999999984 -0.032
+        rotation 0 0 1 2.3561900000000002
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.025990457192025085 1.7981358385599222e-07 -0.008000095794128182
+        rotation -0.260439413308817 -0.2608143585831204 0.9295951712182215 1.6434911601719364
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF YELLOW_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.893445048499387e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.020000130667441773 -0.0004198494222769633 -0.024061894469276958
+        rotation -1.181069130918756e-06 0.9999999999985407 1.2343786776356968e-06 1.570801851011894
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -1589,17 +2194,19 @@ DEF Y2 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
-      rotation 0 0 1 1.5708
+      translation 0 0.043 0.02
+      rotation 0 0 1 1.5707903061004251
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1619,12 +2226,12 @@ DEF Y2 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1644,11 +2251,11 @@ DEF Y2 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1668,12 +2275,12 @@ DEF Y2 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1701,9 +2308,9 @@ DEF Y2 Robot {
     }
     Receiver {
       name "team receiver"
-      channel 3
+      channel 2
       allowedChannels [
-        3
+        2
       ]
     }
     Receiver {
@@ -1717,10 +2324,10 @@ DEF Y2 Robot {
     Emitter {
       name "team emitter"
       range 10
-      channel 3
+      channel 2
       baudRate 115200
       allowedChannels [
-        3
+        2
       ]
     }
     GPS {
@@ -1729,35 +2336,42 @@ DEF Y2 Robot {
     }
   ]
   name "Y2"
-  boundingObject USE YELLOW_ROBOT_SHAPE
-  physics USE ROBOT_PHYSICS
+  boundingObject USE ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
+  }
   controller "rcj_soccer_team_yellow"
   synchronization FALSE
 }
 DEF Y3 Robot {
-  translation -0.0123017 -0.368377 0.0373044
-  rotation 1.19416e-06 1.20388e-06 1 1.58029
+  translation 0 -0.1 0.0380918
+  rotation 0 0 1 1.5699999999999998
   children [
-    HingeJoint {
+    DEF FRONT_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -6.5218941358580196e-12
-        axis 0 1 0
-        anchor 0 -0.045 -0.0176
+        axis 0.785398 0.785398 0
+        anchor 0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "left wheel motor"
+          name "front left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "left wheel sensor"
+          name "front left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 -0.045 -0.0176
-        rotation 2.2826629475503072e-11 -2.2826545628765183e-11 -1 1.5708
+        translation 0.03040390000000001 0.030403900000000005 -0.032
+        rotation 0 0 -1 2.35619
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF FRONT_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               DEF WHEEL_SHAPE Shape {
                 appearance PBRAppearance {
@@ -1765,80 +2379,188 @@ DEF Y3 Robot {
                   metalness 0
                 }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.006
+                  radius 0.0065
                 }
               }
             ]
           }
         ]
-        name "right wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            USE WHEEL_SHAPE
-          ]
-        }
+        name "front left wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_LEFT_TRANSFORM
         physics DEF WHEEL_PHYSICS Physics {
-          density -1
-          mass 0.005
         }
       }
     }
-    HingeJoint {
+    DEF REAR_LEFT_WHEEL HingeJoint {
       jointParameters HingeJointParameters {
-        position -6.5139005300807185e-12
-        axis 0 1 0
-        anchor 0 0.045 -0.0176
+        axis -0.785398 0.785398 0
+        anchor -0.0304039 0.0304039 -0.032
       }
       device [
         RotationalMotor {
-          name "right wheel motor"
+          name "rear left motor"
+          maxVelocity 40
         }
         PositionSensor {
-          name "right wheel sensor"
+          name "rear left sensor"
         }
       ]
       endPoint Solid {
-        translation 0 0.045 -0.0176
-        rotation 2.2798651855282515e-11 -2.2798568111311978e-11 -1 1.5708
+        translation -0.030403899999999984 0.030403899999999994 -0.032
+        rotation 0 0 -1 0.7853953071795856
         children [
-          Transform {
-            rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
+          DEF REAR_LEFT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear left wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_LEFT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF REAR_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis -0.785398 -0.785398 0
+        anchor -0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "rear right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "rear right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.030403899999999928 -0.030403899999999984 -0.032
+        rotation 0 0 0.9999999999999999 0.785398
+        children [
+          DEF REAR_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "rear right wheel"
+        contactMaterial "wheel"
+        boundingObject USE REAR_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF FRONT_RIGHT_WHEEL HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0.785398 -0.785398 0
+        anchor 0.0304039 -0.0304039 -0.032
+      }
+      device [
+        RotationalMotor {
+          name "front right motor"
+          maxVelocity 40
+        }
+        PositionSensor {
+          name "front right sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.030403900000000025 -0.030403899999999994 -0.032
+        rotation 0 0 1 2.3561900000000002
+        children [
+          DEF FRONT_RIGHT_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
+            children [
+              USE WHEEL_SHAPE
+            ]
+          }
+        ]
+        name "front right wheel"
+        contactMaterial "wheel"
+        boundingObject USE FRONT_RIGHT_TRANSFORM
+        physics USE WHEEL_PHYSICS
+      }
+    }
+    DEF DRIBBLER HingeJoint {
+      jointParameters HingeJointParameters {
+        position 8873.53458988807
+        axis 0 1 0
+        anchor 0.026 0 -0.008
+        suspensionAxis 0 0 1
+      }
+      device [
+        RotationalMotor {
+          name "dribbler motor"
+          maxVelocity 50
+        }
+        PositionSensor {
+          name "dribbler sensor"
+        }
+      ]
+      endPoint Solid {
+        translation 0.025990457192025113 1.7981358380625445e-07 -0.008000095794128182
+        rotation -0.260439413308817 -0.2608143585831204 0.9295951712182215 1.6434911601719364
+        children [
+          DEF DRIBBLER_TRANSFORM Transform {
+            rotation 0 1 0 1.570796327
             children [
               Shape {
-                appearance PBRAppearance {
-                  roughness 1
-                  metalness 0
-                }
                 geometry Cylinder {
-                  height 0.01
-                  radius 0.02
+                  height 0.045
+                  radius 0.004
                 }
               }
             ]
           }
         ]
-        name "left wheel"
-        boundingObject Transform {
-          rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
-          children [
-            Shape {
-              appearance PBRAppearance {
-                roughness 1
-                metalness 0
-              }
-              geometry Cylinder {
-                height 0.01
-                radius 0.02
-              }
-            }
-          ]
+        name "dribbler"
+        contactMaterial "dribbler"
+        boundingObject USE DRIBBLER_TRANSFORM
+        physics Physics {
+          density -1
+          mass 1.25
         }
-        physics USE WHEEL_PHYSICS
       }
     }
-    DEF YELLOW_ROBOT_SHAPE Shape {
+    DEF KICKER SliderJoint {
+      jointParameters JointParameters {
+        position -5.893445048499279e-08
+        axis 1 0 0
+      }
+      device [
+        LinearMotor {
+          name "kicker motor"
+          maxVelocity 20
+          minPosition -2.2419110676378706e-05
+          maxPosition 0.042
+          maxForce 10000
+        }
+        PositionSensor {
+          name "kicker sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.020000130667441787 -0.00041984942227696776 -0.024061894469276958
+        rotation -1.181069130918756e-06 0.9999999999985407 1.2343786776356968e-06 1.570801851011894
+        children [
+          DEF KICKER_SHAPE Shape {
+            geometry Box {
+              size 0.015 0.03 0.03
+            }
+          }
+        ]
+        boundingObject USE KICKER_SHAPE
+        physics Physics {
+          density 70000
+        }
+      }
+    }
+    DEF ROBOT_SHAPE Shape {
       appearance PBRAppearance {
         baseColorMap ImageTexture {
           url [
@@ -1848,17 +2570,19 @@ DEF Y3 Robot {
         roughness 1
         metalness 0
       }
-      geometry Box {
-        size 0.075 0.075 0.075
+      geometry Mesh {
+        url [
+          "soccer/Robot Shape.obj"
+        ]
       }
     }
     Solid {
-      translation 0 0.0385 0.02
-      rotation 0 0 1 1.5708
+      translation 0 0.043 0.02
+      rotation 0 0 1 1.5707903061004251
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1878,12 +2602,12 @@ DEF Y3 Robot {
       name "left sonar"
     }
     Solid {
-      translation 0 -0.0385 0.02
+      translation 0 -0.043 0.02
       rotation 0 0 1 -1.5707996938995747
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1903,11 +2627,11 @@ DEF Y3 Robot {
       name "right sonar"
     }
     Solid {
-      translation 0.0385 0 0.02
+      translation 0.043 0 0.02
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1927,12 +2651,12 @@ DEF Y3 Robot {
       name "front sonar"
     }
     Solid {
-      translation -0.0385 0 0.02
+      translation -0.043 0 0.02
       rotation 0 0 1 3.141592653589793
       children [
         Shape {
           appearance PBRAppearance {
-            baseColor 1 1 0
+            baseColor 0 0 1
             roughness 1
             metalness 0
           }
@@ -1960,9 +2684,9 @@ DEF Y3 Robot {
     }
     Receiver {
       name "team receiver"
-      channel 3
+      channel 2
       allowedChannels [
-        3
+        2
       ]
     }
     Receiver {
@@ -1976,10 +2700,10 @@ DEF Y3 Robot {
     Emitter {
       name "team emitter"
       range 10
-      channel 3
+      channel 2
       baudRate 115200
       allowedChannels [
-        3
+        2
       ]
     }
     GPS {
@@ -1988,8 +2712,15 @@ DEF Y3 Robot {
     }
   ]
   name "Y3"
-  boundingObject USE YELLOW_ROBOT_SHAPE
-  physics USE ROBOT_PHYSICS
+  boundingObject USE ROBOT_SHAPE
+  physics DEF ROBOT_PHYSICS Physics {
+    density 20000
+    centerOfMass [
+      0 0 -0.1
+    ]
+    damping Damping {
+    }
+  }
   controller "rcj_soccer_team_yellow"
   synchronization FALSE
 }
@@ -2006,5 +2737,4 @@ Robot {
   ]
   controller "rcj_soccer_referee_supervisor"
   supervisor TRUE
-  synchronization TRUE
 }
