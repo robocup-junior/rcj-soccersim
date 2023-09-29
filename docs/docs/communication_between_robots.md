@@ -38,37 +38,32 @@ this channel are going to receive it. So, if `robot1` sends a message,
 
 ### Converting the message into a packet
 
-Imagine we would like to send values `v1`, `v2`, ... , `vn`.
-Before the message is sent to the channel, it must be converted into a packet.
-Simply put, the packet is just a bytes object representing values `v1`, `v2`, ... , `vn`.
-To convert our values into bytes object we can use built-in library
-called [struct](https://docs.python.org/3/library/struct.html), which is
-shipped together with Python.
+Webots supports sending the packet in different formats (string, bytes, list of doubles...).
+Since our example controllers as well as supervisor use strings, let's describe how to send it.
 
-We need to know the type of each value we want to pack into a packet. Let's see a
-quick example. The values we want to send are `v1 = 3.14`, `v2 = 5` and `v3 = True`.
-It is obvious that `v1` is floating point number, `v2` is integer and `v3`
-is boolean. Knowing the type of each variable, we need to define the
-structure of the message.
+[JSON](https://en.wikipedia.org/wiki/JSON) (JavaScript Object Notation) is an
+open standard file format and data interchange format that uses human-readable
+text to store and transmit data objects consisting of attribute–value pairs and
+arrays (or other serializable values).
+In short, it is very similar to the `dict` data structure that Python uses.
+Starting from version 3.0, Python contains a built-in library called [json](https://docs.python.org/3/library/json.html). It
+offers encoding Python's dictionaries into JSON string and later decoding it back to a dictionary.
+This is very useful in our case because by reading the keys the receiver already knows what the
+value means.
 
-```python
-message_format = "di?"
-```
-
-The `struct` library defines various symbols we might use in order to represent
-a variable type. In our example `"d"` is representing floating point number,
-`"i"` is representing integer and `"?"` is representing boolean value.
-*If you want to use other variable types, check out
-[the struct format characters documentation](https://docs.python.org/3/library/struct.html#format-characters)*.
-Since we now know the structure of the message, we can create the packet
+Let's create a simple message that we would like to send:
 
 ```python
-packet = struct.pack(message_format, v1, v2, v3)
+data = {"robot_id": 1, "my_array": [1, 1.0, 2]}
 ```
 
-**Keep in mind that the order of variables passed to `pack()` function MUST be
-in the same order as specified in `message_format`, otherwise you might get
-a broken packet.**
+Before sending the data, we must convert it to the string so the emitter is able to
+encode it. As mentioned above, `json` library contains a method `dumps` that takes care
+of that.
+
+```python
+packet = json.dumps(data)
+```
 
 The only thing we need to do is emit the packet by the Emitter. It is as easy
 as just calling 
@@ -78,7 +73,6 @@ self.team_emitter.send(packet)
 ```
 
 and the message is succesfully sent to the channel.
-
 
 ### Receiving a message
 
@@ -95,41 +89,24 @@ If the there are new messages, the number of messages will be greater than 0 and
 we can proceed with reading the message.
 
 ```python
-packet = self.team_receiver.getData()
+packet = self.team_receiver.getString()
 self.team_receiver.nextPacket()
 ```
 
-In the first row we call the `getData()` method, which returns the packet and assigns
+In the first row we call the `getString()` method, which returns the packet and assigns
 it to the `packet` variable. The `nextPacket()` method is used to move the pointer
-to the next packet in the queue, so next time we are calling `getData()`, we are going
+to the next packet in the queue, so next time we are calling `getString()`, we are going
 to read next packet in the queue.
 
-Okay, now we have packet. How do we unpack it? Well, remember our cool `struct`
-library? We are going to use it for unpacking the packet, too.
-
-First of all, we need to know what data we expect. In our example, we sent
-three variables in this order - floating point number, integer and boolean. Therefore,
-we can define the format of the message here as well.
+Okay, now we have packet. How do we decode it? Well, remember our cool `json`
+library? We are going to use it for decoding the packet, too.
 
 ```python
-message_format = 'di?'
+data = json.loads(packet)
 ```
 
-Knowing what data to expect, we can unpack the packet by following command:
-
-```python
-unpacked = struct.unpack(message_format, packet)
-```
-
-The variable `unpacked` is a tuple with our values. If we print it, we will get
-`(3.14, 5, True)`. We can access the values as we would for list
-(or array in other languages)
-
-```python
-v1 = unpacked[0]
-v2 = unpacked[1]
-v3 = unpacked[2]
-```
+The variable `data` now contains the same dictionary we sent by the emitter and can be
+accessed as normal dictionary object.
 
 
 **WARNING: There are 3 robots within the team running asynchronously. If all of them
@@ -139,7 +116,11 @@ a `while` loop for example**
 
 ```python
 while self.team_receiver.getQueueLength() > 0:
-    packet = self.team_receiver.getData()
+    packet = self.team_receiver.getString()
     self.team_receiver.nextPacket()
     # Do something with the packet
 ```
+
+**WARNING: Webots does not guarantee the order of messages. Your robot controllers should not rely on the order.
+Instead, we recommend sending robot identifier in the message payload so the receiving robots clearly know which robot
+originally sent the message.**

@@ -17,7 +17,6 @@ class BaseVideoRecordAssistant:
         fastforward_rate: int = 1,
         resolution: str = "720p",
     ):
-
         self.supervisor = supervisor
         self.output_path = output_path
         self.fastforward_rate = fastforward_rate

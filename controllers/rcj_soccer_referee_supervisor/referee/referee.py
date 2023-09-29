@@ -1,5 +1,5 @@
+import json
 import random
-import struct
 from typing import List, Optional, Tuple
 
 from controller import Supervisor
@@ -91,21 +91,18 @@ class RCJSoccerReferee:
         self.sv.draw_team_names(self.team_name_blue, self.team_name_yellow)
         self.sv.draw_scores(self.score_blue, self.score_yellow)
 
-    def _pack_packet(self) -> bytes:
-        """Pack data into packet.
+    def _pack_data(self) -> str:
+        """Pack data into json string.
 
         Returns:
-            bytes: the packed packet.
+            str: json data encoded into string.
         """
-        # True/False telling whether the goal was scored
-        struct_fmt = "?"
-        data = list()
+        # Add Notification if the goal is scored and we are
+        # waiting for kickoff. The value is True or False
+        waiting_for_kickoff = self.ball_reset_timer > 0
 
-        # Add Notification if the goal is scored and we are waiting for kickoff
-        # The value is True or False
-        data.append(self.ball_reset_timer > 0)
-
-        return struct.pack(struct_fmt, *data)
+        data = {"waiting_for_kickoff": waiting_for_kickoff}
+        return json.dumps(data)
 
     def _add_initial_position_noise(
         self, translation: List[float]
@@ -396,7 +393,7 @@ class RCJSoccerReferee:
             )
 
         self.sv.update_positions()
-        self.sv.emit_data(self._pack_packet())
+        self.sv.emit_data(self._pack_data())
         self.time -= TIME_STEP / 1000.0
 
         # On the very last tick, note that the match has finished

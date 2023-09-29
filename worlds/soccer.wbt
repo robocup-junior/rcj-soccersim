@@ -1,4 +1,4 @@
-#VRML_SIM R2023a utf8
+#VRML_SIM R2023b utf8
 
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
@@ -20,7 +20,7 @@ TexturedBackgroundLight {
 }
 DEF SOCCER_FIELD Solid {
   children [
-    DEF GROUND Transform {
+    DEF GROUND Pose {
       rotation 0 0 1 1.5707996938995747
       children [
         Shape {
@@ -255,7 +255,7 @@ DEF SOCCER_FIELD Solid {
   boundingObject Group {
     children [
       USE GROUND
-      DEF NOTH_BBOX Transform {
+      DEF NOTH_BBOX Pose {
         translation 0.655 0 0.045
         children [
           Box {
@@ -263,7 +263,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF SOUTH_BBOX Transform {
+      DEF SOUTH_BBOX Pose {
         translation -0.655 0 0.045
         children [
           Box {
@@ -271,7 +271,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF NW_BBOX Transform {
+      DEF NW_BBOX Pose {
         translation 0.43 0.755 0.045
         children [
           Box {
@@ -279,7 +279,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF NE_BBOX Transform {
+      DEF NE_BBOX Pose {
         translation 0.43 -0.755 0.045
         children [
           Box {
@@ -287,7 +287,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF SW_BBOX Transform {
+      DEF SW_BBOX Pose {
         translation -0.43 0.755 0.045
         children [
           Box {
@@ -295,7 +295,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF SE_BBOX Transform {
+      DEF SE_BBOX Pose {
         translation -0.43 -0.755 0.045
         children [
           Box {
@@ -303,7 +303,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF NWC_BBOX Transform {
+      DEF NWC_BBOX Pose {
         translation -0.62 -0.725 0.045
         rotation 0 0 1 -0.7853
         children [
@@ -312,7 +312,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF NEC_BBOX Transform {
+      DEF NEC_BBOX Pose {
         translation -0.62 0.725 0.045
         rotation 0 0 1 0.7853
         children [
@@ -321,7 +321,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF SWC_BBOX Transform {
+      DEF SWC_BBOX Pose {
         translation 0.62 -0.725 0.045
         rotation 0 0 1 0.7853
         children [
@@ -330,7 +330,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF SEC_BBOX Transform {
+      DEF SEC_BBOX Pose {
         translation 0.62 0.725 0.045
         rotation 0 0 1 -0.7853
         children [
@@ -339,7 +339,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF YG_BBOX Transform {
+      DEF YG_BBOX Pose {
         translation 0 0.855 0.061
         children [
           Box {
@@ -347,7 +347,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF BG_BBOX Transform {
+      DEF BG_BBOX Pose {
         translation 0 -0.855 0.061
         children [
           Box {
@@ -355,7 +355,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF BGS_BBOX Transform {
+      DEF BGS_BBOX Pose {
         translation -0.205 -0.8 0.061
         children [
           Box {
@@ -363,7 +363,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF BGN_BBOX Transform {
+      DEF BGN_BBOX Pose {
         translation 0.205 -0.8 0.061
         children [
           Box {
@@ -371,7 +371,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF YGS_BBOX Transform {
+      DEF YGS_BBOX Pose {
         translation -0.205 0.8 0.061
         children [
           Box {
@@ -379,7 +379,7 @@ DEF SOCCER_FIELD Solid {
           }
         ]
       }
-      DEF YGN_BBOX Transform {
+      DEF YGN_BBOX Pose {
         translation 0.205 0.8 0.061
         children [
           Box {
@@ -462,7 +462,7 @@ DEF B1 Robot {
         translation 0 -0.045 -0.0176
         rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -479,7 +479,7 @@ DEF B1 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -509,7 +509,7 @@ DEF B1 Robot {
         translation 0 0.045 -0.0176
         rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -526,7 +526,7 @@ DEF B1 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
@@ -724,7 +724,7 @@ DEF B2 Robot {
         translation 0 -0.045 -0.0176
         rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -741,7 +741,7 @@ DEF B2 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -771,7 +771,7 @@ DEF B2 Robot {
         translation 0 0.045 -0.0176
         rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -788,7 +788,7 @@ DEF B2 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
@@ -983,7 +983,7 @@ DEF B3 Robot {
         translation 0 -0.045 -0.0176
         rotation -3.337240149329015e-15 -6.254334002834076e-15 1 1.5707999999999998
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -1000,7 +1000,7 @@ DEF B3 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -1030,7 +1030,7 @@ DEF B3 Robot {
         translation 0 0.045 -0.0176
         rotation -6.410229215105164e-15 -3.362702725970239e-15 1 1.5707996938995745
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -1047,7 +1047,7 @@ DEF B3 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
@@ -1240,9 +1240,9 @@ DEF Y1 Robot {
       ]
       endPoint Solid {
         translation 0 -0.045 -0.0176
-        rotation -3.9627690133025035e-11 3.9627544572658754e-11 -1 1.5708
+        rotation -4.84338434959195e-11 4.843366558880515e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -1259,7 +1259,7 @@ DEF Y1 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -1287,9 +1287,9 @@ DEF Y1 Robot {
       ]
       endPoint Solid {
         translation 0 0.045 -0.0176
-        rotation -3.876481307781522e-11 3.876467068696751e-11 -1 1.5708
+        rotation -4.7379215983996383e-11 4.737904195073807e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -1306,7 +1306,7 @@ DEF Y1 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
@@ -1499,9 +1499,9 @@ DEF Y2 Robot {
       ]
       endPoint Solid {
         translation 0 -0.045 -0.0176
-        rotation -3.020494264136286e-11 3.020483169261717e-11 -1 1.5708
+        rotation -3.8834926253180834e-11 3.883478360479352e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -1518,7 +1518,7 @@ DEF Y2 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -1546,9 +1546,9 @@ DEF Y2 Robot {
       ]
       endPoint Solid {
         translation 0 0.045 -0.0176
-        rotation -3.055546077846123e-11 3.055534854219291e-11 -1 1.5708
+        rotation -3.928559242945016e-11 3.92854481256766e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -1565,7 +1565,7 @@ DEF Y2 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {
@@ -1758,9 +1758,9 @@ DEF Y3 Robot {
       ]
       endPoint Solid {
         translation 0 -0.045 -0.0176
-        rotation 2.2826629475503072e-11 -2.2826545628765183e-11 -1 1.5708
+        rotation 2.9348523611361095e-11 -2.934841580841238e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               DEF WHEEL_SHAPE Shape {
@@ -1777,7 +1777,7 @@ DEF Y3 Robot {
           }
         ]
         name "right wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             USE WHEEL_SHAPE
@@ -1805,9 +1805,9 @@ DEF Y3 Robot {
       ]
       endPoint Solid {
         translation 0 0.045 -0.0176
-        rotation 2.2798651855282515e-11 -2.2798568111311978e-11 -1 1.5708
+        rotation 2.931255238536323e-11 -2.9312444714543974e-11 -1 1.5708
         children [
-          Transform {
+          Pose {
             rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
             children [
               Shape {
@@ -1824,7 +1824,7 @@ DEF Y3 Robot {
           }
         ]
         name "left wheel"
-        boundingObject Transform {
+        boundingObject Pose {
           rotation -0.5771969549958951 0.5776567755050862 -0.5771969549958951 2.0939354039397986
           children [
             Shape {

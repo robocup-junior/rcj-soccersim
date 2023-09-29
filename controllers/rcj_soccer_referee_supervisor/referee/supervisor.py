@@ -217,13 +217,13 @@ class RCJSoccerSupervisor(Supervisor):
                 object_name, ROBOT_INITIAL_ROTATION[object_name]
             )
 
-    def emit_data(self, packet: bytes):
+    def emit_data(self, data: str):
         """Send packet via emitter
 
         Args:
-            packet (bytes): the packet to be sent
+            data (str): the data to be sent
         """
-        self.emitter.send(packet)
+        self.emitter.send(data)
 
     def draw_team_names(self, team_name_blue: str, team_name_yellow: str):
         """Visualize (draw) the names of the teams.

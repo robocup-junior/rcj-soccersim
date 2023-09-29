@@ -30,7 +30,6 @@ def output_path(
     match_id: int,
     half_id: int,
 ) -> PosixPath:
-
     now_str = datetime.utcnow().strftime("%Y%m%dT%H%M%S")
     team_blue = team_blue_id.replace(" ", "_")
     team_yellow = team_yellow_id.replace(" ", "_")

@@ -1,5 +1,5 @@
+import json
 import math
-import struct
 
 TIME_STEP = 32
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
@@ -47,22 +47,20 @@ class RCJSoccerRobot:
         self.left_motor.setVelocity(0.0)
         self.right_motor.setVelocity(0.0)
 
-    def parse_supervisor_msg(self, packet: str) -> dict:
+    def parse_supervisor_msg(self, data: str) -> dict:
         """Parse message received from supervisor
 
+        Args:
+            data: json data encoded into string
+
         Returns:
-            dict: Location info about each robot and the ball.
+            dict: data decoded into dictionary
             Example:
                 {
                     'waiting_for_kickoff': False,
                 }
         """
-        # True/False telling whether the goal was scored
-        struct_fmt = "?"
-        unpacked = struct.unpack(struct_fmt, packet)
-
-        data = {"waiting_for_kickoff": unpacked[0]}
-        return data
+        return json.loads(data)
 
     def get_new_data(self) -> dict:
         """Read new data from supervisor
@@ -70,10 +68,9 @@ class RCJSoccerRobot:
         Returns:
             dict: See `parse_supervisor_msg` method
         """
-        packet = self.receiver.getData()
+        data = self.receiver.getString()
         self.receiver.nextPacket()
-
-        return self.parse_supervisor_msg(packet)
+        return self.parse_supervisor_msg(data)
 
     def is_new_data(self) -> bool:
         """Check if there is new data from supervisor to be received
@@ -83,18 +80,16 @@ class RCJSoccerRobot:
         """
         return self.receiver.getQueueLength() > 0
 
-    def parse_team_msg(self, packet: str) -> dict:
+    def parse_team_msg(self, data: str) -> dict:
         """Parse message received from team robot
 
+        Args:
+            dict: json data encoded into string
+
         Returns:
-            dict: Parsed message stored in dictionary.
+            dict: data decoded into dictionary
         """
-        struct_fmt = "i"
-        unpacked = struct.unpack(struct_fmt, packet)
-        data = {
-            "robot_id": unpacked[0],
-        }
-        return data
+        return json.loads(data)
 
     def get_new_team_data(self) -> dict:
         """Read new data from team robot
@@ -102,9 +97,9 @@ class RCJSoccerRobot:
         Returns:
             dict: See `parse_team_msg` method
         """
-        packet = self.team_receiver.getData()
+        data = self.team_receiver.getString()
         self.team_receiver.nextPacket()
-        return self.parse_team_msg(packet)
+        return self.parse_team_msg(data)
 
     def is_new_team_data(self) -> bool:
         """Check if there is new data from team robots to be received
@@ -114,16 +109,14 @@ class RCJSoccerRobot:
         """
         return self.team_receiver.getQueueLength() > 0
 
-    def send_data_to_team(self, robot_id) -> None:
+    def send_data_to_team(self, robot_id: int) -> None:
         """Send data to the team
 
         Args:
              robot_id (int): ID of the robot
         """
-        struct_fmt = "i"
-        data = [robot_id]
-        packet = struct.pack(struct_fmt, *data)
-        self.team_emitter.send(packet)
+        data = {"robot_id": robot_id}
+        self.team_emitter.send(json.dumps(data))
 
     def get_new_ball_data(self) -> dict:
         """Read new data from IR sensor
@@ -138,9 +131,12 @@ class RCJSoccerRobot:
                     'strength': 0.1
                 }
         """
-        _ = self.ball_receiver.getData()
+        _ = self.ball_receiver.getString()
         data = {
-            "direction": self.ball_receiver.getEmitterDirection(),
+            # TODO: Remove [:3] once
+            #   https://github.com/cyberbotics/webots/pull/6394
+            #   is released and Webots updated
+            "direction": self.ball_receiver.getEmitterDirection()[:3],
             "strength": self.ball_receiver.getSignalStrength(),
         }
         self.ball_receiver.nextPacket()

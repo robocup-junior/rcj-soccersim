@@ -3,12 +3,12 @@
 This is the official repository of the RoboCupJunior Soccer Simulator. The
 simulator is based on [Webots](https://github.com/cyberbotics/webots) and this
 repository provides both the "automatic referee" (which implements the [Soccer
-Simulated Rules](https://github.com/RoboCupJuniorTC/soccer-rules-simulation))
+Simulated Rules](https://github.com/robocup-junior/soccer-rules-simulation))
 as well as a sample simulated team of robots with some basic strategy.
 
 ![Soccer Sim](./docs/docs/images/soccer_sim.png)
 
-*Learn more in the [documentation](https://robocupjuniortc.github.io/rcj-soccersim/).*
+*Learn more in the [documentation](https://robocup-junior.github.io/rcj-soccersim/).*
 
 # How do I try this out?
 
@@ -16,11 +16,11 @@ as well as a sample simulated team of robots with some basic strategy.
 
 1. Install Python 3.7 (or higher) 64 bit from the [official website](https://www.python.org/downloads/) (please make sure it is version 3.7 or higher for Windows, and 3.8 or higher if installing on MacOS or Linux). On Windows, please make sure your Python is referenced in Windows PATH by selecting the option "Add Python 3.x to PATH" during the installation. Check out this great [installation guide](https://realpython.com/installing-python/) if you need some help!
 
-2. Download [Webots](https://www.cyberbotics.com/#download) from their official website. Currently, version R2022a is stable with the Soccer Simulator. You can find detailed installation procedure on the official [Webots Installation guide](https://cyberbotics.com/doc/guide/installation-procedure).
+2. Download [Webots](https://www.cyberbotics.com/#download) from their official website. Currently, version R2023b is stable with the Soccer Simulator. You can find detailed installation procedure on the official [Webots Installation guide](https://cyberbotics.com/doc/guide/installation-procedure).
 
-3. Clone the rcj-soccersim repository to your computer by downloading the ZIP file from [here](https://github.com/RoboCupJuniorTC/rcj-soccersim/archive/master.zip) or running
+3. Clone the rcj-soccersim repository to your computer by downloading the ZIP file from [here](https://github.com/robocup-junior/rcj-soccersim/archive/master.zip) or running
 
-        git clone https://github.com/RoboCupJuniorTC/rcj-soccersim.git
+        git clone https://github.com/robocup-junior/rcj-soccersim.git
 
 4. Finally, run Webots, go to `Tools > Preferences > Python command` and set it to `python` or `python3` to point Webots to Python 3. Depending on your system, the reference to Python 3 can be via the command `python` or `python3`. More information on how to configure Webots to work with Python can be found [here](https://cyberbotics.com/doc/guide/using-python).
 
@@ -48,7 +48,7 @@ avoid any compilation issues.
 
 ## Development
 
-We are open to contributions! Have a look at our [issues](https://github.com/RoboCupJuniorTC/rcj-soccersim/issues).
+We are open to contributions! Have a look at our [issues](https://github.com/robocup-junior/rcj-soccersim/issues).
 Before you make a pull request, make sure the code is formatted
 with `black` and `isort`, and `flake8` issues are fixed.
 
