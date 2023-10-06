@@ -15,10 +15,10 @@ class ProgressChecker:
         self.prev_position = None
 
     def track(self, position: List[float]):
-        """Make ProgressChecker react to a new position. Internally, it computes
-        the Euclidian distance from the previous position and saves it so that
-        it can be used when computing whether the given object has made
-        progress.
+        """Make ProgressChecker react to a new position. Internally, it
+        computes the Euclidian distance from the previous position and
+        saves it so that it can be used when computing whether the given
+        object has made progress.
 
         Args:
             position (list): Current position of the object

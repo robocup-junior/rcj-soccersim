@@ -100,7 +100,7 @@ robot we initialized previously.
 Let's put together a simple program to showcase how you can go about programming a robot.
 
 ```python
-import struct
+import json
 
 TIME_STEP = 32
 ROBOT_NAMES = ["B1", "B2", "B3", "Y1", "Y2", "Y3"]
@@ -143,16 +143,9 @@ class MyRobot:
         self.right_motor.setVelocity(0.0)
 
     def get_new_data(self):
-        packet = self.receiver.getData()
+        packet = self.receiver.getString()
         self.receiver.nextPacket()
-
-        struct_fmt = '?'
-
-        unpacked = struct.unpack(struct_fmt, packet)
-        data = {
-            "waiting_for_kickoff": unpacked[0]
-        }
-        return data
+        return json.loads(packet)
 
     def run(self):
         while self.robot.step(TIME_STEP) != -1:
@@ -179,11 +172,11 @@ class MyRobot:
 Let's explain the code in detail:
 
 ```python
-import struct
+import json
 ```
 
-This library is a [built-in Python library](https://docs.python.org/3/library/struct.html),
-which is required to unpack the data sent by the supervisor.
+This library is a [built-in Python library](https://docs.python.org/3/library/json.html),
+which is required to decode the data sent by the supervisor.
 
 ```python
 TIME_STEP = 32
@@ -225,7 +218,7 @@ def get_new_data(self):
     ...
 ```
 
-We are not going to explain this deeply. This function simply parses the incoming
+We are not going to explain this deeply. This function simply decodes the incoming
 data from supervisor. Feel free to copy and use it. The resulting dictionary
 just contains a single bit of information: whether a goal was scored and we are waiting for a new kickoff.
 In case the goal gets scored, the value is `True` and is reset to `False` when the

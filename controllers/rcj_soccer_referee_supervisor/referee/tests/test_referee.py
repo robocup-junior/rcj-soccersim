@@ -32,7 +32,7 @@ def referee() -> RCJSoccerReferee:
 
 
 def test_pack_packet(referee: RCJSoccerReferee):
-    assert referee._pack_packet() == b"\x00"
+    assert referee._pack_data() == '{"waiting_for_kickoff": false}'
 
 
 def test_add_initial_position_noise(referee: RCJSoccerReferee):
