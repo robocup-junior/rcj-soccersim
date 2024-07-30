@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## v2.2
+
 * Features
   * **BREAKING** Change the message format sent between Emitter and Receiver
   * Update Webots from R2022a to R2023b
