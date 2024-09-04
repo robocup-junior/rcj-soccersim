@@ -5,10 +5,10 @@
 ## v2.2
 
 * Features
-  * **BREAKING** Change the message format sent between Emitter and Receiver
-  * Update Webots from R2022a to R2023b
+  * **BREAKING** [#141](https://github.com/robocup-junior/rcj-soccersim/pull/141) Change the message format sent between Emitter and Receiver
+  * [#141](https://github.com/robocup-junior/rcj-soccersim/pull/141) Update Webots from R2022a to R2023b
 * Other
-  * Update development requirements
+  * [#141](https://github.com/robocup-junior/rcj-soccersim/pull/141) Update development requirements
 
 ## v2.1
 
