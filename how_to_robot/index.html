@@ -1,0 +1,918 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../getting_started/">
+      
+      
+        <link rel="next" href="../communication_between_robots/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>How to program your robot - RCJ Soccer Sim</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-to-program-your-robot" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RCJ Soccer Sim" class="md-header__button md-logo" aria-label="RCJ Soccer Sim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RCJ Soccer Sim
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How to program your robot
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RCJ Soccer Sim" class="md-nav__button md-logo" aria-label="RCJ Soccer Sim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RCJ Soccer Sim
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    How to program your robot
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    How to program your robot
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controllers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hello-world-robot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello world, robot!
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hello world, robot!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-for-determining-and-initializing-the-robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script for determining and initializing the robot controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Robot controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#available-sensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available sensors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available sensors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compass
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonars" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sonars
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ball-ir-sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ball IR Sensor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importing-shared-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing shared code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-external-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported external libraries
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../communication_between_robots/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Inter-robot communication
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_run_sim/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to run the simulation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Controllers
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hello-world-robot" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hello world, robot!
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hello world, robot!">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script-for-determining-and-initializing-the-robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Script for determining and initializing the robot controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#robot-controller" class="md-nav__link">
+    <span class="md-ellipsis">
+      Robot controller
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#available-sensors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Available sensors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Available sensors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gps" class="md-nav__link">
+    <span class="md-ellipsis">
+      GPS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#compass" class="md-nav__link">
+    <span class="md-ellipsis">
+      Compass
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sonars" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sonars
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ball-ir-sensor" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ball IR Sensor
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#importing-shared-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Importing shared code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#supported-external-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      Supported external libraries
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="how-to-program-your-robot">How to program your robot</h1>
+<h2 id="controllers">Controllers</h2>
+<p>Each object in the simulation world can be controlled by a program.
+This program is called <strong>Controller</strong>. Each robot should have exactly
+one controller, implemented as a <strong>Python3</strong> program. There is an invisible referee object in the simulation,
+which takes care of controlling the game and checking the rules.</p>
+<p>The controllers are located in the <code>controllers</code> directory. The name of the controller
+must be located in a subfolder with the same name (i.e. <code>robot/robot.py</code>)
+and this name ought to be specified in <code>soccer.wbt</code> file.</p>
+<h2 id="hello-world-robot">Hello world, robot!</h2>
+<p>We have prepared a few sample robot controllers. They can be found in the <code>controllers</code>
+directory. The controllers for the robots of blue team are located in
+<code>rcj_soccer_team_blue</code> folder and for the robots of yellow team in
+<code>rcj_soccer_team_yellow</code> folder, respectively.</p>
+<p>Team folders contain a file called <code>rcj_soccer_team_blue.py</code> (blue team)
+or <code>rcj_soccer_team_yellow.py</code> (yellow team). Each of the robots initially runs
+this file (for the competition, it should be <code>robot.py</code>). Based on the unique identifier of the robot (which can be <code>1</code>, <code>2</code> or <code>3</code>)
+we initialize the code for the particular robot.</p>
+<h3 id="script-for-determining-and-initializing-the-robot-controller">Script for determining and initializing the robot controller</h3>
+<p>A sample initial file might look as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">controller</span> <span class="kn">import</span> <span class="n">Robot</span>
+
+<span class="kn">from</span> <span class="nn">robot1</span> <span class="kn">import</span> <span class="n">MyRobot1</span>
+<span class="kn">from</span> <span class="nn">robot2</span> <span class="kn">import</span> <span class="n">MyRobot2</span>
+<span class="kn">from</span> <span class="nn">robot3</span> <span class="kn">import</span> <span class="n">MyRobot3</span>
+
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">()</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+<span class="n">robot_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="k">if</span> <span class="n">robot_number</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot1</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">robot_number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot2</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot3</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+
+<span class="n">robot_controller</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p>Let's describe a file for determining robot's name and running specific controller.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">controller</span> <span class="kn">import</span> <span class="n">Robot</span>
+</code></pre></div>
+<p>The Robot class is required to be imported because this is the only way we are able
+to controll the robot. The Robot class is shipped together with Webots.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">robot1</span> <span class="kn">import</span> <span class="n">MyRobot1</span>
+<span class="kn">from</span> <span class="nn">robot2</span> <span class="kn">import</span> <span class="n">MyRobot2</span>
+<span class="kn">from</span> <span class="nn">robot3</span> <span class="kn">import</span> <span class="n">MyRobot3</span>
+</code></pre></div>
+<p>Since all of robot controllers are located in the same directory, we can easily import them.</p>
+<div class="highlight"><pre><span></span><code><span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">()</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+</code></pre></div>
+<p>Initialize robot instance and get the name of the robot. The name is one of
+the following <code>{"B1", "B2", "B3", "Y1", "Y2", "Y3"}</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">robot_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">name</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="k">if</span> <span class="n">robot_number</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot1</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">robot_number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot2</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">robot_controller</span> <span class="o">=</span> <span class="n">MyRobot3</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+</code></pre></div>
+<p>By checking the second character in the name, we can easily get the number identifier
+of the robot and initialize its controller appropriately.</p>
+<div class="highlight"><pre><span></span><code><span class="n">robot_controller</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</code></pre></div>
+<p>We just call the method <code>run</code> in order to execute the code for the specific
+robot we initialized previously.</p>
+<h3 id="robot-controller">Robot controller</h3>
+<p>Let's put together a simple program to showcase how you can go about programming a robot.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">TIME_STEP</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">ROBOT_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y3&quot;</span><span class="p">]</span>
+<span class="n">N_ROBOTS</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ROBOT_NAMES</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MyRobot</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;supervisor receiver&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ball_receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;ball receiver&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ball_receiver</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">gps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;gps&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gps</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">compass</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;compass&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compass</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;distancesensor left&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_left</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;distancesensor right&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_right</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_front</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;distancesensor front&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_front</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_back</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;distancesensor back&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sonar_back</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_motor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;left wheel motor&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_motor</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;right wheel motor&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_motor</span><span class="o">.</span><span class="n">setPosition</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;+inf&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_motor</span><span class="o">.</span><span class="n">setPosition</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;+inf&#39;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">left_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">right_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_new_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">getString</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">nextPacket</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">getQueueLength</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_data</span><span class="p">()</span>
+
+                <span class="c1"># Get data from compass</span>
+                <span class="n">heading</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_compass_heading</span><span class="p">()</span>
+
+                <span class="c1"># Get GPS coordinates of the robot</span>
+                <span class="n">robot_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gps_coordinates</span><span class="p">()</span>
+
+                <span class="c1"># Get data from sonars</span>
+                <span class="n">sonar_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sonar_values</span><span class="p">()</span>
+
+                <span class="c1"># Get direction and strength of the IR signal</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_new_ball_data</span><span class="p">():</span>
+                    <span class="n">ball_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_ball_data</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">left_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">right_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Let's explain the code in detail:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">json</span>
+</code></pre></div>
+<p>This library is a <a href="https://docs.python.org/3/library/json.html">built-in Python library</a>,
+which is required to decode the data sent by the supervisor.</p>
+<div class="highlight"><pre><span></span><code><span class="n">TIME_STEP</span> <span class="o">=</span> <span class="mi">32</span>
+<span class="n">ROBOT_NAMES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;B1&quot;</span><span class="p">,</span> <span class="s2">&quot;B2&quot;</span><span class="p">,</span> <span class="s2">&quot;B3&quot;</span><span class="p">,</span> <span class="s2">&quot;Y1&quot;</span><span class="p">,</span> <span class="s2">&quot;Y2&quot;</span><span class="p">,</span> <span class="s2">&quot;Y3&quot;</span><span class="p">]</span>
+<span class="n">N_ROBOTS</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ROBOT_NAMES</span><span class="p">)</span>
+</code></pre></div>
+<p>We also define some useful constants, whose values will be used later.</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span> <span class="nc">MyRobot</span><span class="p">:</span>
+</code></pre></div>
+<p>You can wrap the program into the class as we did. The benefit of OOP
+(<a href="https://realpython.com/python3-object-oriented-programming/">Object Oriented Programming</a>)
+is that you can later reuse the same common class throughout your controllers and
+therefore make the code easier to read. We are going to continue with our OOP approach.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getName</span><span class="p">()</span>
+    <span class="o">...</span>
+</code></pre></div>
+<p>The <code>__init__</code> function is something like a constructor of the class and is called when an instance of the <code>MyRobot</code> object
+is created. We use this function to initialize some important variables. The most important one
+is the <code>Robot</code> instance, which allows us to get access to the so called Webots devices
+like motor (for controlling the speed), receiver (for reading data from Supervisor),
+and sensors like GPS, Compass, Sonars or IR Ball receiver.
+<strong>The name and the team of your robot</strong> can be determined by calling <code>self.robot.getName()</code>.
+It will give you one of <code>{"B1", "B2", "B3", "Y1", "Y2", "Y3"}</code>. The first letter determines
+the team ("Blue", "Yellow"), while the second one is the robot's identifier.
+If you want to know the side of your team (either "Blue" or "Yellow"), you can find out
+by checking <code>self.name[0]</code>, which essentially gives you <code>"B"</code> for Blue or <code>"Y"</code> for Yellow side.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">get_new_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+<p>We are not going to explain this deeply. This function simply decodes the incoming
+data from supervisor. Feel free to copy and use it. The resulting dictionary
+just contains a single bit of information: whether a goal was scored and we are waiting for a new kickoff.
+In case the goal gets scored, the value is <code>True</code> and is reset to <code>False</code> when the
+referee fires new kickoff.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</code></pre></div>
+<p>This is the method which contains the logic for controlling the robot. As mentioned
+previously, it is called by our initialization script.</p>
+<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+</code></pre></div>
+<p><strong>The <code>step</code> function is crucial and must be used in every controller.
+This function synchronizes the sensor and actuator data between Webots and the controllers.</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">getQueueLength</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+</code></pre></div>
+<p>Before reading data, it is important to check if there is actually something
+in the queue that we can read.</p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_data</span><span class="p">()</span>
+
+<span class="n">heading</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_compass_heading</span><span class="p">()</span>
+<span class="n">robot_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_gps_coordinates</span><span class="p">()</span>
+<span class="n">sonar_values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_sonar_values</span><span class="p">()</span>
+<span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_new_ball_data</span><span class="p">():</span>
+    <span class="n">ball_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_ball_data</span><span class="p">()</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">left_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">right_motor</span><span class="o">.</span><span class="n">setVelocity</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>And finally, after reading the new data received from supervisor as well as data
+from sensors we do some calculations and set the speed of the motors.</p>
+<h3 id="available-sensors">Available sensors</h3>
+<h4 id="gps">GPS</h4>
+<p>This sensor gives you the exact position of the robot.
+For more information check <a href="https://cyberbotics.com/doc/reference/gps">official GPS documentation</a>.
+In <code>rcj_soccer_robot.py</code> you can find <code>get_gps_coordinates()</code>, which demonstrates
+how to work with GPS sensor.</p>
+<h4 id="compass">Compass</h4>
+<p>Useful sensor to determine the angle (rotation) of the robot from the north.
+For more information check <a href="https://cyberbotics.com/doc/reference/compass">official compass documentation</a>.
+In <code>rcj_soccer_robot.py</code> you can find <code>get_compass_heading()</code>, which demonstrates
+how to work with compass sensor.</p>
+<h4 id="sonars">Sonars</h4>
+<p>There are four <strong>sonars</strong> mounted on the robot (each side having one). Since the
+exact position of the robot may be retrieved from GPS, these sensors are useful
+for detecting the opponent's robots. For more information check
+<a href="https://cyberbotics.com/doc/reference/distancesensor">official distance sensor documentation</a>.</p>
+<p>Note that you may encounter some error in measurements. When the robot is next to an
+obstacle, the value returned is 0 with error of 0%. On the other hand, when the
+sesnsor does not see anything, the value returned is 1000 with error of 5%.
+The values and errors in between are linearly interpolated.</p>
+<p>In <code>rcj_soccer_robot.py</code> you can find <code>get_sonar_values()</code>, which demonstrates
+how to work with sonar sensors.
+For debugging purposes, you may find it useful to turn on rendering rays of
+distance sensors. This option is available in Webots GUI under
+<code>View -&gt; Optional Rendering -&gt; Show DistanceSensor Rays</code>.</p>
+<h4 id="ball-ir-sensor">Ball IR Sensor</h4>
+<p>There is an infra-red emitter mounted onto the ball.
+The emitter just emits a signal and each robot receives this signal if it is
+located within a pre-defined range. The receiver is able to determine the
+direction as well as strength of the signal, which can be used for navigating
+robots towards the ball.</p>
+<p>For more information check the <a href="https://cyberbotics.com/doc/reference/receiver">official receiver documentation</a>
+or our <code>get_new_ball_data()</code> method in <code>rcj_soccer_robot.py</code>.</p>
+<h2 id="importing-shared-code">Importing shared code</h2>
+<p>Each team consists of three robots. These robots might share some of the code
+and it is  actually <a href="https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">a good practice</a>
+not to duplicate code all over the place.</p>
+<p>Imagine you have the folder structure which looks like this</p>
+<div class="highlight"><pre><span></span><code>controllers/
+├── robot/
+│   └── robot.py
+│   └── robot1.py
+│   └── robot2.py
+│   └── robot3.py
+|   └── utils.py
+</code></pre></div>
+<p>and within <code>robot1.py</code>, <code>robot2.py</code> and <code>robot3.py</code> you want to import
+some useful code from <code>utils.py</code>. You can easily import it by calling</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">utils</span>
+</code></pre></div>
+<p>and use the shared code rather than copying it into each of the controllers.
+Do not import anything from <code>robot.py</code> file, otherwise you might get
+cyclic import problem.</p>
+<h2 id="supported-external-libraries">Supported external libraries</h2>
+<p>In general, the whole Python's
+<a href="https://docs.python.org/3/library/index.html">standard library</a> can be used in the
+robot's programs.</p>
+<p>Furthermore, to make the computations easier, the Soccer Sim environment
+supports the following two Python libraries that are normally used for what's
+called "scientific computing":</p>
+<ul>
+<li><a href="https://numpy.org/doc/stable/"><code>numpy</code></a> <em>(version 1.20.2)</em></li>
+<li><a href="https://docs.scipy.org/doc/scipy/reference/"><code>scipy</code></a> <em>(version 1.6.3)</em></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+    
+  </body>
+</html>

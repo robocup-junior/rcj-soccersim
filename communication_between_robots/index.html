@@ -1,0 +1,616 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../how_to_robot/">
+      
+      
+        <link rel="next" href="../how_to_run_sim/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Inter-robot communication - RCJ Soccer Sim</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#communication-between-robots" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="RCJ Soccer Sim" class="md-header__button md-logo" aria-label="RCJ Soccer Sim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            RCJ Soccer Sim
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Inter-robot communication
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="RCJ Soccer Sim" class="md-nav__button md-logo" aria-label="RCJ Soccer Sim" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    RCJ Soccer Sim
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting_started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_robot/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to program your robot
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Inter-robot communication
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Inter-robot communication
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition-in-the-world-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition in the world file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initializing-the-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initializing the communication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sending-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sending a message
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sending a message">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-the-message-into-a-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting the message into a packet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receiving a message
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how_to_run_sim/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to run the simulation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#definition-in-the-world-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Definition in the world file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#initializing-the-communication" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initializing the communication
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sending-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Sending a message
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sending a message">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#converting-the-message-into-a-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      Converting the message into a packet
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#receiving-a-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      Receiving a message
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="communication-between-robots">Communication between robots</h1>
+<p>Each of the robots is equipped with two Receivers and one Emitter. One of the
+Receivers is used for receiving data from Supervisor. The Emitter and the second
+Receiver can be used for sending and receiving data between robots from the
+same team. We are going to describe what needs to be done in order to make use of it.</p>
+<h2 id="definition-in-the-world-file">Definition in the world file</h2>
+<p>Our world file defines one Emitter and one Receiver for team communication for
+each robot. Blue team is assigned channel 2, while yellow team is assigned
+channel 3. Webots supports changing channels, but we turned this feature off so teams
+are not able to spam the opponent with a bunch of messages.
+The name of the Emitter is set to <code>team emitter</code>, while the Receiver can be found
+under name <code>team receiver</code>.</p>
+<h2 id="initializing-the-communication">Initializing the communication</h2>
+<p>The first thing we need to do in order to setup the communication is initialize
+the Emitter and Receiver. To do so, just call following commands. We are going to use
+the <a href="https://en.wikipedia.org/wiki/Object-oriented_programming">OOP</a> approach here as well (see our sample robot controllers).</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">team_emitter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;team emitter&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">getDevice</span><span class="p">(</span><span class="s2">&quot;team receiver&quot;</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">enable</span><span class="p">(</span><span class="n">TIME_STEP</span><span class="p">)</span>
+</code></pre></div>
+<p>Before using the Receiver, we must enable it with <code>enable(TIME_STEP)</code> command,
+where <code>TIME_STEP</code> is the same value we use in our controller when calling
+<code>self.robot.step(TIME_STEP)</code>.</p>
+<h2 id="sending-a-message">Sending a message</h2>
+<p>Each time we send a message via a channel, all the receivers listening on
+this channel are going to receive it. So, if <code>robot1</code> sends a message,
+<code>robot2</code> and <code>robot3</code> from the same team can read it.</p>
+<h3 id="converting-the-message-into-a-packet">Converting the message into a packet</h3>
+<p>Webots supports sending the packet in different formats (string, bytes, list of doubles...).
+Since our example controllers as well as supervisor use strings, let's describe how to send it.</p>
+<p><a href="https://en.wikipedia.org/wiki/JSON">JSON</a> (JavaScript Object Notation) is an
+open standard file format and data interchange format that uses human-readable
+text to store and transmit data objects consisting of attribute–value pairs and
+arrays (or other serializable values).
+In short, it is very similar to the <code>dict</code> data structure that Python uses.
+Starting from version 3.0, Python contains a built-in library called <a href="https://docs.python.org/3/library/json.html">json</a>. It
+offers encoding Python's dictionaries into JSON string and later decoding it back to a dictionary.
+This is very useful in our case because by reading the keys the receiver already knows what the
+value means.</p>
+<p>Let's create a simple message that we would like to send:</p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;robot_id&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;my_array&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]}</span>
+</code></pre></div>
+<p>Before sending the data, we must convert it to the string so the emitter is able to
+encode it. As mentioned above, <code>json</code> library contains a method <code>dumps</code> that takes care
+of that.</p>
+<div class="highlight"><pre><span></span><code><span class="n">packet</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+<p>The only thing we need to do is emit the packet by the Emitter. It is as easy
+as just calling </p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">team_emitter</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+</code></pre></div>
+<p>and the message is succesfully sent to the channel.</p>
+<h3 id="receiving-a-message">Receiving a message</h3>
+<p>When a Receiver receives a message, it adds it to the queue. We are then
+able to pull the oldest message out of the queue.</p>
+<p>To check the number of messages waiting in the queue, we can call</p>
+<div class="highlight"><pre><span></span><code><span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">getQueueLength</span><span class="p">()</span>
+</code></pre></div>
+<p>If the there are new messages, the number of messages will be greater than 0 and
+we can proceed with reading the message.</p>
+<div class="highlight"><pre><span></span><code><span class="n">packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">getString</span><span class="p">()</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">nextPacket</span><span class="p">()</span>
+</code></pre></div>
+<p>In the first row we call the <code>getString()</code> method, which returns the packet and assigns
+it to the <code>packet</code> variable. The <code>nextPacket()</code> method is used to move the pointer
+to the next packet in the queue, so next time we are calling <code>getString()</code>, we are going
+to read next packet in the queue.</p>
+<p>Okay, now we have packet. How do we decode it? Well, remember our cool <code>json</code>
+library? We are going to use it for decoding the packet, too.</p>
+<div class="highlight"><pre><span></span><code><span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span>
+</code></pre></div>
+<p>The variable <code>data</code> now contains the same dictionary we sent by the emitter and can be
+accessed as normal dictionary object.</p>
+<p><strong>WARNING: There are 3 robots within the team running asynchronously. If all of them
+are sending messages, it is always good to empty the queue before moving on, otherwise
+the queue might grow and you will be reading old messages. You can use
+a <code>while</code> loop for example</strong></p>
+<div class="highlight"><pre><span></span><code><span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">getQueueLength</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">getString</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">team_receiver</span><span class="o">.</span><span class="n">nextPacket</span><span class="p">()</span>
+    <span class="c1"># Do something with the packet</span>
+</code></pre></div>
+<p><strong>WARNING: Webots does not guarantee the order of messages. Your robot controllers should not rely on the order.
+Instead, we recommend sending robot identifier in the message payload so the receiving robots clearly know which robot
+originally sent the message.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+    
+  </body>
+</html>
